@@ -9,4 +9,8 @@
 
 <br>
 
+<hr>
+
+_Whoa, this looks bad :^)_
+
 <img align="center" alt="dbs" src="resources/dbs.png">
