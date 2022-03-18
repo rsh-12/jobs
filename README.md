@@ -14,3 +14,7 @@
 _Whoa, this looks bad :^)_
 
 <img align="center" alt="dbs" src="resources/dbs.png">
+
+<br>
+
+<img align="center" alt="logic model" src="resources/logic_model.png">
