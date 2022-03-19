@@ -4,6 +4,7 @@
 2. **Fields**
 3. **Foreign keys**
 4. **Metadata**
+5. **Checks**
 
 <hr>
 
@@ -26,6 +27,9 @@ CREATE TABLE profile
 
     -- Metadata
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- Database integrity checks
+    CHECK ( TRIM(last_name) != '' AND TRIM(first_name) != '' )
 );
 ```
