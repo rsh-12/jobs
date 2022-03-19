@@ -1,6 +1,6 @@
 ### The table structure I follow during development.
 
-1. **ID**
+1. **Primary keys**
 2. **Fields**
 3. **Foreign keys**
 4. **Metadata**
@@ -15,7 +15,7 @@ Here's an example:
 ```postgresql
 CREATE TABLE profile
 (
-    -- ID
+    -- Primary keys
     id         BIGSERIAL PRIMARY KEY,
 
     -- Fields
