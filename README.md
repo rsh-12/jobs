@@ -6,14 +6,7 @@
 - **Group**: PO-316  
 - **Topic**: Online job portal
 
-
-<br>
-
 <hr>
-
-_Whoa, this looks bad :^)_
-
-<img align="center" alt="dbs" src="resources/dbs.png">
 
 <br>
 
