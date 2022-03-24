@@ -21,11 +21,11 @@ CREATE TABLE seeker_profile
     id                   SERIAL PRIMARY KEY,
     description          VARCHAR(250),
     salary               INT,
-    currency             VARCHAR(3) UNIQUE DEFAULT 'RUB',
+    currency             VARCHAR(3) DEFAULT 'RUB',
     desired_job_position VARCHAR(70),
     account_id           VARCHAR(100) NOT NULL REFERENCES account (id) ON DELETE CASCADE,
-    created_at           TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
-    updated_at           TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
+    created_at           TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
+    updated_at           TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
 
     CHECK ( LENGTH(currency) = 3 ),
     CHECK (
