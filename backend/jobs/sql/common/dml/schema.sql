@@ -25,13 +25,15 @@ CREATE TABLE seeker_profile
     desired_job_position VARCHAR(70),
     account_id           INT NOT NULL REFERENCES account (id) ON DELETE CASCADE,
     created_at           TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
-    updated_at           TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
+    updated_at           TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
+
+    CHECK ( TRIM(description) != '' AND TRIM(desired_job_position) != '' )
 );
 
 CREATE TABLE country
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE CHECK ( TRIM(name) != '' )
 );
 
 CREATE TABLE citizenship
@@ -44,7 +46,7 @@ CREATE TABLE citizenship
 CREATE TABLE language
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
+    name VARCHAR(50) NOT NULL UNIQUE CHECK ( TRIM(name) != '' )
 );
 
 CREATE TABLE seeker_language
@@ -123,7 +125,7 @@ CREATE TABLE job_location
     CHECK (
                 TRIM(street) != '' AND
                 TRIM(city) != '' AND
-                TRIM(street) != '' AND
+                TRIM(state) != '' AND
                 TRIM(country) != ''
         )
 );
