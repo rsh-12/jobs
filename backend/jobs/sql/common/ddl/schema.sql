@@ -1,7 +1,7 @@
 -- Sample user table (Keycloak or other Auth Server)
 CREATE TABLE account
 (
-    id                        SERIAL PRIMARY KEY,
+    id                        VARCHAR PRIMARY KEY,
     last_name                 VARCHAR(50),
     first_name                VARCHAR(50),
     email                     VARCHAR(50),
@@ -23,7 +23,7 @@ CREATE TABLE seeker_profile
     salary               INT,
     currency             VARCHAR(3) UNIQUE DEFAULT 'RUB',
     desired_job_position VARCHAR(70),
-    account_id           INT NOT NULL REFERENCES account (id) ON DELETE CASCADE,
+    account_id           VARCHAR(100) NOT NULL REFERENCES account (id) ON DELETE CASCADE,
     created_at           TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
 
@@ -160,7 +160,9 @@ CREATE TABLE job_post
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    CHECK ( salary_up_to >= salary_from )
+    CHECK ( salary_up_to >= salary_from ),
+    CHECK ( phone ~ '\+?\d([\s-]?\d{3}){0,2}([\s-]?\d{2}){2}' ), -- 8-800-800-80-80
+    CHECK ( email ~* '.+@.+\.+\w{2,8}' )                         -- some@address.com
 );
 
 
