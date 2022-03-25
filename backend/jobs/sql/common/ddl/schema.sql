@@ -15,8 +15,8 @@ CREATE TABLE account
 );
 
 
--- PROFILE
-CREATE TABLE seeker_profile
+-- RESUME
+CREATE TABLE resume
 (
     id                   SERIAL PRIMARY KEY,
     description          VARCHAR(250),
@@ -43,9 +43,9 @@ CREATE TABLE country
 
 CREATE TABLE citizenship
 (
-    seeker_id  INT NOT NULL REFERENCES seeker_profile (id) ON DELETE CASCADE,
+    resume_id  INT NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
     country_id INT NOT NULL REFERENCES country (id) ON DELETE CASCADE,
-    UNIQUE (seeker_id, country_id)
+    UNIQUE (resume_id, country_id)
 );
 
 CREATE TABLE language
@@ -54,12 +54,12 @@ CREATE TABLE language
     name VARCHAR(70) NOT NULL UNIQUE CHECK ( TRIM(name) != '' )
 );
 
-CREATE TABLE seeker_language
+CREATE TABLE resume_language
 (
     level       VARCHAR(50) NOT NULL,
-    seeker_id   INT         NOT NULL REFERENCES seeker_profile (id) ON DELETE CASCADE,
+    resume_id   INT         NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
     language_id INT         NOT NULL REFERENCES language (id) ON DELETE CASCADE,
-    UNIQUE (level, seeker_id, language_id)
+    UNIQUE (level, resume_id, language_id)
 );
 
 CREATE TABLE education_detail
@@ -69,7 +69,7 @@ CREATE TABLE education_detail
     faculty          VARCHAR(150),
     starting_date    DATE,
     completion_date  DATE,
-    seeker_id        INT          NOT NULL REFERENCES seeker_profile (id) ON DELETE CASCADE,
+    resume_id        INT          NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
 
     CHECK ( TRIM(institution_name) != '' ),
     CHECK ( completion_date > starting_date )
@@ -84,7 +84,7 @@ CREATE TABLE experience_detail
     job_title      VARCHAR(50) NOT NULL,
     description    VARCHAR(250),
     company_name   VARCHAR(100),
-    seeker_id      INT         NOT NULL REFERENCES seeker_profile (id) ON DELETE CASCADE,
+    resume_id      INT         NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
 
     CHECK ( end_date > start_date ),
     CHECK ( TRIM(job_title) != '' )
@@ -181,17 +181,17 @@ CREATE TABLE job_post_skill_set
     UNIQUE (level, skill_set_id, job_post_id)
 );
 
-CREATE TABLE seeker_skill_set
+CREATE TABLE resume_skill_set
 (
     level        VARCHAR(50) NOT NULL CHECK ( TRIM(level) != '' ),
     skill_set_id INT         NOT NULL REFERENCES skill_set (id) ON DELETE CASCADE,
-    seeker_id    INT         NOT NULL REFERENCES seeker_profile (id) ON DELETE CASCADE,
-    UNIQUE (level, skill_set_id, seeker_id)
+    resume_id    INT         NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
+    UNIQUE (level, skill_set_id, resume_id)
 );
 
 CREATE TABLE job_post_activity
 (
     job_post_id INT NOT NULL REFERENCES job_post (id) ON DELETE CASCADE,
-    seeker_id   INT NOT NULL REFERENCES seeker_profile (id) ON DELETE CASCADE,
-    UNIQUE (job_post_id, seeker_id)
+    resume_id   INT NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
+    UNIQUE (job_post_id, resume_id)
 );
