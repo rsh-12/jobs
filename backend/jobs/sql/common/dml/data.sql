@@ -46,7 +46,17 @@ VALUES ('Advanced', 1, 1),
        ('Advanced', 3, 1);
 
 
+INSERT INTO experience_detail(is_current_job, start_date, end_date, job_title, description,
+                              company_name, resume_id)
+VALUES (TRUE, '2010-10-12', NULL, 'Manager', NULL, 'IT-cat', 1),
+       (TRUE, '2010-10-12', NULL, 'Manager', NULL, 'IT-cat', 2),
+       (FALSE, '2015-01-05', '2020-03-11', 'Frontend Developer',
+        'I also have some experience with Angular 8', 'MyDocuments', 3);
 
--- INSERT INTO experience_detail(is_current_job, start_date, end_date, job_title, description,
---                               company_name, resume_id)
--- VALUES (TRUE, '12-10-2010', NULL, 'Frontend Developer', NULL, 'IT-cat', 1);
+
+INSERT INTO business_stream(name)
+VALUES ('IT'),
+       ('Marketing'),
+       ('Health Care Management'),
+       ('Human Resources'),
+       ('Business Analytics');
