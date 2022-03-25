@@ -31,6 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-backend/jobs/bash/
+backend/jobs/bash/util/
 backend/jobs/sql/tmp/
 backend/jobs/docker/datastore/
