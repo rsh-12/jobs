@@ -195,3 +195,23 @@ CREATE TABLE job_post_activity
     resume_id   INT NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
     UNIQUE (job_post_id, resume_id)
 );
+
+CREATE TABLE specialization
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(70) NOT NULL UNIQUE CHECK ( TRIM(name) != '' )
+);
+
+CREATE TABLE specialization_resume
+(
+    resume_id         INT NOT NULL REFERENCES resume (id) ON DELETE CASCADE,
+    specialization_id INT NOT NULL REFERENCES specialization (id) ON DELETE CASCADE,
+    UNIQUE (resume_id, specialization_id)
+);
+
+CREATE TABLE specialization_job_post
+(
+    job_post_id       INT NOT NULL REFERENCES job_post (id) ON DELETE CASCADE,
+    specialization_id INT NOT NULL REFERENCES specialization (id) ON DELETE CASCADE,
+    UNIQUE (job_post_id, specialization_id)
+);
