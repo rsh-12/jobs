@@ -154,9 +154,9 @@ CREATE TABLE job_post
     salary_up_to    INT,
     email           VARCHAR(50),
     phone           VARCHAR(50),
-    job_type_id     INT REFERENCES job_type (id),
+    job_type_id     INT NOT NULL REFERENCES job_type (id),
     job_location_id INT REFERENCES job_location (id),
-    posted_by_id    INT REFERENCES company (id) ON DELETE CASCADE,
+    posted_by_id    INT NOT NULL REFERENCES company (id) ON DELETE CASCADE,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
