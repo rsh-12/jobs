@@ -95,7 +95,7 @@ CREATE TABLE experience_detail
 CREATE TABLE business_stream
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE CHECK ( LENGTH(TRIM(name)) > 1 )
+    name VARCHAR(150) NOT NULL UNIQUE CHECK ( LENGTH(TRIM(name)) > 1 )
 );
 
 CREATE TABLE company
