@@ -200,6 +200,7 @@ CREATE TABLE specialization
 (
     id   SERIAL PRIMARY KEY,
     name VARCHAR(70) NOT NULL UNIQUE CHECK ( TRIM(name) != '' )
+    -- business_stream_id INT         NOT NULL REFERENCES business_stream (id)
 );
 
 CREATE TABLE specialization_resume
