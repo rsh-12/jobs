@@ -1,5 +1,3 @@
-SET SEARCH_PATH TO test;
-
 INSERT INTO account(id, last_name, first_name, email, phone, password, gender)
 VALUES ('34551743-d36e-407c-abab-6adcf9943912', 'Snow', 'Rianne', 'rianne@mail.com',
         '8 800 800 80 80', 'password1', 'FEMALE'),
@@ -15,16 +13,10 @@ VALUES ('Looking for a job', NULL, DEFAULT, 'Manager', '34551743-d36e-407c-abab-
         '4b357abb-32b3-4bb5-a578-bad8224101a8');
 
 
-INSERT INTO country(name)
-VALUES ('Russia'),
-       ('France'),
-       ('Kazakhstan');
-
-
 INSERT INTO citizenship(resume_id, country_id)
-VALUES (1, 2),
-       (2, 2),
-       (3, 1);
+VALUES (1, 89), -- France
+       (2, 89),
+       (3, 43); -- Russia
 
 
 INSERT INTO language(name)
@@ -54,9 +46,27 @@ VALUES (TRUE, '2010-10-12', NULL, 'Manager', NULL, 'IT-cat', 1),
         'I also have some experience with Angular 8', 'MyDocuments', 3);
 
 
-INSERT INTO business_stream(name)
-VALUES ('IT'),
-       ('Marketing'),
-       ('Health Care Management'),
-       ('Human Resources'),
-       ('Business Analytics');
+INSERT INTO education_detail(institution_name, faculty, starting_date, completion_date, resume_id)
+VALUES ('UrSU', 'Energy and Hi-Tech Management', '2010-06-01', '2014-06-01', 1),
+       ('UrSU', 'Energy and Hi-Tech Management', '2010-06-01', '2014-06-01', 2),
+       ('UrSU', 'Information and Software Engineering', '2012-06-01', '2017-06-01', 3);
+
+
+INSERT INTO company(name, business_stream_id)
+VALUES ('MyOffice', 2), -- IT, System Integration, Internet
+       ('Rainbow', 5),  -- Media, Marketing, Advertising, PR, Design, Production
+       ('BigLogistic', 1); -- Transportation, Logistics, Warehousing, International Logistics
+
+
+INSERT INTO job_type(name)
+VALUES ('Full time'),
+       ('Part time');
+
+
+INSERT INTO job_location(country, state, city)
+VALUES ('Russia', 'Sverdlovsk Oblast', 'Yekateringburg');
+
+
+/*INSERT INTO job_post(description, salary_from, salary_up_to, email, phone, job_type_id,
+                     job_location_id, posted_by_id)
+VALUES ()*/
