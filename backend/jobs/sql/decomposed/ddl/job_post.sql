@@ -24,21 +24,24 @@ CREATE TABLE job_location
 CREATE TABLE job_post
 (
     id              SERIAL PRIMARY KEY,
+    title           VARCHAR(150) NOT NULL,
     description     TEXT,
-    is_active       BOOLEAN   DEFAULT TRUE,
+    is_active       BOOLEAN    DEFAULT TRUE,
     salary_from     INT,
     salary_up_to    INT,
+    currency        VARCHAR(3) DEFAULT 'RUB',
     email           VARCHAR(50),
     phone           VARCHAR(50),
-    job_type_id     INT NOT NULL REFERENCES job_type (id),
+    job_type_id     INT          NOT NULL REFERENCES job_type (id),
     job_location_id INT REFERENCES job_location (id),
-    posted_by_id    INT NOT NULL,                                -- company
-    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    posted_by_id    INT          NOT NULL,                       -- company
+    created_at      TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
 
     CHECK ( salary_up_to >= salary_from ),
     CHECK ( phone ~ '\+?\d([\s-]?\d{3}){0,2}([\s-]?\d{2}){2}' ), -- 8-800-800-80-80
-    CHECK ( email ~* '.+@.+\.+\w{2,8}' )                         -- some@address.com
+    CHECK ( email ~* '.+@.+\.+\w{2,8}' ),                        -- some@address.com
+    CHECK ( TRIM(title) != '' )
 );
 
 CREATE TABLE job_post_skill_set
@@ -51,15 +54,21 @@ CREATE TABLE job_post_skill_set
 
 CREATE TABLE job_post_activity
 (
-    job_post_id INT NOT NULL REFERENCES job_post (id) ON DELETE CASCADE,
-    resume_id   INT NOT NULL, -- resume
-    UNIQUE (job_post_id, resume_id)
+    job_post_id INT                           NOT NULL REFERENCES job_post (id) ON DELETE CASCADE,
+    resume_id   INT                           NOT NULL, -- resume
+    status      VARCHAR(30) DEFAULT 'pending' NOT NULL,
+    UNIQUE (job_post_id, resume_id, status),
+
+    CHECK (LOWER(status) = 'rejection' OR
+           LOWER(status) = 'invitation' OR
+           LOWER(status) = 'pending')
 );
 
 CREATE TABLE specialization
 (
     id   SERIAL PRIMARY KEY,
     name VARCHAR(70) NOT NULL UNIQUE CHECK ( TRIM(name) != '' )
+    -- business_stream_id INT         NOT NULL REFERENCES business_stream (id)
 );
 
 CREATE TABLE specialization_job_post

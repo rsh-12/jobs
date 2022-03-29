@@ -1,3 +1,9 @@
+-- RUN THE FOLLOWING DML SCRIPTS FIRST:
+--    business_stream.sql
+--    countries.sql
+--    specializations.sql
+
+
 INSERT INTO account(id, last_name, first_name, email, phone, password, gender)
 VALUES ('34551743-d36e-407c-abab-6adcf9943912', 'Snow', 'Rianne', 'rianne@mail.com',
         '8 800 800 80 80', 'password1', 'FEMALE'),
@@ -67,6 +73,72 @@ INSERT INTO job_location(country, state, city)
 VALUES ('Russia', 'Sverdlovsk Oblast', 'Yekateringburg');
 
 
-/*INSERT INTO job_post(description, salary_from, salary_up_to, email, phone, job_type_id,
+INSERT INTO job_post(title, description, salary_from, salary_up_to, currency, email, phone,
+                     job_type_id,
                      job_location_id, posted_by_id)
-VALUES ()*/
+VALUES ('Manager',
+        'Manager will be focused on the management and delivery of client engagements, ' ||
+        'as well as sales and practice development. In this role, you will develop ' ||
+        'and coach high performing people and teams, leading, ' ||
+        'guiding and supporting them to make an impact that matters, ' ||
+        'and setting the direction to deliver exceptional client services.',
+        1000, 2000, 'EUR', 'docs@mail.com', '8-800-600-12-12', 1, 1, 3),
+
+       ('Frontend Developer (React js)',
+        'We make browser extensions that use lots of people around the globe. ' ||
+        'We are constantly entering new markets and ' ||
+        'adjusting products to the needs of users in different countries.',
+        2900, 5000, 'EUR', 'web@mail.com', '8-800-600-20-21', 1, 1, 1);
+
+
+INSERT INTO specialization_job_post(job_post_id, specialization_id)
+VALUES (1, 6),
+       (1, 4),
+       (2, 9),
+       (2, 10),
+       (2, 25);
+
+
+INSERT INTO specialization_resume(resume_id, specialization_id)
+VALUES (1, 36), -- Project Management
+       (2, 36), -- Project Management
+       (3, 25); -- Software Development
+
+
+INSERT INTO skill_set(name)
+VALUES ('React'),
+       ('CSS'),
+       ('HTML'),
+       ('Angular'),
+       ('Java'),
+       ('Docker'),
+       ('Kubernetes'),
+       ('Management'),
+       ('Communication');
+
+
+INSERT INTO job_post_skill_set(level, skill_set_id, job_post_id)
+VALUES ('Beginner', 1, 2),
+       ('Average', 2, 2),
+       ('Skilled', 3, 2),
+       ('Specialist', 4, 2),
+       ('Expert', 6, 2),
+       ('Expert', 8, 1),
+       ('Advanced', 9, 1);
+
+
+INSERT INTO resume_skill_set(level, skill_set_id, resume_id)
+VALUES ('Expert', 1, 3),
+       ('Average', 2, 3),
+       ('Skilled', 3, 3),
+       ('Specialist', 4, 3),
+       ('Expert', 6, 3),
+       ('Expert', 8, 1),
+       ('Expert', 8, 2),
+       ('Advanced', 9, 1),
+       ('Advanced', 9, 2);
+
+
+INSERT INTO job_post_activity(job_post_id, resume_id, status)
+VALUES (1, 1, 'invitation'),
+       (2, 3, DEFAULT);
