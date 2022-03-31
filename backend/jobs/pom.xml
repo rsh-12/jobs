@@ -7,10 +7,17 @@
   <groupId>ru.rsh12</groupId>
   <artifactId>jobs</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <properties>
     <maven.compiler.source>16</maven.compiler.source>
     <maven.compiler.target>16</maven.compiler.target>
   </properties>
+
+  <modules>
+    <module>microservices/company-service</module>
+    <module>microservices/job-service</module>
+    <module>microservices/resume-service</module>
+  </modules>
 
 </project>
