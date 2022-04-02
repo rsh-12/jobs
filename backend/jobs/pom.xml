@@ -19,6 +19,7 @@
     <module>microservices/company-service</module>
     <module>microservices/resume-service</module>
     <module>microservices/job-service</module>
+    <module>util</module>
     <module>api</module>
   </modules>
 
