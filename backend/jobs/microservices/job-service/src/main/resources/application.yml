@@ -1,1 +1,15 @@
+server:
+  port: 7003
+  error:
+    include-message: always
 
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/resume
+    username: ${DB_USERNAME}
+    password: ${DB_PWD}
+
+logging:
+  level:
+    root: info
+    ru.rsh12: debug
