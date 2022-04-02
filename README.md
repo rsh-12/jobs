@@ -27,3 +27,11 @@ _Need to update_
 
 
 <img align="center" alt="dbs" src="resources/dbs.png">
+
+
+<br>
+<br>
+<br>
+
+
+_Experienced by Magnus Larsson_
