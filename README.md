@@ -12,4 +12,18 @@
 <hr>
 
 
+## Logic model
+
+_Need to update_
+
 <img align="center" alt="logic model" src="resources/logic_model.png">
+
+<br>
+<br>
+<br>
+
+
+## Decomposed databases
+
+
+<img align="center" alt="dbs" src="resources/dbs.png">
