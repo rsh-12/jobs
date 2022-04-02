@@ -15,9 +15,10 @@
   </properties>
 
   <modules>
+    <module>microservices/composite-service</module>
     <module>microservices/company-service</module>
-    <module>microservices/job-service</module>
     <module>microservices/resume-service</module>
+    <module>microservices/job-service</module>
   </modules>
 
 </project>
