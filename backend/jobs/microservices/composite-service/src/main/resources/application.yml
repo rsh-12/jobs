@@ -3,6 +3,10 @@ server:
   error:
     include-message: always
 
+spring:
+  application:
+    name: composite-service
+
 logging:
   level:
     root: info

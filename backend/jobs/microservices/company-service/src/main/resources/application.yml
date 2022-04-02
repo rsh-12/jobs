@@ -4,6 +4,8 @@ server:
     include-message: always
 
 spring:
+  application:
+    name: company
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/company
     username: ${DB_USERNAME}
