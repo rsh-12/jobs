@@ -15,4 +15,4 @@ jobs:
           java-version: 16.0.1
       - name: Run tests
         working-directory: ./backend/jobs
-        run: bash bash/test.bash
+        run: mvn test
