@@ -12,9 +12,7 @@ import ru.rsh12.api.core.company.dto.CompanyDto;
 @RequestMapping("/api/v1/companies")
 public interface CompanyApi {
 
-    @GetMapping(
-            value = "/{companyId}",
-            produces = "application/json")
+    @GetMapping(value = "/{companyId}", produces = "application/json")
     CompanyDto getCompany(@PathVariable Integer companyId);
 
 }
