@@ -6,8 +6,8 @@ server:
 spring:
   application:
     name: resume
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/job
+  datasource:
+    url: jdbc:postgresql://localhost/resume
     username: ${DB_USERNAME}
     password: ${DB_PWD}
 
