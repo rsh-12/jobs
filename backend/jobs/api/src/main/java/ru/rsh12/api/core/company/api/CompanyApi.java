@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.rsh12.api.core.company.dto.CompanyDto;
 
-@RequestMapping("/companies")
+@RequestMapping("/api/v1/companies")
 public interface CompanyApi {
 
     @GetMapping(
