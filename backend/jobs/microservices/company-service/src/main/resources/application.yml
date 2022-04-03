@@ -10,6 +10,8 @@ spring:
     url: jdbc:postgresql://localhost/company
     username: ${DB_USERNAME}
     password: ${DB_PWD}
+  flyway:
+    locations: classpath:db.migration
 
 logging:
   level:
