@@ -71,6 +71,13 @@
       <version>8.5.4</version>
     </dependency>
 
+    <dependency>
+      <groupId>ru.rsh12</groupId>
+      <artifactId>api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
