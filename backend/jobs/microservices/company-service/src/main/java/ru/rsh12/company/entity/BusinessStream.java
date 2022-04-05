@@ -28,7 +28,7 @@ public class BusinessStream {
     private Integer id;
 
     @NotBlank
-    @Size(max = 150, message = "Value must be less than 150 characters")
+    @Size(max = 150, message = "Value must be less than 151 characters")
     private String name;
 
     public BusinessStream(String name) {
