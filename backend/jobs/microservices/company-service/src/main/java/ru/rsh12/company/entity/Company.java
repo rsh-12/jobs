@@ -6,11 +6,14 @@ package ru.rsh12.company.entity;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
@@ -49,6 +52,13 @@ public class Company {
 
     @Size(max = 250, message = "Value must be less than 251 characters")
     private String websiteUrl;
+
+    @ManyToOne
+    private BusinessStream businessStream;
+
+    @OneToMany
+    @ToString.Exclude
+    private List<CompanyImage> images;
 
     @CreationTimestamp
     private Instant createdAt;
