@@ -28,6 +28,9 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+/**
+ * Represents the company.
+ */
 @Setter
 @Getter
 @Builder

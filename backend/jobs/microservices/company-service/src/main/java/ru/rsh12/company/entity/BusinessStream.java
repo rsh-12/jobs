@@ -20,6 +20,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Represents the company's industry.
+ */
 @Setter
 @Getter
 @ToString
