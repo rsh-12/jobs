@@ -5,7 +5,9 @@ package ru.rsh12.company.entity;
  * */
 
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,10 +34,11 @@ public class CompanyImage {
     private Integer id;
 
     @NotBlank
+    @Column(unique = true)
     @Size(max = 250, message = "Value must be less than 251 characters")
     private String image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
 
     public CompanyImage(String image) {
