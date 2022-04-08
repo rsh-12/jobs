@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PreRemove;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.Getter;
@@ -38,14 +37,9 @@ public class BusinessStream {
     @Size(max = 150, message = "Value must be less than 151 characters")
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "businessStream")
     @ToString.Exclude
     private List<Company> companies = new ArrayList<>();
-
-    @PreRemove
-    private void preRemove() {
-        this.companies.forEach(company -> company.setBusinessStream(null));
-    }
 
     public BusinessStream(String name) {
         this.name = name;
