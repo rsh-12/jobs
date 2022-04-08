@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,9 +17,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.BusinessStream;
 
+@Sql(scripts = {"industries.sql"})
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
@@ -27,22 +29,16 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
     @Autowired
     private BusinessStreamRepository repository;
 
-    private BusinessStream savedEntity;
-
-    @BeforeEach
-    void setUp() {
+    @AfterEach
+    void tearDown() {
+        assertTrue(repository.count() > 0);
         repository.deleteAll();
-
-        BusinessStream entity = new BusinessStream("Automotive Business");
-        savedEntity = repository.save(entity);
-
-        assertEquals(savedEntity, entity);
+        assertEquals(0, repository.count());
     }
 
     @Test
     public void findByName() {
-        assertEquals(repository.count(), 1);
-        assertTrue(repository.findByName(savedEntity.getName()).isPresent());
+        assertTrue(repository.findByName("Automotive Business").isPresent());
     }
 
     @Test
@@ -50,7 +46,6 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
         List<BusinessStream> entities = repository.findByNameContains("business", 10);
         assertFalse(entities.isEmpty());
         assertEquals(1, entities.size());
-        assertEquals(savedEntity, entities.get(0));
     }
 
     @Test
@@ -62,7 +57,6 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
         assertEquals(1, page.getTotalPages());
 
         assertFalse(page.getContent().isEmpty());
-        assertEquals(savedEntity, page.getContent().get(0));
     }
 
 }
