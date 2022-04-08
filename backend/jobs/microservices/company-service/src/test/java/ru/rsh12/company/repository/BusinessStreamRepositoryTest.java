@@ -56,7 +56,7 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
     @Test
     public void findByNameContains_WithPageable() {
         PageRequest pr = PageRequest.of(0, 10);
-        Page<BusinessStream> page = repository.findByNameContains("business", pr);
+        Page<BusinessStream> page = repository.findByNameContainsIgnoreCase("business", pr);
 
         assertEquals(1, page.getTotalElements());
         assertEquals(1, page.getTotalPages());
