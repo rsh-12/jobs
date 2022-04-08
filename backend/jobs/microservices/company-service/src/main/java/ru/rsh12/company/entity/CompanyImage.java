@@ -32,6 +32,7 @@ public class CompanyImage {
     private Integer id;
 
     @NotBlank
+    @Size(max = 250, message = "Value must be less than 251 characters")
     private String image;
 
     @ManyToOne
