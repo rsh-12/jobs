@@ -15,13 +15,9 @@ public interface BusinessStreamRepository extends
 
     @Query(
             nativeQuery = true,
-            countQuery = "SELECT COUNT(*) FROM business_stream",
-            value = "SELECT * FROM business_stream WHERE name ~* ?1")
-    Page<BusinessStream> findByNameContains(String name, Pageable pageable);
-
-    @Query(
-            nativeQuery = true,
             value = "SELECT * FROM business_stream WHERE name ~* ?1 LIMIT ?2")
     List<BusinessStream> findByNameContains(String name, int limit);
+
+    Page<BusinessStream> findByNameContainsIgnoreCase(String name, Pageable pageable);
 
 }
