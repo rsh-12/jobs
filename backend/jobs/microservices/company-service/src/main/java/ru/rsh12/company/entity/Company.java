@@ -66,6 +66,29 @@ public class Company {
     @UpdateTimestamp
     private Instant updatedAt;
 
+    public void addImage(CompanyImage image) {
+        if (image != null) {
+            this.images.add(image);
+            image.setCompany(this);
+        }
+    }
+
+    public void removeImage(CompanyImage image) {
+        if (image != null) {
+            this.images.remove(image);
+            image.setCompany(null);
+        }
+    }
+
+    public void setImages(List<CompanyImage> images) {
+        if (images != null) {
+            images.forEach(image -> image.setCompany(this));
+
+            this.images.forEach(image -> image.setCompany(null));
+            this.images = images;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
