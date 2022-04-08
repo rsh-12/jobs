@@ -8,7 +8,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,7 +63,9 @@ public class Company {
     @ManyToOne
     private BusinessStream businessStream;
 
-    @OneToMany
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<CompanyImage> images;
 
