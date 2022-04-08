@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -45,6 +46,7 @@ public class Company {
     @Size(max = 100, message = "Value must be less than 101 characters")
     private String name;
 
+    @Lob
     private String description;
 
     @PastOrPresent
