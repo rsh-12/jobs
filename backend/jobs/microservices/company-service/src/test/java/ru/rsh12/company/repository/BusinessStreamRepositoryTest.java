@@ -43,14 +43,14 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
     }
 
     @Test
-    public void findByNameContains_WithLimit() {
-        List<BusinessStream> entities = repository.findByNameContains("business", 10);
+    public void findByNameContainsLimit() {
+        List<BusinessStream> entities = repository.findByNameContainsLimit("business", 10);
         assertFalse(entities.isEmpty());
         assertEquals(1, entities.size());
     }
 
     @Test
-    public void findByNameContains_WithPageable() {
+    public void findByNameContainsIgnoreCase() {
         PageRequest pr = PageRequest.of(0, 10);
         Page<BusinessStream> page = repository.findByNameContainsIgnoreCase("business", pr);
 
