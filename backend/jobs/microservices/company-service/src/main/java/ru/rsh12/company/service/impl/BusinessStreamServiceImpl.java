@@ -23,31 +23,46 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
     private final BusinessStreamRepository repository;
 
     @Override
-    public Optional<BusinessStream> getBusinessStream(Integer id) {
+    public Optional<BusinessStream> findById(Integer id) {
         log.debug("");
 
         return repository.findById(id);
     }
 
     @Override
-    public Optional<BusinessStream> getBusinessStream(String name) {
+    public Optional<BusinessStream> findByName(String name) {
         log.debug("");
 
         return repository.findByName(name);
     }
 
     @Override
-    public Page<BusinessStream> getBusinessStreams(String name, Pageable pageable) {
+    public Page<BusinessStream> findByName(String name, Pageable pageable) {
         log.debug("");
 
         return repository.findByNameContainsIgnoreCase(name, pageable);
     }
 
     @Override
-    public List<BusinessStream> getBusinessStreams(String name, int limit) {
+    public List<BusinessStream> findByName(String name, int limit) {
         log.debug("");
 
         return repository.findByNameContainsLimit(name, limit);
+    }
+
+    @Override
+    public Page<BusinessStream> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(int id) {
+
+    }
+
+    @Override
+    public void delete(BusinessStream businessStream) {
+
     }
 
 }

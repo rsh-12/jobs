@@ -14,7 +14,7 @@ public interface BusinessStreamService {
      * @param id the id
      * @return {@link BusinessStream}
      */
-    Optional<BusinessStream> getBusinessStream(Integer id);
+    Optional<BusinessStream> findById(Integer id);
 
     /**
      * Gets business stream by name.
@@ -22,7 +22,7 @@ public interface BusinessStreamService {
      * @param name the business stream name
      * @return {@link BusinessStream}
      */
-    Optional<BusinessStream> getBusinessStream(String name);
+    Optional<BusinessStream> findByName(String name);
 
     /**
      * Gets business streams containing the value of the parameter in their names.
@@ -31,7 +31,7 @@ public interface BusinessStreamService {
      * @param pageable {@link Pageable}
      * @return the {@link Page} of {@link BusinessStream business streams}
      */
-    Page<BusinessStream> getBusinessStreams(String name, Pageable pageable);
+    Page<BusinessStream> findByName(String name, Pageable pageable);
 
     /**
      * Gets business streams containing the value of the parameter in their names.
@@ -40,6 +40,12 @@ public interface BusinessStreamService {
      * @param limit the maximum possible number of records
      * @return the {@link List} of {@link BusinessStream business streams}
      */
-    List<BusinessStream> getBusinessStreams(String name, int limit);
+    List<BusinessStream> findByName(String name, int limit);
+
+    Page<BusinessStream> findAll(Pageable pageable);
+
+    void deleteById(int id);
+
+    void delete(BusinessStream businessStream);
 
 }
