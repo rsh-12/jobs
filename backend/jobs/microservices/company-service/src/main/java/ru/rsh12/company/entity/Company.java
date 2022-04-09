@@ -9,12 +9,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -51,7 +51,7 @@ public class Company {
     @Size(max = 100, message = "Value must be less than 101 characters")
     private String name;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @PastOrPresent
@@ -65,7 +65,8 @@ public class Company {
 
     @OneToMany(
             fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.ALL,
+            mappedBy = "company")
     @ToString.Exclude
     private List<CompanyImage> images;
 
