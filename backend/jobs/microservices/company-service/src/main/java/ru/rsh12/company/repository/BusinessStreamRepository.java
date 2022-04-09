@@ -16,7 +16,7 @@ public interface BusinessStreamRepository extends
     @Query(
             nativeQuery = true,
             value = "SELECT * FROM business_stream WHERE name ~* ?1 LIMIT ?2")
-    List<BusinessStream> findByNameContains(String name, int limit);
+    List<BusinessStream> findByNameContainsLimit(String name, int limit);
 
     Page<BusinessStream> findByNameContainsIgnoreCase(String name, Pageable pageable);
 
