@@ -56,8 +56,6 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
 
         assertEquals(1, page.getTotalElements());
         assertEquals(1, page.getTotalPages());
-
-        assertFalse(page.getContent().isEmpty());
     }
 
     @Test
