@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,27 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
         assertEquals(1, page.getTotalPages());
 
         assertFalse(page.getContent().isEmpty());
+    }
+
+    @Test
+    public void deleteById() {
+        long before = repository.count();
+
+        String name = "Automotive Business";
+        Optional<BusinessStream> optional = repository.findByName(name);
+        assertTrue(optional.isPresent());
+
+        repository.deleteById(optional.get().getId());
+        assertEquals(before - 1, repository.count());
+
+        assertTrue(repository.findByName(name).isEmpty());
+    }
+
+    @Test
+    public void save() {
+        long before = repository.count();
+        repository.save(new BusinessStream("Some industry"));
+        assertEquals(before + 1, repository.count());
     }
 
 }
