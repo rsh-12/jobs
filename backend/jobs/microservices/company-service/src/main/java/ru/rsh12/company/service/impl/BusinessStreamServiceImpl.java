@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import ru.rsh12.api.exceptions.NotFoundException;
 import ru.rsh12.company.entity.BusinessStream;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.service.BusinessStreamService;
@@ -40,7 +39,6 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
                 .log(log.getName(), FINE)
                 .log(Thread.currentThread().getName(), FINE)
                 .flatMap(Mono::justOrEmpty)
-                .switchIfEmpty(Mono.error(new NotFoundException("Not Found")))
                 .subscribeOn(jdbcScheduler);
     }
 
