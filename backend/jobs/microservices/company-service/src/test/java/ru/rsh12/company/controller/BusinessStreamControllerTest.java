@@ -51,12 +51,6 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
     }
 
     @Test
-    public void getBusinessStreamById_NotFound() {
-        getAndVerify("/1000", HttpStatus.NOT_FOUND)
-                .jsonPath("$.status").isEqualTo(404);
-    }
-
-    @Test
     public void getBusinessStreams() {
         getAndVerify(HttpStatus.OK)
                 .jsonPath("$.length()").isEqualTo(1);
