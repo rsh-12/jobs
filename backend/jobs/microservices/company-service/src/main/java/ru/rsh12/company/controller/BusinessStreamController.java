@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.rsh12.api.core.company.api.BusinessStreamApi;
 import ru.rsh12.api.core.company.dto.BusinessStreamDto;
-import ru.rsh12.api.exceptions.NotFoundException;
 import ru.rsh12.company.service.BusinessStreamService;
 import ru.rsh12.company.service.mapper.BusinessStreamMapper;
 
@@ -25,8 +24,7 @@ public class BusinessStreamController implements BusinessStreamApi {
     @Override
     public Mono<BusinessStreamDto> getBusinessStream(Integer id) {
         return service.findOne(id)
-                .map(mapper::entityToDto)
-                .switchIfEmpty(Mono.error(new NotFoundException("oh no")));
+                .map(mapper::entityToDto);
     }
 
     @Override
