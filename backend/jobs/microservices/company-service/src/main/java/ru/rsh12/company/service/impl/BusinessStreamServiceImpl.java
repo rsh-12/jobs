@@ -4,65 +4,55 @@ package ru.rsh12.company.service.impl;
  * Time: 10:59 PM
  * */
 
-import java.util.List;
-import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+import static java.util.logging.Level.FINE;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import ru.rsh12.api.exceptions.NotFoundException;
 import ru.rsh12.company.entity.BusinessStream;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.service.BusinessStreamService;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class BusinessStreamServiceImpl implements BusinessStreamService {
 
     private final BusinessStreamRepository repository;
+    private final Scheduler jdbcScheduler;
 
-    @Override
-    public Optional<BusinessStream> findById(Integer id) {
-        log.debug("");
-
-        return repository.findById(id);
+    public BusinessStreamServiceImpl(
+            BusinessStreamRepository repository,
+            @Qualifier("jdbcScheduler") Scheduler jdbcScheduler) {
+        this.repository = repository;
+        this.jdbcScheduler = jdbcScheduler;
     }
 
     @Override
-    public Optional<BusinessStream> findByName(String name) {
-        log.debug("");
+    public Mono<BusinessStream> findOne(Integer id) {
+        log.debug("findOne: gets the business stream by id={}", id);
 
-        return repository.findByName(name);
+        return Mono.fromCallable(() -> repository.findById(id))
+                .log(log.getName(), FINE)
+                .log(Thread.currentThread().getName(), FINE)
+                .flatMap(Mono::justOrEmpty)
+                .switchIfEmpty(Mono.error(new NotFoundException("Not Found")))
+                .subscribeOn(jdbcScheduler);
     }
 
     @Override
-    public Page<BusinessStream> findByName(String name, Pageable pageable) {
-        log.debug("");
+    public Flux<BusinessStream> findAll(Pageable pageable) {
+        log.debug("findAll: gets list of business streams");
 
-        return repository.findByNameContainsIgnoreCase(name, pageable);
-    }
-
-    @Override
-    public List<BusinessStream> findByName(String name, int limit) {
-        log.debug("");
-
-        return repository.findByNameContainsLimit(name, limit);
-    }
-
-    @Override
-    public Page<BusinessStream> findAll(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(int id) {
-
-    }
-
-    @Override
-    public void delete(BusinessStream businessStream) {
-
+        return Mono.fromCallable(() -> repository.findAll(pageable))
+                .flatMapMany(Flux::fromIterable)
+                .log(log.getName(), FINE)
+                .log(Thread.currentThread().getName(), FINE)
+                .subscribeOn(jdbcScheduler);
     }
 
 }
