@@ -7,6 +7,7 @@ package ru.rsh12.company.service.impl;
 import static java.util.logging.Level.FINE;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
     private final BusinessStreamRepository repository;
     private final Scheduler jdbcScheduler;
 
+    @Autowired
     public BusinessStreamServiceImpl(
             BusinessStreamRepository repository,
             @Qualifier("jdbcScheduler") Scheduler jdbcScheduler) {
@@ -47,9 +49,9 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
         log.debug("findAll: gets list of business streams");
 
         return Mono.fromCallable(() -> repository.findAll(pageable))
-                .flatMapMany(Flux::fromIterable)
                 .log(log.getName(), FINE)
                 .log(Thread.currentThread().getName(), FINE)
+                .flatMapMany(Flux::fromIterable)
                 .subscribeOn(jdbcScheduler);
     }
 
