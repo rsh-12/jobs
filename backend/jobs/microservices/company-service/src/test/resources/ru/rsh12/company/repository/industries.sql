@@ -7,5 +7,4 @@ VALUES ('Transportation, Logistics, Warehousing, International Logistics'),
        ('Construction, Real Estate, Architecture'),
        ('Automotive Business'),
        ('Timber Industry'),
-       ('Metallurgy, Metalwork'),
-       ('Food Products');
+       ('Metallurgy, Metalwork');
