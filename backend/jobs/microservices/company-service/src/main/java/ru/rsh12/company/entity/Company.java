@@ -6,6 +6,7 @@ package ru.rsh12.company.entity;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -20,8 +21,6 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -35,10 +34,8 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Setter
 @Getter
-@Builder
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Company {
 
@@ -68,13 +65,28 @@ public class Company {
             cascade = CascadeType.ALL,
             mappedBy = "company")
     @ToString.Exclude
-    private List<CompanyImage> images;
+    private List<CompanyImage> images = new ArrayList<>();
 
     @CreationTimestamp
     private Instant createdAt;
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public Company(
+            @NonNull String name,
+            String description,
+            LocalDate establishmentDate,
+            String websiteUrl,
+            BusinessStream businessStream,
+            List<CompanyImage> images) {
+        this.name = name;
+        this.description = description;
+        this.establishmentDate = establishmentDate;
+        this.websiteUrl = websiteUrl;
+        this.businessStream = businessStream;
+        this.images = images;
+    }
 
     public void addImage(CompanyImage image) {
         if (image != null) {
