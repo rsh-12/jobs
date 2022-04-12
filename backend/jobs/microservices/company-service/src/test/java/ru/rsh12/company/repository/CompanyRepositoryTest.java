@@ -7,6 +7,7 @@ package ru.rsh12.company.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.Company;
 
-@Sql(scripts = {"data.sql"})
+@Sql(scripts = {"companies.sql"})
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class CompanyRepositoryTest extends PostgreSqlTestBase {
@@ -49,7 +50,12 @@ public class CompanyRepositoryTest extends PostgreSqlTestBase {
     @Test
     public void deleteById() {
         long before = repository.count();
-        repository.deleteById(1);
+
+        Optional<Company> optionalEntity = repository.findByName("Zoo");
+        assertTrue(optionalEntity.isPresent());
+
+        repository.deleteById(optionalEntity.get().getId());
+
         assertEquals(before - 1, repository.count());
     }
 
