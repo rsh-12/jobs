@@ -4,14 +4,18 @@ package ru.rsh12.company.service;
  * Time: 6:51 PM
  * */
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -33,13 +37,24 @@ public class BusinessStreamServiceTest {
     @Mock
     private Scheduler jdbcScheduler;
 
+    @BeforeEach
+    void setUp() {
+        given(jdbcScheduler.createWorker())
+                .willReturn(Schedulers.single().createWorker());
+    }
+
     @Test
-    public void findOne_ShouldReturnEmpty() {
+    public void findOne_ShouldBeCompleted() {
         given(repository.findById(anyInt())).willReturn(Optional.empty());
-        given(jdbcScheduler.createWorker()).willReturn(Schedulers.single().createWorker());
 
         Mono<BusinessStream> monoEntity = service.findOne(1);
         StepVerifier.create(monoEntity).verifyComplete();
+    }
+
+    @Test
+    public void findAll_ShouldBeCompleted() {
+        given(repository.findAll(any(Pageable.class)))
+                .willReturn(Page.empty());
     }
 
 }
