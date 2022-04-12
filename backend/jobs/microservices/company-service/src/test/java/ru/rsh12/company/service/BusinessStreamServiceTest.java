@@ -6,6 +6,7 @@ package ru.rsh12.company.service;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-import ru.rsh12.api.exceptions.NotFoundException;
 import ru.rsh12.company.entity.BusinessStream;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.service.impl.BusinessStreamServiceImpl;
@@ -35,17 +35,17 @@ public class BusinessStreamServiceTest {
     private Scheduler jdbcScheduler;
 
     @Test
-    public void findOne_ShouldReturnBusinessStreamDto() {
-        BusinessStream mockEntity = new BusinessStream("Food Products");
-        mockEntity.setId(1);
+    public void findOne_ShouldReturnEmpty() {
+        BusinessStream mockEntity = mock(BusinessStream.class);
+        given(mockEntity.getId()).willReturn(1);
+        given(mockEntity.getName()).willReturn("Food Products");
 
         given(repository.findById(anyInt())).willReturn(Optional.empty());
         given(jdbcScheduler.createWorker()).willReturn(Schedulers.single().createWorker());
 
         Mono<BusinessStream> monoEntity = service.findOne(1);
-        StepVerifier.create(monoEntity)
-                .expectError(NotFoundException.class)
-                .verify();
+
+        StepVerifier.create(monoEntity).verifyComplete();
     }
 
 }
