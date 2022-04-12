@@ -39,6 +39,7 @@ public class CompanyImage {
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Company company;
 
     public CompanyImage(String image) {
