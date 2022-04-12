@@ -6,7 +6,6 @@ package ru.rsh12.company.service;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -36,15 +35,10 @@ public class BusinessStreamServiceTest {
 
     @Test
     public void findOne_ShouldReturnEmpty() {
-        BusinessStream mockEntity = mock(BusinessStream.class);
-        given(mockEntity.getId()).willReturn(1);
-        given(mockEntity.getName()).willReturn("Food Products");
-
         given(repository.findById(anyInt())).willReturn(Optional.empty());
         given(jdbcScheduler.createWorker()).willReturn(Schedulers.single().createWorker());
 
         Mono<BusinessStream> monoEntity = service.findOne(1);
-
         StepVerifier.create(monoEntity).verifyComplete();
     }
 
