@@ -4,21 +4,32 @@ package ru.rsh12.company.service.mapper;
  * Time: 11:39 PM
  * */
 
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.company.dto.CompanyDto;
 import ru.rsh12.company.entity.Company;
+import ru.rsh12.company.entity.CompanyImage;
 
 @Component
+@RequiredArgsConstructor
 public class CompanyMapper {
 
+    private final BusinessStreamMapper mapper;
+
     public CompanyDto entityToDto(Company entity) {
+        List<String> images = entity.getImages().stream()
+                .map(CompanyImage::getImage)
+                .toList();
+
         return new CompanyDto(
                 entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getEstablishmentDate(),
                 entity.getWebsiteUrl(),
-                entity.getBusinessStream().getId(),
+                mapper.entityToDto(entity.getBusinessStream()),
+                images,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
