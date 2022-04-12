@@ -5,9 +5,12 @@ package ru.rsh12.company.repository;
  * */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.Company;
+import ru.rsh12.company.entity.CompanyImage;
 
 @Sql(scripts = {"companies.sql"})
 @DataJpaTest
@@ -27,6 +31,9 @@ public class CompanyRepositoryTest extends PostgreSqlTestBase {
 
     @Autowired
     private CompanyRepository repository;
+
+    @Autowired
+    private CompanyImageRepository companyImageRepository;
 
     @AfterEach
     void tearDown() {
@@ -57,6 +64,27 @@ public class CompanyRepositoryTest extends PostgreSqlTestBase {
         repository.deleteById(optionalEntity.get().getId());
 
         assertEquals(before - 1, repository.count());
+    }
+
+    @Test
+    public void save_ShouldSaveImagesToo() {
+        Optional<Company> optionalEntity = repository.findByName("SomeName");
+        assertFalse(optionalEntity.isPresent());
+
+        assertEquals(0, companyImageRepository.count());
+
+        List<CompanyImage> images = IntStream.rangeClosed(1, 5)
+                .mapToObj(i -> new CompanyImage("path/to/image/" + i))
+                .toList();
+
+        Company entity = new Company();
+        entity.setName("SomeName");
+        entity.setImages(images);
+
+        Company savedEntity = repository.save(entity);
+        assertEquals(images.size(), savedEntity.getImages().size());
+
+        assertEquals(images.size(), companyImageRepository.findByCompany(savedEntity).size());
     }
 
 }
