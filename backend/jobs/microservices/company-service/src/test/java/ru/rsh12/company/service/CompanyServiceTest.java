@@ -88,6 +88,7 @@ public class CompanyServiceTest {
 
         Flux<Company> flux = service.findAll(PageRequest.of(0, 10));
         StepVerifier.create(flux)
+                .expectNextCount(1)
                 .thenConsumeWhile(company -> company.getName().equals("Sample"))
                 .verifyComplete();
     }
