@@ -36,12 +36,13 @@ public class CompanyMapper {
     }
 
     public Company dtoToEntity(CompanyDto dto) {
-        return Company.builder()
-                .name(dto.name())
-                .description(dto.description())
-                .establishmentDate(dto.establishmentDate())
-                .websiteUrl(dto.websiteUrl())
-                .build();
+        Company entity = new Company();
+        entity.setName(dto.name());
+        entity.setDescription(dto.description());
+        entity.setEstablishmentDate(dto.establishmentDate());
+        entity.setWebsiteUrl(dto.websiteUrl());
+
+        return entity;
     }
 
 }
