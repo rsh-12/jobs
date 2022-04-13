@@ -43,7 +43,6 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
     @NotBlank
     @Size(max = 100, message = "Value must be less than 101 characters")
     private String name;
