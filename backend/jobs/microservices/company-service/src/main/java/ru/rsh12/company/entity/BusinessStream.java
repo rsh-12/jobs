@@ -45,18 +45,22 @@ public class BusinessStream {
         this.name = name;
     }
 
-    public void addCompany(Company company) {
-        if (company != null) {
-            this.companies.add(company);
-            company.setBusinessStream(this);
+    public boolean addCompany(Company company) {
+        if (company == null) {
+            return false;
         }
+
+        company.setBusinessStream(this);
+        return this.companies.add(company);
     }
 
-    public void removeCompany(Company company) {
-        if (company != null) {
-            this.companies.remove(company);
-            company.setBusinessStream(null);
+    public boolean removeCompany(Company company) {
+        if (company == null) {
+            return false;
         }
+
+        company.setBusinessStream(null);
+        return this.companies.remove(company);
     }
 
     public void setCompanies(List<Company> companies) {
