@@ -87,18 +87,22 @@ public class Company {
         this.images = images;
     }
 
-    public void addImage(CompanyImage image) {
-        if (image != null) {
-            this.images.add(image);
-            image.setCompany(this);
+    public boolean addImage(CompanyImage image) {
+        if (image == null) {
+            return false;
         }
+
+        image.setCompany(this);
+        return this.images.add(image);
     }
 
-    public void removeImage(CompanyImage image) {
-        if (image != null) {
-            this.images.remove(image);
-            image.setCompany(null);
+    public boolean removeImage(CompanyImage image) {
+        if (image == null) {
+            return false;
         }
+
+        image.setCompany(null);
+        return this.images.remove(image);
     }
 
     public void setImages(List<CompanyImage> images) {
