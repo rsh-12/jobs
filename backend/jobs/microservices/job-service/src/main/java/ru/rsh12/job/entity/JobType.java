@@ -4,12 +4,15 @@ package ru.rsh12.job.entity;
  * Time: 10:56 PM
  * */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -33,8 +36,39 @@ public class JobType {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @OneToMany
+    @ToString.Exclude
+    private List<JobPost> jobs = new ArrayList<>();
+
     public JobType(String name) {
         this.name = name;
+    }
+
+    public boolean addJobPost(JobPost jobPost) {
+        if (jobPost == null) {
+            return false;
+        }
+
+        jobPost.setType(this);
+        return jobs.add(jobPost);
+    }
+
+    public boolean removeJobPost(JobPost jobPost) {
+        if (jobPost == null) {
+            return false;
+        }
+
+        jobPost.setType(null);
+        return jobs.remove(jobPost);
+    }
+
+    public void setJobs(List<JobPost> jobs) {
+        if (jobs != null) {
+            jobs.forEach(job -> job.setType(this));
+
+            this.jobs.forEach(job -> job.setType(null));
+            this.jobs = jobs;
+        }
     }
 
     @Override
