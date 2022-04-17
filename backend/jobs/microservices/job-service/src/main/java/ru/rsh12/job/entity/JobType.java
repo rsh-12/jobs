@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -38,6 +39,7 @@ public class JobType {
 
     @OneToMany
     @ToString.Exclude
+    @JoinColumn(name = "job_type_id")
     private List<JobPost> jobs = new ArrayList<>();
 
     public JobType(String name) {
