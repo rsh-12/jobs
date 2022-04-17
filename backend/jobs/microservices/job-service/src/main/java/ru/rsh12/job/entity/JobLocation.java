@@ -4,11 +4,14 @@ package ru.rsh12.job.entity;
  * Time: 6:26 AM
  * */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -43,11 +46,42 @@ public class JobLocation {
     @NotBlank
     private String country;
 
+    @OneToMany
+    @ToString.Exclude
+    private List<JobPost> jobs = new ArrayList<>();
+
     public JobLocation(String street, String city, String state, String country) {
         this.street = street;
         this.city = city;
         this.state = state;
         this.country = country;
+    }
+
+    public boolean addJobPost(JobPost jobPost) {
+        if (jobPost == null) {
+            return false;
+        }
+
+        jobPost.setLocation(this);
+        return this.jobs.add(jobPost);
+    }
+
+    public boolean removeJobPost(JobPost jobPost) {
+        if (jobPost == null) {
+            return false;
+        }
+
+        jobPost.setLocation(null);
+        return this.jobs.remove(jobPost);
+    }
+
+    public void setJobs(List<JobPost> jobs) {
+        if (jobs != null) {
+            jobs.forEach(job -> job.setLocation(this));
+
+            this.jobs.forEach(job -> job.setLocation(null));
+            this.jobs = jobs;
+        }
     }
 
     @Override
