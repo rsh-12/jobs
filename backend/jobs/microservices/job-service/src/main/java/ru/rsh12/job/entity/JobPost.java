@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -33,7 +35,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "job_post")
 @ToString
 @NoArgsConstructor
 public class JobPost {
@@ -52,13 +54,13 @@ public class JobPost {
     private boolean isActive = true;
 
     @Min(0)
-    private Integer salarayFrom;
+    private Integer salaryFrom;
 
     @Min(0)
-    private Integer salarayUpTo;
+    private Integer salaryUpTo;
 
     @Size(min = 3, max = 3)
-    private String curreny = "RUB";
+    private String currency = "RUB";
 
     @Max(50)
     @Pattern(
@@ -75,10 +77,12 @@ public class JobPost {
 
     @ManyToOne
     @ToString.Exclude
+    @JoinColumn(name = "job_type_id")
     private JobType type;
 
     @ManyToOne
     @ToString.Exclude
+    @JoinColumn(name = "job_location_id")
     private JobLocation location;
 
     @NotNull
@@ -86,6 +90,10 @@ public class JobPost {
 
     @ManyToMany
     @ToString.Exclude
+    @JoinTable(
+            name = "specialization_job_post",
+            joinColumns = @JoinColumn(name = "job_post_id"),
+            inverseJoinColumns = @JoinColumn(name = "specialization_id"))
     private List<Specialization> specializations = new ArrayList<>();
 
     @OneToMany
@@ -94,6 +102,7 @@ public class JobPost {
 
     @OneToMany
     @ToString.Exclude
+    @JoinColumn(name = "job_post_id")
     private List<JobPostActivity> activities = new ArrayList<>();
 
     @CreationTimestamp
