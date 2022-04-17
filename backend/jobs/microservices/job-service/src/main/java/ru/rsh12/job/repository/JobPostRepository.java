@@ -21,4 +21,6 @@ public interface JobPostRepository extends PagingAndSortingRepository<JobPost, I
                     """)
     List<JobPost> findBySpecializationsIds(@Param("ids") Iterable<Integer> specializationIds);
 
+    List<JobPost> findByTypeNameIgnoreCase(String name);
+
 }
