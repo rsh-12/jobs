@@ -7,6 +7,7 @@ package ru.rsh12.job.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,16 @@ public class RepositoryTest extends PostgreSqlTestBase {
 
         JobPost jobPost = jobs.get(0);
         assertEquals("Frontend Developer", jobPost.getTitle());
+    }
+
+    @Test
+    public void findByTypeNameIgnoreCase() {
+        List<JobPost> jobs = jobPostRepository.findByTypeNameIgnoreCase("full time");
+        assertFalse(jobs.isEmpty());
+        assertEquals(3, jobs.size());
+
+        jobs = jobPostRepository.findByTypeNameIgnoreCase("part time");
+        assertTrue(jobs.isEmpty());
     }
 
 }
