@@ -55,15 +55,6 @@ public class JobType {
         return jobs.add(jobPost);
     }
 
-    public boolean removeJobPost(JobPost jobPost) {
-        if (jobPost == null) {
-            return false;
-        }
-
-        jobPost.setType(null);
-        return jobs.remove(jobPost);
-    }
-
     public void setJobs(List<JobPost> jobs) {
         if (jobs != null) {
             jobs.forEach(job -> job.setType(this));
