@@ -8,8 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -73,9 +74,9 @@ public class CompanyRepositoryTest extends PostgreSqlTestBase {
 
         assertEquals(0, companyImageRepository.count());
 
-        List<CompanyImage> images = IntStream.rangeClosed(1, 5)
+        Set<CompanyImage> images = IntStream.rangeClosed(1, 5)
                 .mapToObj(i -> new CompanyImage("path/to/image/" + i))
-                .toList();
+                .collect(Collectors.toSet());
 
         Company entity = new Company();
         entity.setName("SomeName");
