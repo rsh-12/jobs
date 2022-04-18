@@ -1,3 +1,9 @@
+ALTER SEQUENCE job_type_id_seq RESTART WITH 1;
+ALTER SEQUENCE job_location_id_seq RESTART WITH 1;
+ALTER SEQUENCE job_post_id_seq RESTART WITH 1;
+ALTER SEQUENCE specialization_id_seq RESTART WITH 1;
+
+
 INSERT INTO job_type(name)
 VALUES ('Full time'),
        ('Part time');
@@ -38,6 +44,7 @@ VALUES ('Developer'),
        ('Manager'),
        ('DBA'),
        ('Designer');
+
 
 INSERT INTO specialization_job_post(job_post_id, specialization_id)
 VALUES (1, 1),
