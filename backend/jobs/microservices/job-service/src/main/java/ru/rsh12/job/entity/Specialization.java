@@ -4,8 +4,9 @@ package ru.rsh12.job.entity;
  * Time: 7:09 AM
  * */
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Specialization {
 
     @ManyToMany
     @ToString.Exclude
-    private List<JobPost> jobPosts;
+    private Set<JobPost> jobPosts = new HashSet<>();
 
     public Specialization(String name) {
         this.name = name;

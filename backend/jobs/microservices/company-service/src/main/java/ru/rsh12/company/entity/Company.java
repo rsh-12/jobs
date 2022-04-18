@@ -6,9 +6,9 @@ package ru.rsh12.company.entity;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,7 +64,7 @@ public class Company {
             cascade = CascadeType.ALL,
             mappedBy = "company")
     @ToString.Exclude
-    private List<CompanyImage> images = new ArrayList<>();
+    private Set<CompanyImage> images = new HashSet<>();
 
     @CreationTimestamp
     private Instant createdAt;
@@ -78,7 +78,7 @@ public class Company {
             LocalDate establishmentDate,
             String websiteUrl,
             BusinessStream businessStream,
-            List<CompanyImage> images) {
+            Set<CompanyImage> images) {
         this.name = name;
         this.description = description;
         this.establishmentDate = establishmentDate;
@@ -105,7 +105,7 @@ public class Company {
         return this.images.remove(image);
     }
 
-    public void setImages(List<CompanyImage> images) {
+    public void setImages(Set<CompanyImage> images) {
         if (images != null) {
             images.forEach(image -> image.setCompany(this));
 

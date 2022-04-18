@@ -4,9 +4,9 @@ package ru.rsh12.job.entity;
  * Time: 10:56 PM
  * */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +40,7 @@ public class JobType {
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "job_type_id")
-    private List<JobPost> jobs = new ArrayList<>();
+    private Set<JobPost> jobs = new HashSet<>();
 
     public JobType(String name) {
         this.name = name;
@@ -55,7 +55,7 @@ public class JobType {
         return jobs.add(jobPost);
     }
 
-    public void setJobs(List<JobPost> jobs) {
+    public void setJobs(Set<JobPost> jobs) {
         if (jobs != null) {
             jobs.forEach(job -> job.setType(this));
 

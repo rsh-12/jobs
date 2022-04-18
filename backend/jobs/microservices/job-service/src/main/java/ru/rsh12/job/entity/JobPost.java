@@ -5,9 +5,9 @@ package ru.rsh12.job.entity;
  * */
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -94,16 +94,16 @@ public class JobPost {
             name = "specialization_job_post",
             joinColumns = @JoinColumn(name = "job_post_id"),
             inverseJoinColumns = @JoinColumn(name = "specialization_id"))
-    private List<Specialization> specializations = new ArrayList<>();
+    private Set<Specialization> specializations = new HashSet<>();
 
     @OneToMany
     @ToString.Exclude
-    private List<JobPostSkillSet> skills = new ArrayList<>();
+    private Set<JobPostSkillSet> skills = new HashSet<>();
 
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "job_post_id")
-    private List<JobPostActivity> activities = new ArrayList<>();
+    private Set<JobPostActivity> activities = new HashSet<>();
 
     @CreationTimestamp
     private Instant createdAt;

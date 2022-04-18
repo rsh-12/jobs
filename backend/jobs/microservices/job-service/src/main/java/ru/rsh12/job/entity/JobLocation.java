@@ -4,9 +4,9 @@ package ru.rsh12.job.entity;
  * Time: 6:26 AM
  * */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,7 +48,7 @@ public class JobLocation {
 
     @OneToMany
     @ToString.Exclude
-    private List<JobPost> jobs = new ArrayList<>();
+    private Set<JobPost> jobs = new HashSet<>();
 
     public JobLocation(String street, String city, String state, String country) {
         this.street = street;
@@ -66,7 +66,7 @@ public class JobLocation {
         return this.jobs.add(jobPost);
     }
 
-    public void setJobs(List<JobPost> jobs) {
+    public void setJobs(Set<JobPost> jobs) {
         if (jobs != null) {
             jobs.forEach(job -> job.setLocation(this));
 
