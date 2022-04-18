@@ -4,21 +4,28 @@ package ru.rsh12.api.core.job.dto;
  * Time: 11:20 AM
  * */
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import java.time.Instant;
+import java.util.List;
 
-public record JobPostDto(Integer id,
-                         String title,
-                         String description,
-                         boolean isActive,
-                         Integer salaryFrom,
-                         Integer salaryUpTo,
-                         String currency,
-                         String email,
-                         String phone,
-                         Integer jobTypeId,
-                         Integer jobLocationId,
-                         Integer postedById,
-                         Instant createdAt,
-                         Instant updatedAt) {
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+public record JobPostDto(
+        Integer id,
+        String title,
+        String description,
+        boolean isActive,
+        Integer salaryFrom,
+        Integer salaryUpTo,
+        String currency,
+        String email,
+        String phone,
+        JobTypeDto type,
+        JobLocationDto location,
+        Integer postedById,
+        List<SpecializationDto> specializations,
+        List<String> skills,
+        Instant createdAt,
+        Instant updatedAt) {
 
 }
