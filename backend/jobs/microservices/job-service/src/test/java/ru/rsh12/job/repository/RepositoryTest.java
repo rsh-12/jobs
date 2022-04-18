@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.job.PostgreSqlTestBase;
 import ru.rsh12.job.entity.JobPost;
+import ru.rsh12.job.entity.JobType;
 
 @Sql(scripts = {"data.sql"})
 @DataJpaTest
@@ -70,6 +72,22 @@ public class RepositoryTest extends PostgreSqlTestBase {
 
         jobs = jobPostRepository.findByTypeNameIgnoreCase("part time");
         assertTrue(jobs.isEmpty());
+    }
+
+    @Test
+    public void addJobPost() {
+        Optional<JobType> optionalPartTimeJob = jobTypeRepository.findByNameIgnoreCase("part time");
+        assertTrue(optionalPartTimeJob.isPresent());
+
+        JobType partTime = optionalPartTimeJob.get();
+        assertTrue(partTime.getJobs().isEmpty());
+
+        Optional<Boolean> opt = jobPostRepository.findById(1).map(partTime::addJobPost);
+        assertTrue(opt.isPresent());
+
+        assertFalse(partTime.getJobs().isEmpty());
+        List<JobPost> partTimeJobs = jobPostRepository.findByTypeNameIgnoreCase("part time");
+        assertFalse(partTimeJobs.isEmpty());
     }
 
 }
