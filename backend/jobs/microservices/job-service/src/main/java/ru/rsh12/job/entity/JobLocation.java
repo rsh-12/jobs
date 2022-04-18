@@ -66,15 +66,6 @@ public class JobLocation {
         return this.jobs.add(jobPost);
     }
 
-    public boolean removeJobPost(JobPost jobPost) {
-        if (jobPost == null) {
-            return false;
-        }
-
-        jobPost.setLocation(null);
-        return this.jobs.remove(jobPost);
-    }
-
     public void setJobs(List<JobPost> jobs) {
         if (jobs != null) {
             jobs.forEach(job -> job.setLocation(this));
