@@ -6,7 +6,6 @@ package ru.rsh12.api.core.job.dto;
 
 public record JobPostSkillSetDto(
         String level,
-        Integer skillSetId,
-        Integer jobPostId) {
+        Integer skillSetId) {
 
 }
