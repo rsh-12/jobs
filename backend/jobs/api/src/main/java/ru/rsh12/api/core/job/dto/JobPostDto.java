@@ -7,7 +7,7 @@ package ru.rsh12.api.core.job.dto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public record JobPostDto(
@@ -23,8 +23,8 @@ public record JobPostDto(
         JobTypeDto type,
         JobLocationDto location,
         Integer postedById,
-        List<SpecializationDto> specializations,
-        List<String> skills,
+        Set<SpecializationDto> specializations,
+        Set<Integer> specializationIds,
         Instant createdAt,
         Instant updatedAt) {
 
