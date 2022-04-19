@@ -5,11 +5,9 @@ package ru.rsh12.job.entity;
  * */
 
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
@@ -39,9 +37,9 @@ public class JobPostSkillSet {
     @Column(name = "skill_set_id", insertable = false, updatable = false)
     private Integer skillSetId;
 
+    @ManyToOne
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_post_id", insertable=false, updatable=false)
+    @JoinColumn(name = "job_post_id", insertable = false, updatable = false)
     private JobPost jobPost;
 
     public JobPostSkillSet(String level, Integer skillSetId, JobPost jobPost) {
