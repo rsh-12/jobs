@@ -4,13 +4,10 @@ package ru.rsh12.job.service.mapper;
  * Time: 9:30 AM
  * */
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobPostDto;
 import ru.rsh12.job.entity.JobPost;
-import ru.rsh12.job.entity.Specialization;
 import ru.rsh12.util.Mapper;
 
 @Component
@@ -19,6 +16,7 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
 
     private final JobTypeMapper jobTypeMapper;
     private final JobLocationMapper jobLocationMapper;
+    private final JobPostSkillSetMapper jobPostSkillSetMapper;
     private final SpecializationMapper specializationMapper;
 
     @Override
@@ -48,10 +46,6 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
 
     @Override
     public JobPostDto entityToDto(JobPost entity) {
-        Set<Integer> specializationIds = entity.getSpecializations()
-                .stream()
-                .map(Specialization::getId)
-                .collect(Collectors.toSet());
 
         return new JobPostDto(
                 entity.getId(),
@@ -67,7 +61,7 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
                 jobLocationMapper.entityToDto(entity.getLocation()),
                 entity.getPostedById(),
                 specializationMapper.entitySetToDtoSet(entity.getSpecializations()),
-                specializationIds,
+                jobPostSkillSetMapper.entitySetToDtoSey(entity.getSkills()),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
