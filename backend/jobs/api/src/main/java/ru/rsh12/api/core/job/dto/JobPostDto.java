@@ -24,7 +24,7 @@ public record JobPostDto(
         JobLocationDto location,
         Integer postedById,
         Set<SpecializationDto> specializations,
-        Set<Integer> specializationIds,
+        Set<JobPostSkillSetDto> skills,
         Instant createdAt,
         Instant updatedAt) {
 
