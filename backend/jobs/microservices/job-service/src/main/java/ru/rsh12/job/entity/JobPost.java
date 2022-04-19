@@ -97,8 +97,9 @@ public class JobPost {
             inverseJoinColumns = @JoinColumn(name = "specialization_id"))
     private Set<Specialization> specializations = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JoinColumn(name = "job_post_id")
     private Set<JobPostSkillSet> skills = new HashSet<>();
 
     @OneToMany
