@@ -4,6 +4,9 @@ package ru.rsh12.job.service.mapper;
  * Time: 10:13 AM
  * */
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobPostSkillSetDto;
 import ru.rsh12.job.entity.JobPostSkillSet;
@@ -14,12 +17,18 @@ public class JobPostSkillSetMapper implements Mapper<JobPostSkillSet, JobPostSki
 
     @Override
     public JobPostSkillSet dtoToEntity(JobPostSkillSetDto dto) {
-        return null;
+        throw new NotImplementedException("No implementation found");
     }
 
     @Override
     public JobPostSkillSetDto entityToDto(JobPostSkillSet entity) {
-        return null;
+        return new JobPostSkillSetDto(
+                entity.getLevel(),
+                entity.getSkillSetId());
+    }
+
+    public Set<JobPostSkillSetDto> entitySetToDtoSey(Set<JobPostSkillSet> entities) {
+        return entities.stream().map(this::entityToDto).collect(Collectors.toSet());
     }
 
 }
