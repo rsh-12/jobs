@@ -4,12 +4,15 @@ package ru.rsh12.resume.entity;
  * Time: 5:36 AM
  * */
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -32,6 +35,10 @@ public class Language {
     @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany
+    @ToString.Exclude
+    private Set<ResumeLanguage> resumes = new HashSet<>();
 
     public Language(String name) {
         this.name = name;
