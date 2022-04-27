@@ -8,17 +8,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -97,7 +87,7 @@ public class JobPost {
             inverseJoinColumns = @JoinColumn(name = "specialization_id"))
     private Set<Specialization> specializations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "job_post_id")
     private Set<JobPostSkillSet> skills = new HashSet<>();
