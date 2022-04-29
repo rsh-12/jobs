@@ -4,18 +4,24 @@ package ru.rsh12.resume.entity;
  * Time: 5:36 AM
  * */
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,6 +38,14 @@ public class Country {
     @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany
+    @ToString.Exclude
+    @JoinTable(
+            name = "citizenship",
+            joinColumns = @JoinColumn(name = "country_id"),
+            inverseJoinColumns = @JoinColumn(name = "resume_id"))
+    private Set<Resume> resumes = new HashSet<>();
 
     public Country(String name) {
         this.name = name;
