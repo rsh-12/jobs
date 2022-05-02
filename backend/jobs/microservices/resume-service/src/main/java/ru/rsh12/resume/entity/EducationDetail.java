@@ -63,26 +63,17 @@ public class EducationDetail {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         EducationDetail that = (EducationDetail) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        return resume.equals(that.resume);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + resume.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
 }

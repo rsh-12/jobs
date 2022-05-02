@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -40,30 +41,16 @@ public class ResumeLanguage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ResumeLanguage that = (ResumeLanguage) o;
 
-        if (!level.equals(that.level)) {
-            return false;
-        }
-        if (!resume.equals(that.resume)) {
-            return false;
-        }
-        return language.equals(that.language);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = level.hashCode();
-        result = 31 * result + resume.hashCode();
-        result = 31 * result + language.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

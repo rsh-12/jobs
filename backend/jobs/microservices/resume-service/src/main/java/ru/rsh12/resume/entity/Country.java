@@ -4,6 +4,7 @@ package ru.rsh12.resume.entity;
  * Time: 5:36 AM
  * */
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import java.util.Set;
 @Entity
 @ToString
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class Country {
 
     @Id
@@ -53,26 +55,17 @@ public class Country {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Country country = (Country) o;
 
-        if (!Objects.equals(id, country.id)) {
-            return false;
-        }
-        return name.equals(country.name);
+        return Objects.equals(id, country.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
 }

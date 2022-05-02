@@ -4,7 +4,11 @@ package ru.rsh12.job.entity;
  * Time: 7:03 AM
  * */
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,10 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -50,34 +51,16 @@ public class JobPostSkillSet {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         JobPostSkillSet that = (JobPostSkillSet) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        if (!level.equals(that.level)) {
-            return false;
-        }
-        if (!skillSetId.equals(that.skillSetId)) {
-            return false;
-        }
-        return jobPost.equals(that.jobPost);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + level.hashCode();
-        result = 31 * result + skillSetId.hashCode();
-        result = 31 * result + jobPost.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

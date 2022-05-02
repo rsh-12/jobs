@@ -4,9 +4,11 @@ package ru.rsh12.job.entity;
  * Time: 6:26 AM
  * */
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -77,38 +78,16 @@ public class JobLocation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         JobLocation that = (JobLocation) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        if (!Objects.equals(street, that.street)) {
-            return false;
-        }
-        if (!Objects.equals(city, that.city)) {
-            return false;
-        }
-        if (!Objects.equals(state, that.state)) {
-            return false;
-        }
-        return Objects.equals(country, that.country);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (street != null ? street.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

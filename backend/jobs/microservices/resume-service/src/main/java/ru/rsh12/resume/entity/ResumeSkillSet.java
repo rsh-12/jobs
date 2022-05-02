@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -44,30 +45,16 @@ public class ResumeSkillSet {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ResumeSkillSet that = (ResumeSkillSet) o;
 
-        if (!level.equals(that.level)) {
-            return false;
-        }
-        if (!skill.equals(that.skill)) {
-            return false;
-        }
-        return resume.equals(that.resume);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = level.hashCode();
-        result = 31 * result + skill.hashCode();
-        result = 31 * result + resume.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

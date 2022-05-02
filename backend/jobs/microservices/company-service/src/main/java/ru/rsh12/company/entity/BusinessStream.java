@@ -4,9 +4,11 @@ package ru.rsh12.company.entity;
  * Time: 4:23 PM
  * */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents the company's industry.
@@ -74,27 +75,17 @@ public class BusinessStream {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         BusinessStream that = (BusinessStream) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        return name.equals(that.name);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }
 

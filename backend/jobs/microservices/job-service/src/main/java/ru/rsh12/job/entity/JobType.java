@@ -4,9 +4,11 @@ package ru.rsh12.job.entity;
  * Time: 10:56 PM
  * */
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -66,26 +67,16 @@ public class JobType {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         JobType jobType = (JobType) o;
 
-        if (!Objects.equals(id, jobType.id)) {
-            return false;
-        }
-        return name.equals(jobType.name);
+        return Objects.equals(id, jobType.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

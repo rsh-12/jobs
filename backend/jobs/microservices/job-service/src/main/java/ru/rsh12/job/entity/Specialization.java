@@ -4,9 +4,11 @@ package ru.rsh12.job.entity;
  * Time: 7:09 AM
  * */
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,10 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -46,26 +47,16 @@ public class Specialization {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Specialization that = (Specialization) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        return name.equals(that.name);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

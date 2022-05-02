@@ -4,17 +4,20 @@ package ru.rsh12.job.entity;
  * Time: 7:12 AM
  * */
 
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
 @Getter
 @ToString
 @Embeddable
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobPostActivityId implements Serializable {
@@ -24,29 +27,5 @@ public class JobPostActivityId implements Serializable {
 
     @Column(name = "resume_id")
     private Integer resumeId;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        JobPostActivityId that = (JobPostActivityId) o;
-
-        if (!jobPostId.equals(that.jobPostId)) {
-            return false;
-        }
-        return resumeId.equals(that.resumeId);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = jobPostId.hashCode();
-        result = 31 * result + resumeId.hashCode();
-        return result;
-    }
 
 }

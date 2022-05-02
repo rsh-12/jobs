@@ -4,7 +4,11 @@ package ru.rsh12.company.entity;
  * Time: 1:20 PM
  * */
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,10 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Objects;
 
 /**
  * Represents an image of the company as a path or link.
@@ -48,26 +49,16 @@ public class CompanyImage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         CompanyImage that = (CompanyImage) o;
 
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        return image.equals(that.image);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + image.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

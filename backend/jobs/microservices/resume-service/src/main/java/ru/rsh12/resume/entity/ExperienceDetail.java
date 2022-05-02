@@ -18,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -68,37 +67,5 @@ public class ExperienceDetail {
         this.resume = resume;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ExperienceDetail that = (ExperienceDetail) o;
-
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        if (!Objects.equals(startDate, that.startDate)) {
-            return false;
-        }
-        if (!Objects.equals(endDate, that.endDate)) {
-            return false;
-        }
-        if (!jobTitle.equals(that.jobTitle)) {
-            return false;
-        }
-        return Objects.equals(companyName, that.companyName);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + jobTitle.hashCode();
-        return result;
-    }
 
 }

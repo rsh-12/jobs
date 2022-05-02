@@ -108,42 +108,16 @@ public class Resume {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Resume resume = (Resume) o;
 
-        if (!Objects.equals(id, resume.id)) {
-            return false;
-        }
-        if (!desiredJobPosition.equals(resume.desiredJobPosition)) {
-            return false;
-        }
-        if (!Objects.equals(description, resume.description)) {
-            return false;
-        }
-        if (!Objects.equals(salary, resume.salary)) {
-            return false;
-        }
-        if (!currency.equals(resume.currency)) {
-            return false;
-        }
-        return accountId.equals(resume.accountId);
+        return Objects.equals(id, resume.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + desiredJobPosition.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (salary != null ? salary.hashCode() : 0);
-        result = 31 * result + currency.hashCode();
-        result = 31 * result + accountId.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }

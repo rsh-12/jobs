@@ -4,17 +4,18 @@ package ru.rsh12.job.entity;
  * Time: 7:12 AM
  * */
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -45,34 +46,16 @@ public class JobPostActivity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         JobPostActivity that = (JobPostActivity) o;
 
-        if (!Objects.equals(resumeId, that.resumeId)) {
-            return false;
-        }
-        if (!Objects.equals(id, that.id)) {
-            return false;
-        }
-        if (!status.equals(that.status)) {
-            return false;
-        }
-        return jobPost.equals(that.jobPost);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + status.hashCode();
-        result = 31 * result + jobPost.hashCode();
-        result = 31 * result + resumeId.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 }
