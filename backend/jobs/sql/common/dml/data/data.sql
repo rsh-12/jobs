@@ -70,7 +70,7 @@ VALUES ('Full time'),
 
 
 INSERT INTO job_location(country, state, city)
-VALUES ('Russia', 'Sverdlovsk Oblast', 'Yekateringburg');
+VALUES ('Russia', 'Sverdlovsk Oblast', 'Yekaterinburg');
 
 
 INSERT INTO job_post(title, description, salary_from, salary_up_to, currency, email, phone,
