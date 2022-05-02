@@ -8,8 +8,8 @@ spring:
     name: resume
   datasource:
     url: jdbc:postgresql://localhost/resume
-    username: ${DB_USERNAME}
-    password: ${DB_PWD}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PWD:postgres}
 
 logging:
   level:
