@@ -2,12 +2,12 @@ package ru.rsh12.resume.service.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.rsh12.api.core.resume.dto.LanguageDto;
 import ru.rsh12.api.core.resume.dto.ResumeDto;
 import ru.rsh12.api.core.resume.dto.SkillSetDto;
 import ru.rsh12.resume.entity.Language;
 import ru.rsh12.resume.entity.Resume;
-import ru.rsh12.resume.entity.ResumeLanguage;
-import ru.rsh12.resume.entity.ResumeSkillSet;
+import ru.rsh12.resume.entity.SkillSet;
 import ru.rsh12.resume.entity.SpecializationResume;
 import ru.rsh12.util.Mapper;
 
@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 public class ResumeMapper implements Mapper<Resume, ResumeDto> {
 
     private final CountryMapper countryMapper;
-    private final SkillSetMapper skillSetMapper;
-    private final LanguageMapper languageMapper;
     private final EducationDetailMapper educationDetailMapper;
     private final ExperienceDetailMapper experienceDetailMapper;
 
@@ -38,12 +36,17 @@ public class ResumeMapper implements Mapper<Resume, ResumeDto> {
     @Override
     public ResumeDto entityToDto(Resume entity) {
         Set<SkillSetDto> skills = entity.getSkills().stream()
-                .map(ResumeSkillSet::getSkill)
-                .map(skillSetMapper::entityToDto)
+                .map(rs -> {
+                    SkillSet skill = rs.getSkill();
+                    return new SkillSetDto(skill.getId(), skill.getName(), rs.getLevel());
+                })
                 .collect(Collectors.toSet());
 
-        Set<Language> languages = entity.getLanguages().stream()
-                .map(ResumeLanguage::getLanguage)
+        Set<LanguageDto> languages = entity.getLanguages().stream()
+                .map(rl -> {
+                    Language language = rl.getLanguage();
+                    return new LanguageDto(language.getId(), language.getName(), rl.getLevel());
+                })
                 .collect(Collectors.toSet());
 
         Set<Integer> specializationIds = entity.getSpecializations().stream()
@@ -61,7 +64,7 @@ public class ResumeMapper implements Mapper<Resume, ResumeDto> {
                 entity.getUpdatedAt(),
                 countryMapper.entitySetToDtoSet(entity.getCitizenship()),
                 skills,
-                languageMapper.entitySetToDtoSet(languages),
+                languages,
                 educationDetailMapper.entitySetToDtoSet(entity.getEducationDetails()),
                 experienceDetailMapper.entitySetToDtoSet(entity.getExperienceDetails()),
                 specializationIds
