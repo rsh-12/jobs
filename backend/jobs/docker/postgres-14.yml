@@ -4,6 +4,8 @@ services:
   postgres:
     image: postgres:14-alpine
     container_name: postgres14
+    volumes:
+      - ./datastore/pg_data_local:/var/lib/postgresql/data/pgdata
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
