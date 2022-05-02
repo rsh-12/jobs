@@ -12,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,7 +63,7 @@ public class Resume {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     @JoinTable(
             name = "citizenship",
@@ -70,23 +71,25 @@ public class Resume {
             inverseJoinColumns = @JoinColumn(name = "country_id"))
     private Set<Country> citizenship = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JoinColumn(name = "resume_id")
     private Set<ResumeSkillSet> skills = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JoinColumn(name = "resume_id")
     private Set<ResumeLanguage> languages = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resume")
     @ToString.Exclude
     private Set<EducationDetail> educationDetails = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resume")
     @ToString.Exclude
     private Set<ExperienceDetail> experienceDetails = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resume")
     @ToString.Exclude
     private Set<SpecializationResume> specializations = new HashSet<>();
 
