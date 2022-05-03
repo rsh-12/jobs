@@ -10,7 +10,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobPostSkillSetDto;
 import ru.rsh12.job.entity.JobPostSkillSet;
-import ru.rsh12.util.Mapper;
+import ru.rsh12.util.mapper.Mapper;
 
 @Component
 public class JobPostSkillSetMapper implements Mapper<JobPostSkillSet, JobPostSkillSetDto> {

@@ -9,7 +9,7 @@ import ru.rsh12.resume.entity.Language;
 import ru.rsh12.resume.entity.Resume;
 import ru.rsh12.resume.entity.SkillSet;
 import ru.rsh12.resume.entity.SpecializationResume;
-import ru.rsh12.util.Mapper;
+import ru.rsh12.util.mapper.Mapper;
 
 import java.util.Set;
 import java.util.stream.Collectors;

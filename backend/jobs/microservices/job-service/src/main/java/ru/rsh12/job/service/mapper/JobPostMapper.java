@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobPostDto;
 import ru.rsh12.job.entity.JobPost;
-import ru.rsh12.util.Mapper;
+import ru.rsh12.util.mapper.Mapper;
 
 @Component
 @RequiredArgsConstructor

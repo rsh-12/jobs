@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.SpecializationDto;
 import ru.rsh12.job.entity.Specialization;
-import ru.rsh12.util.Mapper;
+import ru.rsh12.util.mapper.Mapper;
 
 @Component
 public class SpecializationMapper implements Mapper<Specialization, SpecializationDto> {

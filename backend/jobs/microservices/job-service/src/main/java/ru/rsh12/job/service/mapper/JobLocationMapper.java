@@ -7,7 +7,7 @@ package ru.rsh12.job.service.mapper;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobLocationDto;
 import ru.rsh12.job.entity.JobLocation;
-import ru.rsh12.util.Mapper;
+import ru.rsh12.util.mapper.Mapper;
 
 @Component
 public class JobLocationMapper implements Mapper<JobLocation, JobLocationDto> {

@@ -7,7 +7,7 @@ package ru.rsh12.company.service.mapper;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.company.dto.BusinessStreamDto;
 import ru.rsh12.company.entity.BusinessStream;
-import ru.rsh12.util.Mapper;
+import ru.rsh12.util.mapper.Mapper;
 
 @Component
 public class BusinessStreamMapper implements Mapper<BusinessStream, BusinessStreamDto> {

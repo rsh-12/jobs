@@ -3,7 +3,7 @@ package ru.rsh12.resume.service.mapper;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.resume.dto.ExperienceDetailDto;
 import ru.rsh12.resume.entity.ExperienceDetail;
-import ru.rsh12.util.CommonSetMapper;
+import ru.rsh12.util.mapper.CommonSetMapper;
 
 import java.util.Set;
 import java.util.stream.Collectors;
