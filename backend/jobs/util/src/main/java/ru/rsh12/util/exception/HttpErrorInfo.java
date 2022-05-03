@@ -1,4 +1,4 @@
-package ru.rsh12.util;
+package ru.rsh12.util.exception;
 /*
  * Date: 03.04.2022
  * Time: 10:32 AM
