@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobPostDto;
 import ru.rsh12.job.entity.JobPost;
+import ru.rsh12.util.ServiceUtil;
 import ru.rsh12.util.mapper.Mapper;
 
 @Component
@@ -18,6 +19,8 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
     private final JobLocationMapper jobLocationMapper;
     private final JobPostSkillSetMapper jobPostSkillSetMapper;
     private final SpecializationMapper specializationMapper;
+
+    private final ServiceUtil serviceUtil;
 
     @Override
     public JobPost dtoToEntity(JobPostDto dto) {
@@ -63,7 +66,8 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
                 specializationMapper.entitySetToDtoSet(entity.getSpecializations()),
                 jobPostSkillSetMapper.entitySetToDtoSey(entity.getSkills()),
                 entity.getCreatedAt(),
-                entity.getUpdatedAt()
+                entity.getUpdatedAt(),
+                serviceUtil.getServiceAddress()
         );
     }
 

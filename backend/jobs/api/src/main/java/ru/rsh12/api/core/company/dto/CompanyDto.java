@@ -6,6 +6,7 @@ package ru.rsh12.api.core.company.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +22,7 @@ public record CompanyDto(
         BusinessStreamDto businessStreamDto,
         List<String> images,
         Instant createdAt,
-        Instant updatedAt) {
+        Instant updatedAt,
+        String serviceAddress) {
 
 }

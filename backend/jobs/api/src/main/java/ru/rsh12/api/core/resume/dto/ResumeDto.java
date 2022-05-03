@@ -21,7 +21,8 @@ public record ResumeDto(
         Set<LanguageDto> languages,
         Set<EducationDetailDto> education,
         Set<ExperienceDetailDto> experience,
-        Set<Integer> specializationIds
+        Set<Integer> specializationIds,
+        String serviceAddress
 ) {
 
 }

@@ -9,6 +9,7 @@ import ru.rsh12.resume.entity.Language;
 import ru.rsh12.resume.entity.Resume;
 import ru.rsh12.resume.entity.SkillSet;
 import ru.rsh12.resume.entity.SpecializationResume;
+import ru.rsh12.util.ServiceUtil;
 import ru.rsh12.util.mapper.Mapper;
 
 import java.util.Set;
@@ -21,6 +22,8 @@ public class ResumeMapper implements Mapper<Resume, ResumeDto> {
     private final CountryMapper countryMapper;
     private final EducationDetailMapper educationDetailMapper;
     private final ExperienceDetailMapper experienceDetailMapper;
+
+    private final ServiceUtil serviceUtil;
 
     @Override
     public Resume dtoToEntity(ResumeDto dto) {
@@ -67,7 +70,8 @@ public class ResumeMapper implements Mapper<Resume, ResumeDto> {
                 languages,
                 educationDetailMapper.entitySetToDtoSet(entity.getEducationDetails()),
                 experienceDetailMapper.entitySetToDtoSet(entity.getExperienceDetails()),
-                specializationIds
+                specializationIds,
+                serviceUtil.getServiceAddress()
         );
     }
 }

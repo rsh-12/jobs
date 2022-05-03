@@ -26,6 +26,7 @@ public record JobPostDto(
         Set<SpecializationDto> specializations,
         Set<JobPostSkillSetDto> skills,
         Instant createdAt,
-        Instant updatedAt) {
+        Instant updatedAt,
+        String serviceAddress) {
 
 }
