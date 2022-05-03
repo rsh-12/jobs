@@ -1,4 +1,4 @@
-package ru.rsh12.util;
+package ru.rsh12.util.mapper;
 
 public interface Mapper<E, D> {
 

@@ -1,4 +1,4 @@
-package ru.rsh12.util;
+package ru.rsh12.util.mapper;
 
 import java.util.Set;
 
