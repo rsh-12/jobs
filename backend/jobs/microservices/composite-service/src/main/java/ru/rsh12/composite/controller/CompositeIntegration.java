@@ -76,6 +76,19 @@ public class CompositeIntegration implements CompanyApi, ResumeApi, JobPostApi {
     }
 
     @Override
+    public Flux<JobPostDto> getCompanyJobPosts(Integer companyId, int page, int size) {
+        return webClient.get().uri("http://localhost:7003/api/v1/company/" + companyId + "/jobs",
+                        uriBuilder -> uriBuilder
+                                .queryParam("page", page)
+                                .queryParam("size", size)
+                                .build())
+                .retrieve()
+                .bodyToFlux(JobPostDto.class)
+                .log(log.getName(), Level.FINE)
+                .onErrorMap(throwable -> new InvalidInputException("Temporary placeholder :)"));
+    }
+
+    @Override
     public Mono<ResumeDto> getResume(Integer resumeId) {
         return webClient.get().uri(resumeServiceUrl + "/" + resumeId)
                 .retrieve()

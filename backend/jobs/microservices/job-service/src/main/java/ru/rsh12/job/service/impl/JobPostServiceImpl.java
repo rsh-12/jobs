@@ -4,8 +4,6 @@ package ru.rsh12.job.service.impl;
  * Time: 10:35 AM
  * */
 
-import static java.util.logging.Level.FINE;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +15,8 @@ import reactor.core.scheduler.Scheduler;
 import ru.rsh12.job.entity.JobPost;
 import ru.rsh12.job.repository.JobPostRepository;
 import ru.rsh12.job.service.JobPostService;
+
+import static java.util.logging.Level.FINE;
 
 @Slf4j
 @Service
@@ -51,6 +51,15 @@ public class JobPostServiceImpl implements JobPostService {
         return Mono.fromCallable(() -> repository.findAll(pageable))
                 .log(log.getName(), FINE)
                 .log(Thread.currentThread().getName(), FINE)
+                .flatMapMany(Flux::fromIterable)
+                .subscribeOn(jdbcScheduler);
+    }
+
+    @Override
+    public Flux<JobPost> findCompanyJobPosts(Integer companyId, Pageable pageable) {
+        return Mono.fromCallable(() -> repository.findByPostedById(companyId, pageable))
+                .log(log.getName(), FINE)
+                .log(Thread.currentThread().getName())
                 .flatMapMany(Flux::fromIterable)
                 .subscribeOn(jdbcScheduler);
     }
