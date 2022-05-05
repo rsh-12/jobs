@@ -5,22 +5,25 @@ package ru.rsh12.job.repository;
  * */
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.job.PostgreSqlTestBase;
 import ru.rsh12.job.entity.JobPost;
 import ru.rsh12.job.entity.JobType;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Sql(scripts = {"data.sql"})
 @DataJpaTest
@@ -47,12 +50,12 @@ public class RepositoryTest extends PostgreSqlTestBase {
 
     @AfterEach
     void tearDown() {
+        jobPostSkillSetRepository.deleteAll();
         jobPostActivityRepository.deleteAll();
         jobPostRepository.deleteAll();
         specializationRepository.deleteAll();
         jobLocationRepository.deleteAll();
         jobTypeRepository.deleteAll();
-        jobPostSkillSetRepository.deleteAll();
     }
 
     @Test
@@ -99,6 +102,13 @@ public class RepositoryTest extends PostgreSqlTestBase {
         assertFalse(partTime.getJobs().isEmpty());
         List<JobPost> partTimeJobs = jobPostRepository.findByTypeNameIgnoreCase("part time");
         assertFalse(partTimeJobs.isEmpty());
+    }
+
+    @Test
+    void findByPostedById() {
+        Page<JobPost> jobPostPage = jobPostRepository.findByPostedById(10, PageRequest.of(0, 10));
+        assertFalse(jobPostPage.isEmpty());
+        assertEquals(2, jobPostPage.getTotalElements());
     }
 
 }
