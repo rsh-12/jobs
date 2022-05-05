@@ -11,4 +11,6 @@ public interface JobPostService {
 
     Flux<JobPost> findAll(Pageable pageable);
 
+    Flux<JobPost> findCompanyJobPosts(Integer companyId, Pageable pageable);
+
 }

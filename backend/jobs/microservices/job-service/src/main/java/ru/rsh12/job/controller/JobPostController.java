@@ -36,4 +36,13 @@ public class JobPostController implements JobPostApi {
                 .map(mapper::entityToDto);
     }
 
+    @Override
+    public Flux<JobPostDto> getCompanyJobPosts(Integer companyId, int page, int size) {
+        page = Math.max(page, 0);
+        size = Math.max(size, 1);
+
+        return service.findCompanyJobPosts(companyId, PageRequest.of(page, size))
+                .map(mapper::entityToDto);
+    }
+
 }
