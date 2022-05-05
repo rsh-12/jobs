@@ -4,11 +4,14 @@ package ru.rsh12.job.repository;
  * Time: 7:13 PM
  * */
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import ru.rsh12.job.entity.JobPost;
+
+import java.util.List;
 
 public interface JobPostRepository extends PagingAndSortingRepository<JobPost, Integer> {
 
@@ -22,5 +25,7 @@ public interface JobPostRepository extends PagingAndSortingRepository<JobPost, I
     List<JobPost> findBySpecializationsIds(@Param("ids") Iterable<Integer> specializationIds);
 
     List<JobPost> findByTypeNameIgnoreCase(String name);
+
+    Page<JobPost> findByPostedById(Integer companyId, Pageable pageable);
 
 }
