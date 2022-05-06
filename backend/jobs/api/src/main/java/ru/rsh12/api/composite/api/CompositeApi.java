@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.rsh12.api.composite.dto.CompanyJobPosts;
+import ru.rsh12.api.composite.dto.ResumeAggregate;
 import ru.rsh12.api.core.company.dto.CompanyDto;
 import ru.rsh12.api.core.job.dto.JobPostDto;
 import ru.rsh12.api.core.resume.dto.ResumeDto;
@@ -35,7 +36,7 @@ public interface CompositeApi {
             @RequestParam(required = false, defaultValue = "10") int size);
 
     @GetMapping(value = "/api/v1/composite/resumes/{resumeId}", produces = "application/json")
-    Mono<ResumeDto> getResume(@PathVariable("resumeId") Integer resumeId);
+    Mono<ResumeAggregate> getResume(@PathVariable("resumeId") Integer resumeId);
 
     @GetMapping(value = "/api/v1/composite/resumes", produces = "application/json")
     Flux<ResumeDto> getResumes(

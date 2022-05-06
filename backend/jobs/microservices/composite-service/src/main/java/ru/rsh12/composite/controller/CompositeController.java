@@ -8,11 +8,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.rsh12.api.composite.api.CompositeApi;
 import ru.rsh12.api.composite.dto.CompanyJobPosts;
+import ru.rsh12.api.composite.dto.ResumeAggregate;
 import ru.rsh12.api.core.company.dto.CompanyDto;
 import ru.rsh12.api.core.job.dto.JobPostDto;
+import ru.rsh12.api.core.job.dto.SpecializationDto;
 import ru.rsh12.api.core.resume.dto.ResumeDto;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 @RestController
@@ -68,15 +72,39 @@ public class CompositeController implements CompositeApi {
     }
 
     @Override
-    public Mono<ResumeDto> getResume(Integer resumeId) {
+    public Mono<ResumeAggregate> getResume(Integer resumeId) {
         return integration.getResume(resumeId)
-                .doOnError(ex -> log.warn("get resume by id failed: {}", ex.toString()));
+                .flatMap(resume -> integration
+                        .getSpecializationsById(resume.specializationIds().stream().toList())
+                        .collectList()
+                        .mapNotNull(specializations -> toResumeAggregate(resume, new HashSet<>(specializations))))
+                .doOnError(ex -> log.warn("get aggregate resume failed: {}", ex.toString()));
     }
 
     @Override
     public Flux<ResumeDto> getResumes(int page, int size) {
         return integration.getResumes(page, size)
                 .doOnError(ex -> log.warn("get resumes failed: {}", ex.toString()));
+    }
+
+    private ResumeAggregate toResumeAggregate(ResumeDto resume, Set<SpecializationDto> specializations) {
+        return new ResumeAggregate(
+                resume.id(),
+                resume.description(),
+                resume.salary(),
+                resume.currency(),
+                resume.desiredJobPosition(),
+                resume.accountId(),
+                resume.createdAt(),
+                resume.updatedAt(),
+                resume.citizenship(),
+                resume.skills(),
+                resume.languages(),
+                resume.education(),
+                resume.experience(),
+                specializations,
+                resume.serviceAddress()
+        );
     }
 
 }
