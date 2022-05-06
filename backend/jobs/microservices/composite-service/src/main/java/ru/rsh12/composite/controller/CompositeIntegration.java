@@ -9,15 +9,19 @@ import reactor.core.publisher.Mono;
 import ru.rsh12.api.core.company.api.CompanyApi;
 import ru.rsh12.api.core.company.dto.CompanyDto;
 import ru.rsh12.api.core.job.api.JobPostApi;
+import ru.rsh12.api.core.job.api.SpecializationApi;
 import ru.rsh12.api.core.job.dto.JobPostDto;
+import ru.rsh12.api.core.job.dto.SpecializationDto;
 import ru.rsh12.api.core.resume.api.ResumeApi;
 import ru.rsh12.api.core.resume.dto.ResumeDto;
 import ru.rsh12.api.exceptions.InvalidInputException;
 
+import java.util.List;
 import java.util.logging.Level;
 
 @Component
-public class CompositeIntegration implements CompanyApi, ResumeApi, JobPostApi {
+public class CompositeIntegration implements
+        CompanyApi, ResumeApi, JobPostApi, SpecializationApi {
 
     private static final Logger log = LoggerFactory.getLogger(CompositeIntegration.class);
 
@@ -84,6 +88,18 @@ public class CompositeIntegration implements CompanyApi, ResumeApi, JobPostApi {
                                 .build())
                 .retrieve()
                 .bodyToFlux(JobPostDto.class)
+                .log(log.getName(), Level.FINE)
+                .onErrorMap(throwable -> new InvalidInputException("Temporary placeholder :)"));
+    }
+
+    @Override
+    public Flux<SpecializationDto> getSpecializationsById(List<Integer> ids) {
+        return webClient.get().uri(jobServiceUrl + "/specializations",
+                        uriBuilder -> uriBuilder
+                                .queryParam("ids", ids)
+                                .build())
+                .retrieve()
+                .bodyToFlux(SpecializationDto.class)
                 .log(log.getName(), Level.FINE)
                 .onErrorMap(throwable -> new InvalidInputException("Temporary placeholder :)"));
     }
