@@ -17,6 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.job.PostgreSqlTestBase;
 import ru.rsh12.job.entity.JobPost;
 import ru.rsh12.job.entity.JobType;
+import ru.rsh12.job.entity.Specialization;
 
 import java.util.List;
 import java.util.Optional;
@@ -109,6 +110,15 @@ public class RepositoryTest extends PostgreSqlTestBase {
         Page<JobPost> jobPostPage = jobPostRepository.findByPostedById(10, PageRequest.of(0, 10));
         assertFalse(jobPostPage.isEmpty());
         assertEquals(2, jobPostPage.getTotalElements());
+    }
+
+    @Test
+    void findSpecializationsById() {
+        assertEquals(4, specializationRepository.count());
+
+        List<Specialization> specializations = specializationRepository.findByIdIn(List.of(1, 3));
+        assertFalse(specializations.isEmpty());
+        assertEquals(2, specializations.size());
     }
 
 }
