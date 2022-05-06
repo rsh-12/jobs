@@ -57,6 +57,8 @@ public class JobPostServiceImpl implements JobPostService {
 
     @Override
     public Flux<JobPost> findCompanyJobPosts(Integer companyId, Pageable pageable) {
+        log.debug("findCompanyJobPosts: gets list of job posts by company id");
+
         return Mono.fromCallable(() -> repository.findByPostedById(companyId, pageable))
                 .log(log.getName(), FINE)
                 .log(Thread.currentThread().getName())
