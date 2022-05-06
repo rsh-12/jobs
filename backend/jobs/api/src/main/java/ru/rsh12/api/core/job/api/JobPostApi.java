@@ -17,7 +17,7 @@ public interface JobPostApi {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size);
 
-    @GetMapping(value = "/api/v1/company/{companyId}/jobs")
+    @GetMapping(value = "/api/v1/company/{companyId}/jobs", produces = "application/json")
     Flux<JobPostDto> getCompanyJobPosts(
             @PathVariable("companyId") Integer companyId,
             @RequestParam(required = false, defaultValue = "0") int page,
