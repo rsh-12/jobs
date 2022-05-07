@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +39,7 @@ public class BusinessStream {
     @Size(max = 150, message = "Value must be less than 151 characters")
     private String name;
 
-    @OneToMany(mappedBy = "businessStream")
+    @OneToMany(mappedBy = "businessStream", cascade = {CascadeType.PERSIST})
     @ToString.Exclude
     private List<Company> companies = new ArrayList<>();
 
