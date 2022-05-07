@@ -4,27 +4,31 @@ package ru.rsh12.company.controller;
  * Time: 12:10 PM
  * */
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-
 import lombok.NonNull;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.BodyContentSpec;
 import reactor.core.publisher.Mono;
-import ru.rsh12.api.core.company.dto.BusinessStreamDto;
+import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
+import ru.rsh12.api.core.company.request.CreateCompanyRequest;
 import ru.rsh12.company.PostgreSqlTestBase;
-import ru.rsh12.company.entity.BusinessStream;
-import ru.rsh12.company.service.BusinessStreamService;
-import ru.rsh12.company.service.mapper.BusinessStreamMapper;
+import ru.rsh12.company.repository.BusinessStreamRepository;
+import ru.rsh12.company.repository.CompanyImageRepository;
+import ru.rsh12.company.repository.CompanyRepository;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BusinessStreamControllerTest extends PostgreSqlTestBase {
@@ -32,25 +36,70 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
     @Autowired
     private WebTestClient client;
 
-    @MockBean
-    private BusinessStreamService service;
+    @Autowired
+    private BusinessStreamRepository repository;
 
-    @MockBean
-    private BusinessStreamMapper mapper;
+    @Autowired
+    private CompanyRepository companyRepository;
+
+    @Autowired
+    private CompanyImageRepository companyImageRepository;
 
     private final String API = "/api/v1/industries";
 
+    @BeforeEach
+    void setUp() {
+        companyImageRepository.deleteAll();
+        companyRepository.deleteAll();
+        repository.deleteAll();
+
+        assertEquals(0, repository.count());
+        assertEquals(0, companyRepository.count());
+        assertEquals(0, companyImageRepository.count());
+    }
+
     @Test
-    public void getBusinessStream() {
-        BusinessStream mockEntity = mock(BusinessStream.class);
-        given(service.findOne(anyInt())).willReturn(Mono.just(mockEntity));
+    void getBusinessStream_shouldReturnBusinessStreamDto() {
+        String name = "Art";
+        postAndVerify(API, new CreateBusinessStreamRequest(name), HttpStatus.CREATED)
+                .jsonPath("$.name").isEqualTo(name);
+    }
 
-        BusinessStreamDto dto = new BusinessStreamDto(1, "Food Products");
-        given(mapper.entityToDto(any())).willReturn(dto);
+    @Test
+    void createBusinessStream_shouldReturnBadRequestErrorResponse_ifNameIsNotValid() {
+        postAndVerify(API, new CreateBusinessStreamRequest(""), HttpStatus.BAD_REQUEST);
+    }
 
-        getAndVerify("/1", HttpStatus.OK)
-                .jsonPath("id").isEqualTo(1)
-                .jsonPath("name").isEqualTo("Food Products");
+    @Test
+    void createBusinessStream_shouldReturnBadRequestErrorResponse_ifCreateCompanyRequestInvalid() {
+        CreateBusinessStreamRequest request = new CreateBusinessStreamRequest("Art")
+                .setCompanies(Collections.singleton(new CreateCompanyRequest()
+                        .setDescription("Lorem ipsum")));
+        postAndVerify(API, request, HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void createBusinessStream_shouldCreateBusinessStream_withCompaniesAndImages() {
+        int size = 3;
+        Set<CreateCompanyRequest> createCompanyRequests = createCompanyRequests(size);
+        CreateBusinessStreamRequest request = new CreateBusinessStreamRequest("Art")
+                .setCompanies(createCompanyRequests);
+
+        postAndVerify(API, request, HttpStatus.CREATED);
+
+        assertEquals(1, repository.count());
+        assertEquals(size, companyRepository.count());
+        assertEquals(size, companyImageRepository.count());
+    }
+
+    private BodyContentSpec postAndVerify(String url, CreateBusinessStreamRequest request, HttpStatus expectedStatus) {
+        return client.post()
+                .uri(url)
+                .body(Mono.just(request), CreateBusinessStreamRequest.class)
+                .accept(APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isEqualTo(expectedStatus)
+                .expectBody();
     }
 
     private BodyContentSpec getAndVerify(String arg, HttpStatus status) {
@@ -70,6 +119,17 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
                 .expectStatus().isEqualTo(status)
                 .expectHeader().contentType(APPLICATION_JSON)
                 .expectBody();
+    }
+
+    public Set<CreateCompanyRequest> createCompanyRequests(int size) {
+        return IntStream.rangeClosed(1, size)
+                .mapToObj(i -> new CreateCompanyRequest(
+                        "Company " + i,
+                        "Company description " + i,
+                        LocalDate.now().minusYears(i),
+                        "http://some.url" + i,
+                        Collections.singletonList("file://path/to/file" + i)))
+                .collect(Collectors.toSet());
     }
 
 }
