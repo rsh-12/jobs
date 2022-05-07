@@ -4,8 +4,6 @@ package ru.rsh12.company.service.impl;
  * Time: 10:59 PM
  * */
 
-import static java.util.logging.Level.FINE;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,9 +12,18 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
 import ru.rsh12.company.entity.BusinessStream;
+import ru.rsh12.company.entity.Company;
+import ru.rsh12.company.entity.CompanyImage;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.service.BusinessStreamService;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.logging.Level.FINE;
 
 @Slf4j
 @Service
@@ -52,6 +59,40 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
                 .log(log.getName(), FINE)
                 .log(Thread.currentThread().getName(), FINE)
                 .flatMapMany(Flux::fromIterable)
+                .subscribeOn(jdbcScheduler);
+    }
+
+    @Override
+    public Mono<BusinessStream> createBusinessStream(CreateBusinessStreamRequest request) {
+        log.debug("createBusinessStream: creates a business stream");
+
+        BusinessStream businessStream = new BusinessStream(request.getName());
+
+        if (!request.getCompanies().isEmpty()) {
+            List<Company> companies = request.getCompanies().stream().map(createCompanyRequest -> {
+                Set<CompanyImage> images = createCompanyRequest.getImages().stream()
+                        .map(CompanyImage::new)
+                        .collect(Collectors.toSet());
+
+                Company company = new Company(
+                        createCompanyRequest.getName(),
+                        createCompanyRequest.getDescription(),
+                        createCompanyRequest.getEstablishmentDate(),
+                        createCompanyRequest.getWebsiteUrl(),
+                        businessStream,
+                        images);
+
+                images.forEach(image -> image.setCompany(company));
+
+                return company;
+            }).collect(Collectors.toList());
+
+            businessStream.setCompanies(companies);
+        }
+
+        return Mono.fromCallable(() -> repository.save(businessStream))
+                .log(log.getName(), FINE)
+                .log(Thread.currentThread().getName(), FINE)
                 .subscribeOn(jdbcScheduler);
     }
 

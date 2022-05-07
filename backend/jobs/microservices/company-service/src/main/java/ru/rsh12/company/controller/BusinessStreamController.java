@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.rsh12.api.core.company.api.BusinessStreamApi;
 import ru.rsh12.api.core.company.dto.BusinessStreamDto;
+import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
 import ru.rsh12.company.service.BusinessStreamService;
 import ru.rsh12.company.service.mapper.BusinessStreamMapper;
 
@@ -33,6 +34,12 @@ public class BusinessStreamController implements BusinessStreamApi {
         size = Math.max(size, 1);
 
         return service.findAll(PageRequest.of(page, size))
+                .map(mapper::entityToDto);
+    }
+
+    @Override
+    public Mono<BusinessStreamDto> createBusinessStream(CreateBusinessStreamRequest request) {
+        return service.createBusinessStream(request)
                 .map(mapper::entityToDto);
     }
 
