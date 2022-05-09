@@ -12,8 +12,7 @@ import ru.rsh12.resume.entity.SpecializationResume;
 import ru.rsh12.util.ServiceUtil;
 import ru.rsh12.util.mapper.Mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -38,23 +37,21 @@ public class ResumeMapper implements Mapper<Resume, ResumeDto> {
 
     @Override
     public ResumeDto entityToDto(Resume entity) {
-        Set<SkillSetDto> skills = entity.getSkills().stream()
+        List<SkillSetDto> skills = entity.getSkills().stream()
                 .map(rs -> {
                     SkillSet skill = rs.getSkill();
                     return new SkillSetDto(skill.getId(), skill.getName(), rs.getLevel());
-                })
-                .collect(Collectors.toSet());
+                }).toList();
 
-        Set<LanguageDto> languages = entity.getLanguages().stream()
+        List<LanguageDto> languages = entity.getLanguages().stream()
                 .map(rl -> {
                     Language language = rl.getLanguage();
                     return new LanguageDto(language.getId(), language.getName(), rl.getLevel());
-                })
-                .collect(Collectors.toSet());
+                }).toList();
 
-        Set<Integer> specializationIds = entity.getSpecializations().stream()
+        List<Integer> specializationIds = entity.getSpecializations().stream()
                 .map(SpecializationResume::getSpecializationId)
-                .collect(Collectors.toSet());
+                .toList();
 
         return new ResumeDto(
                 entity.getId(),
@@ -65,11 +62,11 @@ public class ResumeMapper implements Mapper<Resume, ResumeDto> {
                 entity.getAccountId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
-                countryMapper.entitySetToDtoSet(entity.getCitizenship()),
+                countryMapper.entityListToDtoList(entity.getCitizenship()),
                 skills,
                 languages,
-                educationDetailMapper.entitySetToDtoSet(entity.getEducationDetails()),
-                experienceDetailMapper.entitySetToDtoSet(entity.getExperienceDetails()),
+                educationDetailMapper.entityListToDtoList(entity.getEducationDetails()),
+                experienceDetailMapper.entityListToDtoList(entity.getExperienceDetails()),
                 specializationIds,
                 serviceUtil.getServiceAddress()
         );

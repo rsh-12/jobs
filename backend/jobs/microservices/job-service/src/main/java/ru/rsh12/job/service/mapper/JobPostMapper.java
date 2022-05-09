@@ -42,7 +42,7 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
         entity.setLocation(jobLocationMapper.dtoToEntity(dto.location()));
 
         entity.setPostedById(dto.postedById());
-        entity.setSpecializations(specializationMapper.dtoSetToEntitySet(dto.specializations()));
+        entity.setSpecializations(specializationMapper.dtoListToEntityList(dto.specializations()));
 
         return entity;
     }
@@ -63,8 +63,8 @@ public class JobPostMapper implements Mapper<JobPost, JobPostDto> {
                 jobTypeMapper.entityToDto(entity.getType()),
                 jobLocationMapper.entityToDto(entity.getLocation()),
                 entity.getPostedById(),
-                specializationMapper.entitySetToDtoSet(entity.getSpecializations()),
-                jobPostSkillSetMapper.entitySetToDtoSey(entity.getSkills()),
+                specializationMapper.entityListToDtoList(entity.getSpecializations()),
+                jobPostSkillSetMapper.entityListToDtoList(entity.getSkills()),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
                 serviceUtil.getServiceAddress()

@@ -3,13 +3,12 @@ package ru.rsh12.resume.service.mapper;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.resume.dto.EducationDetailDto;
 import ru.rsh12.resume.entity.EducationDetail;
-import ru.rsh12.util.mapper.CommonSetMapper;
+import ru.rsh12.util.mapper.CommonListMapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Component
-public class EducationDetailMapper implements CommonSetMapper<EducationDetail, EducationDetailDto> {
+public class EducationDetailMapper implements CommonListMapper<EducationDetail, EducationDetailDto> {
 
     @Override
     public EducationDetail dtoToEntity(EducationDetailDto dto) {
@@ -32,16 +31,12 @@ public class EducationDetailMapper implements CommonSetMapper<EducationDetail, E
     }
 
     @Override
-    public Set<EducationDetail> dtoSetToEntitySet(Set<EducationDetailDto> dtoSet) {
-        return dtoSet.stream()
-                .map(this::dtoToEntity)
-                .collect(Collectors.toSet());
+    public List<EducationDetail> dtoListToEntityList(List<EducationDetailDto> dtoList) {
+        return dtoList.stream().map(this::dtoToEntity).toList();
     }
 
     @Override
-    public Set<EducationDetailDto> entitySetToDtoSet(Set<EducationDetail> entitySet) {
-        return entitySet.stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toSet());
+    public List<EducationDetailDto> entityListToDtoList(List<EducationDetail> entityList) {
+        return entityList.stream().map(this::entityToDto).toList();
     }
 }

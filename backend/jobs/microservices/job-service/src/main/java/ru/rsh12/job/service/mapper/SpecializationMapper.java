@@ -4,15 +4,15 @@ package ru.rsh12.job.service.mapper;
  * Time: 9:50 AM
  * */
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.SpecializationDto;
 import ru.rsh12.job.entity.Specialization;
-import ru.rsh12.util.mapper.Mapper;
+import ru.rsh12.util.mapper.CommonListMapper;
+
+import java.util.List;
 
 @Component
-public class SpecializationMapper implements Mapper<Specialization, SpecializationDto> {
+public class SpecializationMapper implements CommonListMapper<Specialization, SpecializationDto> {
 
     @Override
     public Specialization dtoToEntity(SpecializationDto dto) {
@@ -24,12 +24,13 @@ public class SpecializationMapper implements Mapper<Specialization, Specializati
         return new SpecializationDto(entity.getId(), entity.getName());
     }
 
-    public Set<Specialization> dtoSetToEntitySet(Set<SpecializationDto> dtos) {
-        return dtos.stream().map(this::dtoToEntity).collect(Collectors.toSet());
+    @Override
+    public List<Specialization> dtoListToEntityList(List<SpecializationDto> dtoList) {
+        return dtoList.stream().map(this::dtoToEntity).toList();
     }
 
-    public Set<SpecializationDto> entitySetToDtoSet(Set<Specialization> entities) {
-        return entities.stream().map(this::entityToDto).collect(Collectors.toSet());
+    @Override
+    public List<SpecializationDto> entityListToDtoList(List<Specialization> entityList) {
+        return entityList.stream().map(this::entityToDto).toList();
     }
-
 }

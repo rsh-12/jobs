@@ -3,13 +3,12 @@ package ru.rsh12.resume.service.mapper;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.resume.dto.ExperienceDetailDto;
 import ru.rsh12.resume.entity.ExperienceDetail;
-import ru.rsh12.util.mapper.CommonSetMapper;
+import ru.rsh12.util.mapper.CommonListMapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Component
-public class ExperienceDetailMapper implements CommonSetMapper<ExperienceDetail, ExperienceDetailDto> {
+public class ExperienceDetailMapper implements CommonListMapper<ExperienceDetail, ExperienceDetailDto> {
 
     @Override
     public ExperienceDetail dtoToEntity(ExperienceDetailDto dto) {
@@ -36,17 +35,12 @@ public class ExperienceDetailMapper implements CommonSetMapper<ExperienceDetail,
     }
 
     @Override
-    public Set<ExperienceDetail> dtoSetToEntitySet(Set<ExperienceDetailDto> dtoSet) {
-        return dtoSet.stream()
-                .map(this::dtoToEntity)
-                .collect(Collectors.toSet());
+    public List<ExperienceDetail> dtoListToEntityList(List<ExperienceDetailDto> dtoList) {
+        return dtoList.stream().map(this::dtoToEntity).toList();
     }
 
     @Override
-    public Set<ExperienceDetailDto> entitySetToDtoSet(Set<ExperienceDetail> entitySet) {
-        return entitySet.stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toSet());
+    public List<ExperienceDetailDto> entityListToDtoList(List<ExperienceDetail> entityList) {
+        return entityList.stream().map(this::entityToDto).toList();
     }
-
 }

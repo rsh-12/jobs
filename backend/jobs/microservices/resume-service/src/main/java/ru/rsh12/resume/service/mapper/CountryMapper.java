@@ -3,13 +3,12 @@ package ru.rsh12.resume.service.mapper;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.resume.dto.CountryDto;
 import ru.rsh12.resume.entity.Country;
-import ru.rsh12.util.mapper.CommonSetMapper;
+import ru.rsh12.util.mapper.CommonListMapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Component
-public class CountryMapper implements CommonSetMapper<Country, CountryDto> {
+public class CountryMapper implements CommonListMapper<Country, CountryDto> {
 
     @Override
     public Country dtoToEntity(CountryDto dto) {
@@ -22,14 +21,12 @@ public class CountryMapper implements CommonSetMapper<Country, CountryDto> {
     }
 
     @Override
-    public Set<Country> dtoSetToEntitySet(Set<CountryDto> dtoSet) {
-        return dtoSet.stream().map(this::dtoToEntity)
-                .collect(Collectors.toSet());
+    public List<Country> dtoListToEntityList(List<CountryDto> dtoList) {
+        return dtoList.stream().map(this::dtoToEntity).toList();
     }
 
     @Override
-    public Set<CountryDto> entitySetToDtoSet(Set<Country> entitySet) {
-        return entitySet.stream().map(this::entityToDto)
-                .collect(Collectors.toSet());
+    public List<CountryDto> entityListToDtoList(List<Country> entityList) {
+        return entityList.stream().map(this::entityToDto).toList();
     }
 }

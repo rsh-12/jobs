@@ -4,16 +4,16 @@ package ru.rsh12.job.service.mapper;
  * Time: 10:13 AM
  * */
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import ru.rsh12.api.core.job.dto.JobPostSkillSetDto;
 import ru.rsh12.job.entity.JobPostSkillSet;
-import ru.rsh12.util.mapper.Mapper;
+import ru.rsh12.util.mapper.CommonListMapper;
+
+import java.util.List;
 
 @Component
-public class JobPostSkillSetMapper implements Mapper<JobPostSkillSet, JobPostSkillSetDto> {
+public class JobPostSkillSetMapper implements CommonListMapper<JobPostSkillSet, JobPostSkillSetDto> {
 
     @Override
     public JobPostSkillSet dtoToEntity(JobPostSkillSetDto dto) {
@@ -27,8 +27,13 @@ public class JobPostSkillSetMapper implements Mapper<JobPostSkillSet, JobPostSki
                 entity.getSkillSetId());
     }
 
-    public Set<JobPostSkillSetDto> entitySetToDtoSey(Set<JobPostSkillSet> entities) {
-        return entities.stream().map(this::entityToDto).collect(Collectors.toSet());
+    @Override
+    public List<JobPostSkillSet> dtoListToEntityList(List<JobPostSkillSetDto> dtoList) {
+        return dtoList.stream().map(this::dtoToEntity).toList();
     }
 
+    @Override
+    public List<JobPostSkillSetDto> entityListToDtoList(List<JobPostSkillSet> entityList) {
+        return entityList.stream().map(this::entityToDto).toList();
+    }
 }
