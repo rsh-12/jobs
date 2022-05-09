@@ -180,7 +180,7 @@ CREATE TABLE job_post_skill_set
 (
     level        VARCHAR(50) NOT NULL CHECK ( TRIM(level) != '' ),
     skill_set_id INT         NOT NULL REFERENCES skill_set (id) ON DELETE CASCADE,
-    job_post_id  INT         NOT NULL REFERENCES job_type (id) ON DELETE CASCADE,
+    job_post_id  INT         NOT NULL REFERENCES job_post (id) ON DELETE CASCADE,
     UNIQUE (level, skill_set_id, job_post_id)
 );
 
