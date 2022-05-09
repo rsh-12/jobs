@@ -6,8 +6,37 @@ server:
 spring:
   application:
     name: composite-service
+  cloud:
+    stream:
+      bindings:
+        companies-out-0:
+          destination: companies
+          producer:
+            required-groups: auditGroup
+        resumes-out-0:
+          destination: resumes
+          producer:
+            required-groups: auditGroup
+        jobs-out-0:
+          destination: jobs
+          producer:
+            required-groups: auditGroup
+      default-binder: rabbit
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 logging:
   level:
     root: info
     ru.rsh12: debug
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  rabbitmq:
+    host: rabbitmq
