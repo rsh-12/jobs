@@ -9,14 +9,14 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateJobPostRequest {
+public class JobPostRequest {
 
     @NotBlank(message = "Title must not be blank")
     private String title;
 
     private String description;
 
-    private boolean isActive;
+    private boolean active;
 
     @Min(0)
     private Integer salaryFrom;
@@ -54,7 +54,7 @@ public class CreateJobPostRequest {
         return title;
     }
 
-    public CreateJobPostRequest setTitle(String title) {
+    public JobPostRequest setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -63,17 +63,17 @@ public class CreateJobPostRequest {
         return description;
     }
 
-    public CreateJobPostRequest setDescription(String description) {
+    public JobPostRequest setDescription(String description) {
         this.description = description;
         return this;
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
-    public CreateJobPostRequest setActive(boolean active) {
-        isActive = active;
+    public JobPostRequest setActive(boolean active) {
+        this.active = active;
         return this;
     }
 
@@ -81,7 +81,7 @@ public class CreateJobPostRequest {
         return salaryFrom;
     }
 
-    public CreateJobPostRequest setSalaryFrom(Integer salaryFrom) {
+    public JobPostRequest setSalaryFrom(Integer salaryFrom) {
         this.salaryFrom = salaryFrom;
         return this;
     }
@@ -90,7 +90,7 @@ public class CreateJobPostRequest {
         return salaryUpTo;
     }
 
-    public CreateJobPostRequest setSalaryUpTo(Integer salaryUpTo) {
+    public JobPostRequest setSalaryUpTo(Integer salaryUpTo) {
         this.salaryUpTo = salaryUpTo;
         return this;
     }
@@ -99,7 +99,7 @@ public class CreateJobPostRequest {
         return currency;
     }
 
-    public CreateJobPostRequest setCurrency(String currency) {
+    public JobPostRequest setCurrency(String currency) {
         this.currency = currency;
         return this;
     }
@@ -108,7 +108,7 @@ public class CreateJobPostRequest {
         return email;
     }
 
-    public CreateJobPostRequest setEmail(String email) {
+    public JobPostRequest setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -117,7 +117,7 @@ public class CreateJobPostRequest {
         return phone;
     }
 
-    public CreateJobPostRequest setPhone(String phone) {
+    public JobPostRequest setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -126,7 +126,7 @@ public class CreateJobPostRequest {
         return jobTypeId;
     }
 
-    public CreateJobPostRequest setJobTypeId(Integer jobTypeId) {
+    public JobPostRequest setJobTypeId(Integer jobTypeId) {
         this.jobTypeId = jobTypeId;
         return this;
     }
@@ -135,7 +135,7 @@ public class CreateJobPostRequest {
         return locationId;
     }
 
-    public CreateJobPostRequest setLocationId(Integer locationId) {
+    public JobPostRequest setLocationId(Integer locationId) {
         this.locationId = locationId;
         return this;
     }
@@ -144,7 +144,7 @@ public class CreateJobPostRequest {
         return companyId;
     }
 
-    public CreateJobPostRequest setCompanyId(Integer companyId) {
+    public JobPostRequest setCompanyId(Integer companyId) {
         this.companyId = companyId;
         return this;
     }
@@ -153,7 +153,7 @@ public class CreateJobPostRequest {
         return specializationIds;
     }
 
-    public CreateJobPostRequest setSpecializationIds(List<Integer> specializationIds) {
+    public JobPostRequest setSpecializationIds(List<Integer> specializationIds) {
         this.specializationIds = specializationIds;
         return this;
     }
@@ -162,7 +162,7 @@ public class CreateJobPostRequest {
         return skills;
     }
 
-    public CreateJobPostRequest setSkills(List<JobPostSkillSetDto> skills) {
+    public JobPostRequest setSkills(List<JobPostSkillSetDto> skills) {
         this.skills = skills;
         return this;
     }
