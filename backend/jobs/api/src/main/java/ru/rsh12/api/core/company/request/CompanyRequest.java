@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateCompanyRequest {
+public class CompanyRequest {
 
     @NotBlank
     @Size(max = 100, message = "Value must be less than 101 characters")
@@ -23,14 +23,16 @@ public class CreateCompanyRequest {
 
     private List<String> images = new ArrayList<>();
 
-    public CreateCompanyRequest() {
+    private Integer businessStreamId;
+
+    public CompanyRequest() {
     }
 
-    public CreateCompanyRequest(String name,
-                                String description,
-                                LocalDate establishmentDate,
-                                String websiteUrl,
-                                List<String> images) {
+    public CompanyRequest(String name,
+                          String description,
+                          LocalDate establishmentDate,
+                          String websiteUrl,
+                          List<String> images) {
         this.name = name;
         this.description = description;
         this.establishmentDate = establishmentDate;
@@ -42,7 +44,7 @@ public class CreateCompanyRequest {
         return name;
     }
 
-    public CreateCompanyRequest setName(String name) {
+    public CompanyRequest setName(String name) {
         this.name = name;
         return this;
     }
@@ -51,7 +53,7 @@ public class CreateCompanyRequest {
         return description;
     }
 
-    public CreateCompanyRequest setDescription(String description) {
+    public CompanyRequest setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -60,7 +62,7 @@ public class CreateCompanyRequest {
         return establishmentDate;
     }
 
-    public CreateCompanyRequest setEstablishmentDate(LocalDate establishmentDate) {
+    public CompanyRequest setEstablishmentDate(LocalDate establishmentDate) {
         this.establishmentDate = establishmentDate;
         return this;
     }
@@ -69,7 +71,7 @@ public class CreateCompanyRequest {
         return websiteUrl;
     }
 
-    public CreateCompanyRequest setWebsiteUrl(String websiteUrl) {
+    public CompanyRequest setWebsiteUrl(String websiteUrl) {
         this.websiteUrl = websiteUrl;
         return this;
     }
@@ -78,8 +80,17 @@ public class CreateCompanyRequest {
         return images;
     }
 
-    public CreateCompanyRequest setImages(List<String> images) {
+    public CompanyRequest setImages(List<String> images) {
         this.images = images;
+        return this;
+    }
+
+    public Integer getBusinessStreamId() {
+        return businessStreamId;
+    }
+
+    public CompanyRequest setBusinessStreamId(Integer businessStreamId) {
+        this.businessStreamId = businessStreamId;
         return this;
     }
 }
