@@ -2,6 +2,60 @@ version: '3.8'
 
 services:
 
+  job:
+    build: ../microservices/job-service
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_started
+
+  resume:
+    build: ../microservices/resume-service
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_started
+
+  company:
+    build: ../microservices/company-service
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_started
+
+  composite:
+    build: ../microservices/composite-service
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      rabbitmq:
+        condition: service_started
+
   rabbitmq:
     image: rabbitmq:3.8.11-management-alpine
     deploy:
