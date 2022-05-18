@@ -6,23 +6,23 @@ import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CreateBusinessStreamRequest {
+public class BusinessStreamRequest {
 
     @NotBlank
     @Size(max = 150, message = "Value must be less than 151 characters")
     private String name;
 
     @Valid
-    private Set<CreateCompanyRequest> companies = new HashSet<>();
+    private Set<CompanyRequest> companies = new HashSet<>();
 
-    public CreateBusinessStreamRequest() {
+    public BusinessStreamRequest() {
     }
 
-    public CreateBusinessStreamRequest(String name) {
+    public BusinessStreamRequest(String name) {
         this.name = name;
     }
 
-    public CreateBusinessStreamRequest(String name, Set<CreateCompanyRequest> companies) {
+    public BusinessStreamRequest(String name, Set<CompanyRequest> companies) {
         this.name = name;
         this.companies = companies;
     }
@@ -31,16 +31,16 @@ public class CreateBusinessStreamRequest {
         return name;
     }
 
-    public CreateBusinessStreamRequest setName(String name) {
+    public BusinessStreamRequest setName(String name) {
         this.name = name;
         return this;
     }
 
-    public Set<CreateCompanyRequest> getCompanies() {
+    public Set<CompanyRequest> getCompanies() {
         return companies;
     }
 
-    public CreateBusinessStreamRequest setCompanies(Set<CreateCompanyRequest> companies) {
+    public BusinessStreamRequest setCompanies(Set<CompanyRequest> companies) {
         this.companies = companies;
         return this;
     }
