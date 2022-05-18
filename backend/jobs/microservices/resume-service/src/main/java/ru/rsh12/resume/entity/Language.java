@@ -17,9 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -39,7 +39,7 @@ public class Language {
 
     @OneToMany
     @ToString.Exclude
-    private Set<ResumeLanguage> resumes = new HashSet<>();
+    private List<ResumeLanguage> resumes = new ArrayList<>();
 
     public Language(String name) {
         this.name = name;

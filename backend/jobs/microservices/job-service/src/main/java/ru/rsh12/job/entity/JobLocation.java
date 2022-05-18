@@ -16,9 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -49,7 +49,7 @@ public class JobLocation {
 
     @OneToMany
     @ToString.Exclude
-    private Set<JobPost> jobs = new HashSet<>();
+    private List<JobPost> jobs = new ArrayList<>();
 
     public JobLocation(String street, String city, String state, String country) {
         this.street = street;
@@ -67,7 +67,7 @@ public class JobLocation {
         return this.jobs.add(jobPost);
     }
 
-    public void setJobs(Set<JobPost> jobs) {
+    public void setJobs(List<JobPost> jobs) {
         if (jobs != null) {
             jobs.forEach(job -> job.setLocation(this));
 

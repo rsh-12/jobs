@@ -26,9 +26,9 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Represents the company.
@@ -65,7 +65,7 @@ public class Company {
             cascade = CascadeType.ALL,
             mappedBy = "company")
     @ToString.Exclude
-    private Set<CompanyImage> images = new HashSet<>();
+    private List<CompanyImage> images = new ArrayList<>();
 
     @CreationTimestamp
     private Instant createdAt;
@@ -79,7 +79,7 @@ public class Company {
             LocalDate establishmentDate,
             String websiteUrl,
             BusinessStream businessStream,
-            Set<CompanyImage> images) {
+            List<CompanyImage> images) {
         this.name = name;
         this.description = description;
         this.establishmentDate = establishmentDate;
@@ -106,7 +106,7 @@ public class Company {
         return this.images.remove(image);
     }
 
-    public void setImages(Set<CompanyImage> images) {
+    public void setImages(List<CompanyImage> images) {
         if (images != null) {
             images.forEach(image -> image.setCompany(this));
 

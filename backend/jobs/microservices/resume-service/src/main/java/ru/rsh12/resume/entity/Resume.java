@@ -11,8 +11,8 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,14 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -40,11 +39,11 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Max(70)
+    @Size(max = 70)
     @NotBlank
     private String desiredJobPosition;
 
-    @Max(value = 250)
+    @Size(max = 250)
     private String description;
 
     @Min(0)
@@ -63,35 +62,35 @@ public class Resume {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @ToString.Exclude
     @JoinTable(
             name = "citizenship",
             joinColumns = @JoinColumn(name = "resume_id"),
             inverseJoinColumns = @JoinColumn(name = "country_id"))
-    private Set<Country> citizenship = new HashSet<>();
+    private List<Country> citizenship = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "resume_id")
-    private Set<ResumeSkillSet> skills = new HashSet<>();
+    private List<ResumeSkillSet> skills = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "resume_id")
-    private Set<ResumeLanguage> languages = new HashSet<>();
+    private List<ResumeLanguage> languages = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resume")
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<EducationDetail> educationDetails = new HashSet<>();
+    private List<EducationDetail> educationDetails = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resume")
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<ExperienceDetail> experienceDetails = new HashSet<>();
+    private List<ExperienceDetail> experienceDetails = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "resume")
+    @OneToMany(mappedBy = "resume")
     @ToString.Exclude
-    private Set<SpecializationResume> specializations = new HashSet<>();
+    private List<SpecializationResume> specializations = new ArrayList<>();
 
     public Resume(
             String desiredJobPosition,
@@ -104,6 +103,15 @@ public class Resume {
         this.salary = salary;
         this.currency = (currency == null || currency.length() != 3) ? "RUB" : currency;
         this.accountId = accountId;
+    }
+
+    public void setSkills(List<ResumeSkillSet> skills) {
+        if (skills != null) {
+            skills.forEach(resumeSkillSet -> resumeSkillSet.setResume(this));
+
+            this.skills.forEach(resumeSkillSet -> resumeSkillSet.setResume(null));
+            this.skills = skills;
+        }
     }
 
     @Override

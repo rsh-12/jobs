@@ -18,9 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -41,9 +41,14 @@ public class JobType {
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "job_type_id")
-    private Set<JobPost> jobs = new HashSet<>();
+    private List<JobPost> jobs = new ArrayList<>();
 
     public JobType(String name) {
+        this.name = name;
+    }
+
+    public JobType(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -56,7 +61,7 @@ public class JobType {
         return jobs.add(jobPost);
     }
 
-    public void setJobs(Set<JobPost> jobs) {
+    public void setJobs(List<JobPost> jobs) {
         if (jobs != null) {
             jobs.forEach(job -> job.setType(this));
 

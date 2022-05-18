@@ -10,6 +10,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
@@ -23,7 +25,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,9 +32,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Pattern.Flag;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -64,14 +65,14 @@ public class JobPost {
     @Size(min = 3, max = 3)
     private String currency = "RUB";
 
-    @Max(50)
+    @Size(max = 50, message = "Email length must be less than or equal to 50")
     @Pattern(
             flags = {Flag.CASE_INSENSITIVE},
             regexp = ".+@.+\\.+\\w{2,8}",
             message = "Invalid email address format")
     private String email;
 
-    @Max(50)
+    @Size(max = 50, message = "Phone length must be less than or equal to 50")
     @Pattern(
             regexp = "\\+?\\d([\\s-]?\\d{3}){0,2}([\\s-]?\\d{2}){2}",
             message = "Invalid phone number format")
@@ -96,22 +97,33 @@ public class JobPost {
             name = "specialization_job_post",
             joinColumns = @JoinColumn(name = "job_post_id"),
             inverseJoinColumns = @JoinColumn(name = "specialization_id"))
-    private Set<Specialization> specializations = new HashSet<>();
+    private List<Specialization> specializations = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "jobPost")
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @ToString.Exclude
-    private Set<JobPostSkillSet> skills = new HashSet<>();
+    @JoinColumn(name = "job_post_id")
+    private List<JobPostSkillSet> skills = new ArrayList<>();
 
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "job_post_id")
-    private Set<JobPostActivity> activities = new HashSet<>();
+    private List<JobPostActivity> activities = new ArrayList<>();
 
     @CreationTimestamp
     private Instant createdAt;
 
     @UpdateTimestamp
     private Instant updatedAt;
+
+    public void setSkills(List<JobPostSkillSet> skills) {
+        if (skills != null) {
+            skills.forEach(skill -> skill.setJobPost(this));
+
+            this.skills.forEach(skill -> skill.setJobPost(null));
+            this.skills = skills;
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

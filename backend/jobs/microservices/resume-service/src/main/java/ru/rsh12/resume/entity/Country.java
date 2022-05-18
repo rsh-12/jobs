@@ -4,7 +4,6 @@ package ru.rsh12.resume.entity;
  * Time: 5:36 AM
  * */
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,16 +19,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @ToString
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id"})
 public class Country {
 
     @Id
@@ -47,7 +45,7 @@ public class Country {
             name = "citizenship",
             joinColumns = @JoinColumn(name = "country_id"),
             inverseJoinColumns = @JoinColumn(name = "resume_id"))
-    private Set<Resume> resumes = new HashSet<>();
+    private List<Resume> resumes = new ArrayList<>();
 
     public Country(String name) {
         this.name = name;

@@ -17,9 +17,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -39,7 +39,7 @@ public class Specialization {
 
     @ManyToMany
     @ToString.Exclude
-    private Set<JobPost> jobPosts = new HashSet<>();
+    private List<JobPost> jobPosts = new ArrayList<>();
 
     public Specialization(String name) {
         this.name = name;
