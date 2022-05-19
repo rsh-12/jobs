@@ -52,6 +52,8 @@ services:
           memory: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
     depends_on:
       rabbitmq:
         condition: service_started
@@ -90,3 +92,12 @@ services:
     ports:
       - "5432:5432"
     restart: on-failure
+
+  eureka:
+    build: ../spring-cloud/eureka-server
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8761:8761"
