@@ -13,11 +13,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>eureka-server</name>
     <description>eureka-server</description>
+
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

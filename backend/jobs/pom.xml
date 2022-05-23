@@ -21,6 +21,8 @@
     <module>microservices/job-service</module>
     <module>util</module>
     <module>api</module>
+    <module>spring-cloud/eureka-server</module>
+    <module>spring-cloud/gateway</module>
   </modules>
 
 </project>
