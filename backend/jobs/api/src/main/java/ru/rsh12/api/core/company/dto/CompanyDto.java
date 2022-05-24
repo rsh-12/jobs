@@ -11,7 +11,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
-// todo: add some validation
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public record CompanyDto(
         Integer id,
@@ -19,7 +18,7 @@ public record CompanyDto(
         String description,
         LocalDate establishmentDate,
         String websiteUrl,
-        BusinessStreamDto businessStreamDto,
+        BusinessStreamDto businessStream,
         List<String> images,
         Instant createdAt,
         Instant updatedAt,

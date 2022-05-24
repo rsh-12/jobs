@@ -14,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.BodyContentSpec;
 import reactor.core.publisher.Mono;
-import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
-import ru.rsh12.api.core.company.request.CreateCompanyRequest;
+import ru.rsh12.api.core.company.request.BusinessStreamRequest;
+import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.repository.CompanyImageRepository;
@@ -45,7 +45,7 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
     @Autowired
     private CompanyImageRepository companyImageRepository;
 
-    private final String API = "/api/v1/industries";
+    private static final String API = "/api/v1/industries";
 
     @BeforeEach
     void setUp() {
@@ -61,19 +61,19 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
     @Test
     void getBusinessStream_shouldReturnBusinessStreamDto() {
         String name = "Art";
-        postAndVerify(API, new CreateBusinessStreamRequest(name), HttpStatus.CREATED)
+        postAndVerify(API, new BusinessStreamRequest(name), HttpStatus.CREATED)
                 .jsonPath("$.name").isEqualTo(name);
     }
 
     @Test
     void createBusinessStream_shouldReturnBadRequestErrorResponse_ifNameIsNotValid() {
-        postAndVerify(API, new CreateBusinessStreamRequest(""), HttpStatus.BAD_REQUEST);
+        postAndVerify(API, new BusinessStreamRequest(""), HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void createBusinessStream_shouldReturnBadRequestErrorResponse_ifCreateCompanyRequestInvalid() {
-        CreateBusinessStreamRequest request = new CreateBusinessStreamRequest("Art")
-                .setCompanies(Collections.singleton(new CreateCompanyRequest()
+        BusinessStreamRequest request = new BusinessStreamRequest("Art")
+                .setCompanies(Collections.singleton(new CompanyRequest()
                         .setDescription("Lorem ipsum")));
         postAndVerify(API, request, HttpStatus.BAD_REQUEST);
     }
@@ -81,8 +81,8 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
     @Test
     void createBusinessStream_shouldCreateBusinessStream_withCompaniesAndImages() {
         int size = 3;
-        Set<CreateCompanyRequest> createCompanyRequests = createCompanyRequests(size);
-        CreateBusinessStreamRequest request = new CreateBusinessStreamRequest("Art")
+        Set<CompanyRequest> createCompanyRequests = createCompanyRequests(size);
+        BusinessStreamRequest request = new BusinessStreamRequest("Art")
                 .setCompanies(createCompanyRequests);
 
         postAndVerify(API, request, HttpStatus.CREATED);
@@ -92,10 +92,10 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
         assertEquals(size, companyImageRepository.count());
     }
 
-    private BodyContentSpec postAndVerify(String url, CreateBusinessStreamRequest request, HttpStatus expectedStatus) {
+    private BodyContentSpec postAndVerify(String url, BusinessStreamRequest request, HttpStatus expectedStatus) {
         return client.post()
                 .uri(url)
-                .body(Mono.just(request), CreateBusinessStreamRequest.class)
+                .body(Mono.just(request), BusinessStreamRequest.class)
                 .accept(APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus)
@@ -121,9 +121,9 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
                 .expectBody();
     }
 
-    public Set<CreateCompanyRequest> createCompanyRequests(int size) {
+    public Set<CompanyRequest> createCompanyRequests(int size) {
         return IntStream.rangeClosed(1, size)
-                .mapToObj(i -> new CreateCompanyRequest(
+                .mapToObj(i -> new CompanyRequest(
                         "Company " + i,
                         "Company description " + i,
                         LocalDate.now().minusYears(i),

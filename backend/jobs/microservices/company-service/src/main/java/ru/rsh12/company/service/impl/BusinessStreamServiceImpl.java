@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
+import ru.rsh12.api.core.company.request.BusinessStreamRequest;
 import ru.rsh12.company.entity.BusinessStream;
 import ru.rsh12.company.entity.Company;
 import ru.rsh12.company.entity.CompanyImage;
@@ -20,7 +20,6 @@ import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.service.BusinessStreamService;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
@@ -63,30 +62,12 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
     }
 
     @Override
-    public Mono<BusinessStream> createBusinessStream(CreateBusinessStreamRequest request) {
+    public Mono<BusinessStream> createBusinessStream(BusinessStreamRequest request) {
         log.debug("createBusinessStream: creates a business stream");
 
         BusinessStream businessStream = new BusinessStream(request.getName());
-
         if (!request.getCompanies().isEmpty()) {
-            List<Company> companies = request.getCompanies().stream().map(createCompanyRequest -> {
-                Set<CompanyImage> images = createCompanyRequest.getImages().stream()
-                        .map(CompanyImage::new)
-                        .collect(Collectors.toSet());
-
-                Company company = new Company(
-                        createCompanyRequest.getName(),
-                        createCompanyRequest.getDescription(),
-                        createCompanyRequest.getEstablishmentDate(),
-                        createCompanyRequest.getWebsiteUrl(),
-                        businessStream,
-                        images);
-
-                images.forEach(image -> image.setCompany(company));
-
-                return company;
-            }).collect(Collectors.toList());
-
+            List<Company> companies = toCompaniesWithImages(request, businessStream);
             businessStream.setCompanies(companies);
         }
 
@@ -94,6 +75,26 @@ public class BusinessStreamServiceImpl implements BusinessStreamService {
                 .log(log.getName(), FINE)
                 .log(Thread.currentThread().getName(), FINE)
                 .subscribeOn(jdbcScheduler);
+    }
+
+    private List<Company> toCompaniesWithImages(BusinessStreamRequest request, BusinessStream businessStream) {
+        return request.getCompanies().stream().map(createCompanyRequest -> {
+            List<CompanyImage> images = createCompanyRequest.getImages().stream()
+                    .map(CompanyImage::new)
+                    .toList();
+
+            Company company = new Company(
+                    createCompanyRequest.getName(),
+                    createCompanyRequest.getDescription(),
+                    createCompanyRequest.getEstablishmentDate(),
+                    createCompanyRequest.getWebsiteUrl(),
+                    businessStream,
+                    images);
+
+            images.forEach(img -> img.setCompany(company));
+
+            return company;
+        }).collect(Collectors.toList());
     }
 
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.rsh12.api.core.company.dto.BusinessStreamDto;
-import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
+import ru.rsh12.api.core.company.request.BusinessStreamRequest;
 
 import javax.validation.Valid;
 
@@ -28,6 +28,6 @@ public interface BusinessStreamApi {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes = "application/json", produces = "application/json")
-    Mono<BusinessStreamDto> createBusinessStream(@Valid @RequestBody CreateBusinessStreamRequest request);
+    Mono<BusinessStreamDto> createBusinessStream(@Valid @RequestBody BusinessStreamRequest request);
 
 }

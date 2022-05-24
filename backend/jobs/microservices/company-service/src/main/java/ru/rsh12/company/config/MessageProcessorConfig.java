@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.rsh12.api.core.company.api.BusinessStreamApi;
 import ru.rsh12.api.core.company.api.CompanyApi;
-import ru.rsh12.api.core.company.request.CreateBusinessStreamRequest;
-import ru.rsh12.api.core.company.request.CreateCompanyRequest;
+import ru.rsh12.api.core.company.request.CompanyRequest;
+import ru.rsh12.api.core.company.request.BusinessStreamRequest;
 import ru.rsh12.api.event.Event;
 import ru.rsh12.api.exceptions.EventProcessingException;
 
@@ -23,24 +23,26 @@ public class MessageProcessorConfig {
     private final BusinessStreamApi businessStreamApi;
 
     @Bean
-    public Consumer<Event<Integer, CreateCompanyRequest>> companyMessageProcessor() {
+    public Consumer<Event<Integer, CompanyRequest>> companyMessageProcessor() {
         return event -> {
-            log.info("Process company message created at {}", event.getEventCreatedAt());
+            log.info("Process company message created at '{}'", event.getEventCreatedAt());
 
             switch (event.getEventType()) {
                 case CREATE -> {
-                    CreateCompanyRequest request = event.getData();
-                    log.info("Create company with name {}", request.getName());
+                    CompanyRequest request = event.getData();
+                    log.info("Create company with name '{}'", request.getName());
                     companyApi.createCompany(request.getBusinessStreamId(), request).block();
                 }
 
-                case DELETE -> {
-                    log.info("Delete company by id {}", event.getKey());
-                    companyApi.deleteCompany(event.getKey()).block();
+                case UPDATE -> {
+                    CompanyRequest request = event.getData();
+                    log.info("Update company with name '{}'", request.getName());
+                    companyApi.updateCompany(request.getBusinessStreamId(), event.getKey(), request).block();
                 }
 
-                case UPDATE -> {
-                    throw new NotImplementedException("No update implementation found!");
+                case DELETE -> {
+                    log.info("Delete company by id '{}'", event.getKey());
+                    companyApi.deleteCompany(event.getKey()).block();
                 }
 
                 default -> {
@@ -56,13 +58,13 @@ public class MessageProcessorConfig {
     }
 
     @Bean
-    public Consumer<Event<Integer, CreateBusinessStreamRequest>> businessStreamMessageProcessor() {
+    public Consumer<Event<Integer, BusinessStreamRequest>> businessStreamMessageProcessor() {
         return event -> {
-            log.info("Process business stream message created at {}", event.getEventCreatedAt());
+            log.info("Process business stream message created at '{}'", event.getEventCreatedAt());
 
             switch (event.getEventType()) {
                 case CREATE -> {
-                    log.info("Create business stream with name {}", event.getData().getName());
+                    log.info("Create business stream with name '{}'", event.getData().getName());
                     businessStreamApi.createBusinessStream(event.getData()).block();
                 }
 
