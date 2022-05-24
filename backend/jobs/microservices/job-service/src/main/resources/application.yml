@@ -10,6 +10,38 @@ spring:
     url: jdbc:postgresql://localhost/job
     username: ${DB_USERNAME:postgres}
     password: ${DB_PWD:postgres}
+    hikari:
+      initialization-fail-timeout: 60000
+  data:
+    web:
+      pageable:
+        max-page-size: 500
+  cloud:
+    function:
+      definition: jobPostMessageProcessor
+    stream:
+      default-binder: rabbit
+      bindings:
+        jobPostMessageProcessor-in-0:
+          destination: jobs
+          group: jobsGroup
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 500
+            back-off-max-interval: 1000
+            back-off-multiplier: 2.0
+      rabbit:
+        bindings:
+          jobPostMessageProcessor-in-0:
+            consumer:
+              auto-bind-dlq: true
+              republish-to-dlq: true
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 logging:
   level:
@@ -17,3 +49,34 @@ logging:
     ru.rsh12: debug
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+app:
+  eureka-server: localhost
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initial-instance-info-replication-interval-seconds: 5
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 5
+
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres/job
+  config:
+    activate:
+      on-profile: docker
+  rabbitmq:
+    host: rabbitmq
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://eureka:8761/eureka/
+
+server:
+  port: 8080
