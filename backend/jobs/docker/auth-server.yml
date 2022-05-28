@@ -23,8 +23,9 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+    command: [ "-Djboss.http.port=9999" ]
     ports:
-      - "8080:8080"
+      - "9999:9999"
     depends_on:
       postgres:
         condition: service_started
