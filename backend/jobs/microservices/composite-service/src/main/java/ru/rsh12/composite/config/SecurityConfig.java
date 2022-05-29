@@ -19,10 +19,10 @@ public class SecurityConfig {
     private final String VACANCIES;
     private final String RESUMES;
 
-    public SecurityConfig(@Value("${http-pattern}") String pattern,
-                          @Value("${scope-companies}") String companies,
-                          @Value("${scope-vacancies}") String vacancies,
-                          @Value("${scope-resumes}") String resumes) {
+    public SecurityConfig(@Value("${app.http-pattern}") String pattern,
+                          @Value("${app.scope-companies}") String companies,
+                          @Value("${app.scope-vacancies}") String vacancies,
+                          @Value("${app.scope-resumes}") String resumes) {
         PATTERN = pattern;
         COMPANIES = companies;
         VACANCIES = vacancies;
