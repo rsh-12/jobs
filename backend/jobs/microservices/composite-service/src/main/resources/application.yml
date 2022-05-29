@@ -28,6 +28,12 @@ spring:
     username: guest
     password: guest
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9999/auth/realms/ugk
+
 logging:
   level:
     root: info
@@ -35,10 +41,17 @@ logging:
 
 app:
   eureka-server: localhost
+  eureka-username: u
+  eureka-password: p
+  http-pattern: "/api/v1/composite"
+  scope-companies: "SCOPE_companies"
+  scope-vacancies: "SCOPE_vacancies"
+  scope-resumes: "SCOPE_resumes"
+
 eureka:
   client:
     service-url:
-      defaultZone: http://${app.eureka-server}:8761/eureka/
+      defaultZone: "http://${app.eureka-username}:${app.eureka-password}@${app.eureka-server}:8761/eureka/"
     initial-instance-info-replication-interval-seconds: 5
     registry-fetch-interval-seconds: 5
   instance:
