@@ -16,11 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.job.PostgreSqlTestBase;
 import ru.rsh12.job.entity.JobPost;
-import ru.rsh12.job.entity.JobType;
 import ru.rsh12.job.entity.Specialization;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -89,21 +87,6 @@ public class RepositoryTest extends PostgreSqlTestBase {
         assertTrue(jobs.isEmpty());
     }
 
-    @Test
-    public void addJobPost() {
-        Optional<JobType> optionalPartTimeJob = jobTypeRepository.findByNameIgnoreCase("part time");
-        assertTrue(optionalPartTimeJob.isPresent());
-
-        JobType partTime = optionalPartTimeJob.get();
-        assertTrue(partTime.getJobs().isEmpty());
-
-        Optional<Boolean> opt = jobPostRepository.findById(1).map(partTime::addJobPost);
-        assertTrue(opt.isPresent());
-
-        assertFalse(partTime.getJobs().isEmpty());
-        List<JobPost> partTimeJobs = jobPostRepository.findByTypeNameIgnoreCase("part time");
-        assertFalse(partTimeJobs.isEmpty());
-    }
 
     @Test
     void findByPostedById() {

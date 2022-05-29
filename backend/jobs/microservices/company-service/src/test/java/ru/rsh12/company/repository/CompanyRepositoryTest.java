@@ -4,14 +4,6 @@ package ru.rsh12.company.repository;
  * Time: 8:09 AM
  * */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +16,14 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.Company;
 import ru.rsh12.company.entity.CompanyImage;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Sql(scripts = {"companies.sql"})
 @DataJpaTest
@@ -74,9 +74,9 @@ public class CompanyRepositoryTest extends PostgreSqlTestBase {
 
         assertEquals(0, companyImageRepository.count());
 
-        Set<CompanyImage> images = IntStream.rangeClosed(1, 5)
+        List<CompanyImage> images = IntStream.rangeClosed(1, 5)
                 .mapToObj(i -> new CompanyImage("path/to/image/" + i))
-                .collect(Collectors.toSet());
+                .toList();
 
         Company entity = new Company();
         entity.setName("SomeName");

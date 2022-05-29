@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.BodyContentSpec;
 import reactor.core.publisher.Mono;
-import ru.rsh12.api.core.company.request.CreateCompanyRequest;
+import ru.rsh12.api.core.company.request.BusinessStreamRequest;
+import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.api.event.Event;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.BusinessStream;
@@ -21,14 +22,16 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static ru.rsh12.api.event.Event.Type.CREATE;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class CompanyControllerTest extends PostgreSqlTestBase {
 
-    private static final String API = "/api/v1/companies";
+    private static final String API = "/api/v1";
 
     @Autowired
     private WebTestClient client;
@@ -41,12 +44,16 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
 
     @Autowired
     @Qualifier("companyMessageProcessor")
-    private Consumer<Event<Integer, CreateCompanyRequest>> companyMessageProcessor;
+    private Consumer<Event<Integer, CompanyRequest>> companyMessageProcessor;
+
+    @Autowired
+    @Qualifier("businessStreamMessageProcessor")
+    private Consumer<Event<Integer, BusinessStreamRequest>> businessStreamMessageProcessor;
 
     @BeforeEach
-    void setUp() {
-        businessStreamRepository.deleteAll();
+    void  setUp() {
         repository.deleteAll();
+        businessStreamRepository.deleteAll();
 
         assertEquals(0, businessStreamRepository.count());
         assertEquals(0, repository.count());
@@ -54,27 +61,18 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
 
     @Test
     void getCompany_shouldReturnBadRequestResponse_ifCompanyNotFound() {
-        getAndVerify(API + "/" + 1, NOT_FOUND)
+        getAndVerify(API + "/companies/" + 1, NOT_FOUND)
                 .jsonPath("$.message").isEqualTo("Entity not found");
     }
 
     @Test
-    void createCompany_shouldCreateCompany() {
-        int industryId = 1;
-        CreateCompanyRequest request = createSampleCompany();
-        businessStreamRepository.save(new BusinessStream("Art"));
-
-        postAndVerify("/api/v1/industries/" + industryId + "/companies", request, OK)
-                .jsonPath("$.name").isEqualTo(request.getName())
-                .jsonPath("$.websiteUrl").isEqualTo(request.getWebsiteUrl())
-                .jsonPath("$.description").isEqualTo(request.getDescription())
-                .jsonPath("$.businessStream").exists()
-                .jsonPath("$.images.length()").isEqualTo(request.getImages().size())
-                .jsonPath("$.establishmentDate").isEqualTo(request.getEstablishmentDate().toString());
+    void getCompany_shouldReturnOkResponse_ifCompanyFound() {
+        sendCreateCompanyEvent();
+        getAndVerify(API + "/companies/" + 1, OK);
     }
 
-    private CreateCompanyRequest createSampleCompany() {
-        return new CreateCompanyRequest()
+    private CompanyRequest createSampleCompany() {
+        return new CompanyRequest()
                 .setName("Cat and Dog")
                 .setDescription("Food for cats and dogs :)")
                 .setEstablishmentDate(LocalDate.now().minusYears(10))
@@ -82,9 +80,9 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
                 .setImages(List.of("path://to/file1", "path://to/file2"));
     }
 
-    private BodyContentSpec postAndVerify(String url, CreateCompanyRequest request, HttpStatus expectedStatus) {
+    private BodyContentSpec postAndVerify(String url, CompanyRequest request, HttpStatus expectedStatus) {
         return client.post().uri(url)
-                .body(Mono.just(request), CreateCompanyRequest.class)
+                .body(Mono.just(request), CompanyRequest.class)
                 .accept(APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus)
@@ -93,6 +91,42 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
 
     private BodyContentSpec getAndVerify(String url, HttpStatus expectedStatus) {
         return client.get().uri(url)
+                .accept(APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isEqualTo(expectedStatus)
+                .expectHeader().contentType(APPLICATION_JSON)
+                .expectBody();
+    }
+
+    private void sendCreateCompanyEvent() {
+        BusinessStream businessStream = businessStreamRepository.save(new BusinessStream("Animals"));
+
+        getAndVerifyBusinessStream(businessStream.getId(), OK);
+
+        CompanyRequest request = new CompanyRequest(
+                "Dog and cat",
+                "Food for animals",
+                LocalDate.now().minusYears(10),
+                "https://dogscats",
+                List.of("https://img1"));
+        request.setBusinessStreamId(businessStream.getId());
+
+        Event<Integer, CompanyRequest> event = new Event<>(CREATE, null, request);
+        companyMessageProcessor.accept(event);
+    }
+
+    private void sendCreateBusinessStreamEvent() {
+        BusinessStreamRequest request = new BusinessStreamRequest("Animals");
+        Event<Integer, BusinessStreamRequest> event = new Event<>(CREATE, null, request);
+        businessStreamMessageProcessor.accept(event);
+    }
+
+    private WebTestClient.BodyContentSpec getAndVerifyBusinessStream(
+            Integer businessStreamId,
+            HttpStatus expectedStatus) {
+
+        return client.get()
+                .uri(API + "/industries/" + businessStreamId)
                 .accept(APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus)
