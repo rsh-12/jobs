@@ -1,6 +1,6 @@
 package ru.rsh12.api.core.resume.request;
 
-import ru.rsh12.api.core.resume.dto.SkillSetDto;
+import ru.rsh12.api.core.resume.dto.ResumeSkillSetDto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -25,7 +25,7 @@ public class ResumeRequest {
 
     private List<Integer> countryIds = new ArrayList<>();
 
-    private List<SkillSetDto> skills = new ArrayList<>();
+    private List<ResumeSkillSetDto> skills = new ArrayList<>();
 
     private List<LanguageRequest> languages = new ArrayList<>();
 
@@ -75,11 +75,11 @@ public class ResumeRequest {
         this.countryIds = countryIds;
     }
 
-    public List<SkillSetDto> getSkills() {
+    public List<ResumeSkillSetDto> getSkills() {
         return skills;
     }
 
-    public void setSkills(List<SkillSetDto> skills) {
+    public void setSkills(List<ResumeSkillSetDto> skills) {
         this.skills = skills;
     }
 
