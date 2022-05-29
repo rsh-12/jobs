@@ -5,7 +5,7 @@ package ru.rsh12.api.core.resume.dto;
  * */
 
 import java.time.Instant;
-import java.util.Set;
+import java.util.List;
 
 public record ResumeDto(
         Integer id,
@@ -16,12 +16,12 @@ public record ResumeDto(
         String accountId,
         Instant createdAt,
         Instant updatedAt,
-        Set<CountryDto> citizenship,
-        Set<SkillSetDto> skills,
-        Set<LanguageDto> languages,
-        Set<EducationDetailDto> education,
-        Set<ExperienceDetailDto> experience,
-        Set<Integer> specializationIds,
+        List<CountryDto> citizenship,
+        List<ResumeSkillSetDto> skills,
+        List<ResumeLanguageDto> languages,
+        List<EducationDetailDto> education,
+        List<ExperienceDetailDto> experience,
+        List<Integer> specializationIds,
         String serviceAddress
 ) {
 
