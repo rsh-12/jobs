@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SpecializationApi {
 
-    @GetMapping(value = "/api/v1/jobs/specializations", produces = "application/json")
+    @GetMapping(value = "/api/v1/specializations", produces = "application/json")
     Flux<SpecializationDto> getSpecializationsById(@RequestParam("ids") List<Integer> specializationIds);
 
 }
