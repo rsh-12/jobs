@@ -15,8 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Getter
@@ -36,15 +36,15 @@ public class ExperienceDetail {
 
     private LocalDate endDate;
 
-    @Max(value = 50)
+    @Size(max = 50)
     @NotBlank
     @Column(nullable = false)
     private String jobTitle;
 
-    @Max(value = 250)
+    @Size(max = 250)
     private String description;
 
-    @Max(value = 100)
+    @Size(max = 100)
     private String companyName;
 
     @ManyToOne

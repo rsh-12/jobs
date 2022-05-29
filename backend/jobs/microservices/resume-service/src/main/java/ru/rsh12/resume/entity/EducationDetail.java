@@ -15,9 +15,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -32,12 +32,12 @@ public class EducationDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Max(150)
+    @Size(max = 150)
     @NotBlank
     @Column(nullable = false)
     private String institutionName;
 
-    @Max(150)
+    @Size(max = 150)
     private String faculty;
 
     @PastOrPresent

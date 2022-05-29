@@ -10,8 +10,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Getter
@@ -24,7 +24,7 @@ public class ResumeSkillSet {
     @EmbeddedId
     private ResumeSkillSetId id;
 
-    @Max(50)
+    @Size(max = 50)
     @NotBlank
     @Column(nullable = false)
     private String level;
