@@ -31,16 +31,19 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        String[] employers = {PATTERN + "/companies/**", PATTERN + "/jobs/**", PATTERN + "/industries/**"};
+        String[] employees = {PATTERN + "/resumes/**"};
+
         http.authorizeExchange()
                 .pathMatchers("/actuator/**").permitAll()
                 // modify companies, jobs
-                .pathMatchers(POST, PATTERN + "/companies/**", PATTERN + "/jobs/**").hasAnyAuthority(COMPANIES, VACANCIES)
-                .pathMatchers(PUT, PATTERN + "/companies/**", PATTERN + "/jobs/**").hasAnyAuthority(COMPANIES, VACANCIES)
-                .pathMatchers(DELETE, PATTERN + "/companies/**", PATTERN + "/jobs/**").hasAnyAuthority(COMPANIES, VACANCIES)
+                .pathMatchers(POST, employers).hasAnyAuthority(COMPANIES, VACANCIES)
+                .pathMatchers(PUT, employers).hasAnyAuthority(COMPANIES, VACANCIES)
+                .pathMatchers(DELETE, employers).hasAnyAuthority(COMPANIES, VACANCIES)
                 // modify resumes
-                .pathMatchers(POST, PATTERN + "/resumes/**").hasAuthority(RESUMES)
-                .pathMatchers(PUT, PATTERN + "/resumes/**").hasAuthority(RESUMES)
-                .pathMatchers(DELETE, PATTERN + "/resumes/**").hasAuthority(RESUMES)
+                .pathMatchers(POST, employees).hasAuthority(RESUMES)
+                .pathMatchers(PUT, employees).hasAuthority(RESUMES)
+                .pathMatchers(DELETE, employees).hasAuthority(RESUMES)
                 // read companies, vacancies, resumes
                 .pathMatchers(GET, PATTERN + "/**").hasAnyAuthority(COMPANIES, VACANCIES, RESUMES)
                 .anyExchange().authenticated()
