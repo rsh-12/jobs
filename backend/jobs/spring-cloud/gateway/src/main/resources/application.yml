@@ -37,7 +37,7 @@ spring:
             - Path=/eureka/**
 
         - id: auth-server
-          uri: http://localhost:9999
+          uri: ${app.auth-server}
           predicates:
             - Path=/oauth2/{segment}
           filters:
@@ -53,6 +53,7 @@ app:
   eureka-server: localhost
   eureka-username: u
   eureka-password: p
+  auth-server: http://localhost:9999
 
 eureka:
   client:
