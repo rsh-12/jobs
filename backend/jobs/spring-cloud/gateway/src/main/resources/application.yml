@@ -43,6 +43,13 @@ spring:
           filters:
             - SetPath=/auth/realms/ugk/protocol/openid-connect/{segment}
 
+        - id: config-server
+          uri: http://${app.config-server}:8888
+          predicates:
+            - Path=/config/**
+          filters:
+            - RewritePath=/config/(?<segment>.*), /$\{segment}
+
   security:
     oauth2:
       resourceserver:
@@ -54,6 +61,7 @@ app:
   eureka-username: u
   eureka-password: p
   auth-server: http://localhost:9999
+  config-server: localhost
 
 eureka:
   client:
@@ -88,3 +96,4 @@ spring:
 
 app:
   eureka-server: eureka
+  config-server: config-server
