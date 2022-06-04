@@ -1,93 +1,24 @@
-server:
-  port: 7001
-  error:
-    include-message: always
-
 spring:
   application:
     name: company
-  datasource:
-    url: jdbc:postgresql://localhost/company
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PWD:postgres}
-    hikari:
-      initialization-fail-timeout: 60000
-  data:
-    web:
-      pageable:
-        max-page-size: 500
   cloud:
-    function:
-      definition: companyMessageProcessor;businessStreamMessageProcessor
-    stream:
-      default-binder: rabbit
-      bindings:
-        companyMessageProcessor-in-0:
-          destination: companies
-          group: companiesGroup
-          consumer:
-            max-attempts: 3
-            back-off-initial-interval: 500
-            back-off-max-interval: 1000
-            back-off-multiplier: 2.0
-        businessStreamMessageProcessor-in-0:
-          destination: businessStreams
-          group: businessStreamsGroup
-          consumer:
-            max-attempts: 3
-            back-off-initial-interval: 500
-            back-off-max-interval: 1000
-            back-off-multiplier: 2.0
-      rabbit:
-        bindings:
-          companyMessageProcessor-in-0:
-            consumer:
-              auto-bind-dlq: true
-              republish-to-dlq: true
-          businessStreamMessageProcessor-in-0:
-            consumer:
-              auto-bind-dlq: true
-              republish-to-dlq: true
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
-
-logging:
-  level:
-    root: info
-    ru.rsh12: debug
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
-
-app:
-  eureka-server: localhost
-  eureka-username: u
-  eureka-password: p
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${app.eureka-username}:${app.eureka-password}@${app.eureka-server}:8761/eureka/
-    initial-instance-info-replication-interval-seconds: 5
-    registry-fetch-interval-seconds: 5
-  instance:
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 5
+    config:
+      fail-fast: true
+      retry:
+        initial-interval: 3000
+        multiplier: 1.3
+        max-interval: 10000
+        max-attempts: 20
+      uri: http://localhost:8888
+      username: ${CONFIG_SERVER_USR}
+      password: ${CONFIG_SERVER_PWD}
 
 ---
 spring:
-  datasource:
-    url: jdbc:postgresql://postgres/company
   config:
     activate:
       on-profile: docker
-  rabbitmq:
-    host: rabbitmq
 
-app:
-  eureka-server: eureka
-
-server:
-  port: 8080
+  cloud:
+    config:
+      uri: http://config-server:8888
