@@ -1,0 +1,45 @@
+server:
+  port: 7000
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: composite
+  cloud:
+    stream:
+      bindings:
+        companies-out-0:
+          destination: companies
+          producer:
+            required-groups: auditGroup
+        resumes-out-0:
+          destination: resumes
+          producer:
+            required-groups: auditGroup
+        jobs-out-0:
+          destination: jobs
+          producer:
+            required-groups: auditGroup
+      default-binder: rabbit
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9999/auth/realms/ugk
+
+logging:
+  level:
+    root: info
+    ru.rsh12: debug
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+server:
+  port: 8080

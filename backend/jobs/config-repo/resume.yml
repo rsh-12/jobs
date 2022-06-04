@@ -1,0 +1,51 @@
+server:
+  port: 7002
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/resume
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PWD:postgres}
+    hikari:
+      initialization-fail-timeout: 60000
+  cloud:
+    function:
+      definition: resumeMessageProcessor
+    stream:
+      default-binder: rabbit
+      bindings:
+        resumeMessageProcessor-in-0:
+          destination: resumes
+          group: resumesGroup
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 500
+            back-off-max-interval: 1000
+            back-off-multiplier: 2.0
+      rabbit:
+        bindings:
+          resumeMessageProcessor-in-0:
+            consumer:
+              auto-bind-dlq: true
+              republish-to-dlq: true
+
+logging:
+  level:
+    root: info
+    ru.rsh12: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres/resume
+  config:
+    activate:
+      on-profile: docker
+
+server:
+  port: 8080

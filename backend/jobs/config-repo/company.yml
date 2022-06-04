@@ -1,0 +1,67 @@
+server:
+  port: 7001
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/company
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PWD:postgres}
+    hikari:
+      initialization-fail-timeout: 60000
+  data:
+    web:
+      pageable:
+        max-page-size: 500
+  cloud:
+    function:
+      definition: companyMessageProcessor;businessStreamMessageProcessor
+    stream:
+      default-binder: rabbit
+      bindings:
+        companyMessageProcessor-in-0:
+          destination: companies
+          group: companiesGroup
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 500
+            back-off-max-interval: 1000
+            back-off-multiplier: 2.0
+        businessStreamMessageProcessor-in-0:
+          destination: businessStreams
+          group: businessStreamsGroup
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 500
+            back-off-max-interval: 1000
+            back-off-multiplier: 2.0
+      rabbit:
+        bindings:
+          companyMessageProcessor-in-0:
+            consumer:
+              auto-bind-dlq: true
+              republish-to-dlq: true
+          businessStreamMessageProcessor-in-0:
+            consumer:
+              auto-bind-dlq: true
+              republish-to-dlq: true
+
+logging:
+  level:
+    root: info
+    ru.rsh12: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres/company
+  config:
+    activate:
+      on-profile: docker
+
+server:
+  port: 8080
