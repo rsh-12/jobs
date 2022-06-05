@@ -135,4 +135,4 @@ services:
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
     ports:
-      - "8433:8433"
+      - "8443:8443"
