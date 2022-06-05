@@ -1,3 +1,5 @@
+spring.config.import: "configserver:"
+
 spring:
   application:
     name: composite
@@ -10,8 +12,8 @@ spring:
         max-interval: 10000
         max-attempts: 20
       uri: http://localhost:8888
-      username: ${CONFIG_SERVER_USR}
-      password: ${CONFIG_SERVER_PWD}
+      username: ${CONFIG_SERVER_USR:usr}
+      password: ${CONFIG_SERVER_PWD:pwd}
 
 ---
 spring:
