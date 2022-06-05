@@ -5,7 +5,10 @@ spring:
     config:
       server:
         native:
-          search-locations: file:${PWD}/config-repo
+          search-locations: file:///${PWD}/config-repo
+  config:
+    activate:
+      on-profile: native
 
 management:
   endpoint:
@@ -14,7 +17,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: *
+        include: "*"
 logging:
   level:
     root: info
