@@ -42,11 +42,11 @@ spring:
             - SetPath=/auth/realms/ugk/protocol/openid-connect/{segment}
 
         - id: config-server
-          uri: http://${app.config-server}:8888
+          uri: ${spring.cloud.config.uri}
           predicates:
             - Path=/config/**
           filters:
-            - RewritePath=/config/(?<segment>.*), /$\{segment}
+            - RewritePath=/config(?<segment>/?.*), $\{segment}
 
   security:
     oauth2:
