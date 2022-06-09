@@ -1,5 +1,5 @@
 app:
-  auth-server: http://localhost:9999
+  auth-server: localhost
   config-server: localhost
   eureka-server: localhost
   eureka-username: u
@@ -40,3 +40,4 @@ spring.rabbitmq.host: rabbitmq
 app:
   eureka-server: eureka
   config-server: config-server
+  auth-server: keycloak

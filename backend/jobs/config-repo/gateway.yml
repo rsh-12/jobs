@@ -35,7 +35,7 @@ spring:
             - Path=/eureka/**
 
         - id: auth-server
-          uri: ${app.auth-server}
+          uri: http://${app.auth-server}:9999
           predicates:
             - Path=/oauth2/{segment}
           filters:
