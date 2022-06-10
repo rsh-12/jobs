@@ -22,13 +22,18 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static ru.rsh12.api.event.Event.Type.CREATE;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        properties = {
+                "spring.cloud.stream.default-binder=rabbit",
+                "logging.level.ru.rsh12=debug",
+                "eureka.client.enabled=false",
+                "spring.cloud.config.enabled=false"})
 public class CompanyControllerTest extends PostgreSqlTestBase {
 
     private static final String API = "/api/v1";

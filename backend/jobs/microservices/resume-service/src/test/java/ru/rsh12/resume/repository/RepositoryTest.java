@@ -11,7 +11,11 @@ import ru.rsh12.resume.PostgreSqlTestBase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Sql(scripts = {"data.sql"})
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.cloud.stream.default-binder=rabbit",
+        "logging.level.ru.rsh12=debug",
+        "eureka.client.enabled=false",
+        "spring.cloud.config.enabled=false"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class RepositoryTest extends PostgreSqlTestBase {
 

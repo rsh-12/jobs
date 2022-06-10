@@ -30,7 +30,13 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(
+        webEnvironment = WebEnvironment.RANDOM_PORT,
+        properties = {
+                "spring.cloud.stream.default-binder=rabbit",
+                "logging.level.ru.rsh12=debug",
+                "eureka.client.enabled=false",
+                "spring.cloud.config.enabled=false"})
 public class BusinessStreamControllerTest extends PostgreSqlTestBase {
 
     @Autowired

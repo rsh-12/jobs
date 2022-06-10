@@ -4,12 +4,6 @@ package ru.rsh12.company.repository;
  * Time: 9:47 PM
  * */
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +16,19 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.BusinessStream;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @Sql(scripts = {"industries.sql"})
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.cloud.stream.default-binder=rabbit",
+        "logging.level.ru.rsh12=debug",
+        "eureka.client.enabled=false",
+        "spring.cloud.config.enabled=false"})
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
 
