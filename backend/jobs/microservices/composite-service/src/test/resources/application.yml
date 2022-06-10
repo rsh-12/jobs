@@ -1,0 +1,12 @@
+app:
+  http-pattern: api
+  scope-companies: companies
+  scope-vacancies: vacancies
+  scope-resumes: resumes
+
+spring.cloud.stream:
+  defaultBinder: rabbit
+  bindings:
+    products-out-0.destination: products
+    recommendations-out-0.destination: recommendations
+    reviews-out-0.destination: reviews
