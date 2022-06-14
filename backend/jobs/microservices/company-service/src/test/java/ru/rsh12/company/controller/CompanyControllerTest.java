@@ -1,5 +1,6 @@
 package ru.rsh12.company.controller;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.BodyContentSpec;
-import reactor.core.publisher.Mono;
-import ru.rsh12.api.core.company.request.BusinessStreamRequest;
 import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.api.event.Event;
 import ru.rsh12.company.PostgreSqlTestBase;
@@ -18,8 +17,10 @@ import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.repository.CompanyRepository;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -51,12 +52,8 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
     @Qualifier("companyMessageProcessor")
     private Consumer<Event<Integer, CompanyRequest>> companyMessageProcessor;
 
-    @Autowired
-    @Qualifier("businessStreamMessageProcessor")
-    private Consumer<Event<Integer, BusinessStreamRequest>> businessStreamMessageProcessor;
-
     @BeforeEach
-    void  setUp() {
+    void setUp() {
         repository.deleteAll();
         businessStreamRepository.deleteAll();
 
@@ -65,33 +62,36 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
     }
 
     @Test
-    void getCompany_shouldReturnBadRequestResponse_ifCompanyNotFound() {
+    void getCompany_shouldReturn400_ifCompanyNotFound() {
         getAndVerify(API + "/companies/" + 1, NOT_FOUND)
                 .jsonPath("$.message").isEqualTo("Entity not found");
     }
 
     @Test
     void getCompany_shouldReturnOkResponse_ifCompanyFound() {
-        sendCreateCompanyEvent();
-        getAndVerify(API + "/companies/" + 1, OK);
+        BusinessStream industry = createAndGetIndustry();
+        sendCreateCompanyEvent(industry, this::getSampleCompanyRequest);
+
+        getAndVerify(API + "/companies/" + 1, OK)
+                .jsonPath("$.name").exists()
+                .jsonPath("$.name").isEqualTo("Dog and cat");
     }
 
-    private CompanyRequest createSampleCompany() {
-        return new CompanyRequest()
-                .setName("Cat and Dog")
-                .setDescription("Food for cats and dogs :)")
-                .setEstablishmentDate(LocalDate.now().minusYears(10))
-                .setWebsiteUrl("https://catsdogs.io")
-                .setImages(List.of("path://to/file1", "path://to/file2"));
-    }
+    @Test
+    void getCompanies_shouldReturnListOfCompanies() {
+        assertEquals(0, repository.count());
 
-    private BodyContentSpec postAndVerify(String url, CompanyRequest request, HttpStatus expectedStatus) {
-        return client.post().uri(url)
-                .body(Mono.just(request), CompanyRequest.class)
-                .accept(APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isEqualTo(expectedStatus)
-                .expectBody();
+        BusinessStream industry = createAndGetIndustry();
+
+        sendCreateCompanyEvent(industry, this::getSampleCompanyRequest);
+        sendCreateCompanyEvent(industry, () -> new CompanyRequest(
+                "Private Bank",
+                "Description",
+                LocalDate.of(1970, 4, 12),
+                "some.website.com",
+                Collections.emptyList()));
+
+        assertEquals(2, repository.count());
     }
 
     private BodyContentSpec getAndVerify(String url, HttpStatus expectedStatus) {
@@ -103,27 +103,34 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
                 .expectBody();
     }
 
-    private void sendCreateCompanyEvent() {
-        BusinessStream businessStream = businessStreamRepository.save(new BusinessStream("Animals"));
-
-        getAndVerifyBusinessStream(businessStream.getId(), OK);
-
-        CompanyRequest request = new CompanyRequest(
-                "Dog and cat",
-                "Food for animals",
-                LocalDate.now().minusYears(10),
-                "https://dogscats",
-                List.of("https://img1"));
+    private void sendCreateCompanyEvent(BusinessStream businessStream, Supplier<CompanyRequest> supplier) {
+        CompanyRequest request = supplier.get();
         request.setBusinessStreamId(businessStream.getId());
 
         Event<Integer, CompanyRequest> event = new Event<>(CREATE, null, request);
         companyMessageProcessor.accept(event);
     }
 
-    private void sendCreateBusinessStreamEvent() {
-        BusinessStreamRequest request = new BusinessStreamRequest("Animals");
-        Event<Integer, BusinessStreamRequest> event = new Event<>(CREATE, null, request);
-        businessStreamMessageProcessor.accept(event);
+    @NotNull
+    private BusinessStream createAndGetIndustry() {
+        String businessStreamName = "Finance";
+        BusinessStream businessStream = businessStreamRepository.save(new BusinessStream(businessStreamName));
+
+        getAndVerifyBusinessStream(businessStream.getId(), OK)
+                .jsonPath("$.name").exists()
+                .jsonPath("$.name").isEqualTo(businessStreamName);
+
+        return businessStream;
+    }
+
+    @NotNull
+    private CompanyRequest getSampleCompanyRequest() {
+        return new CompanyRequest(
+                "Dog and cat",
+                "Food for animals",
+                LocalDate.now().minusYears(10),
+                "https://dogscats",
+                List.of("https://img1"));
     }
 
     private WebTestClient.BodyContentSpec getAndVerifyBusinessStream(
