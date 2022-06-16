@@ -13,6 +13,7 @@ import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.api.event.Event;
 import ru.rsh12.company.PostgreSqlTestBase;
 import ru.rsh12.company.entity.BusinessStream;
+import ru.rsh12.company.entity.Company;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.repository.CompanyRepository;
 
@@ -68,13 +69,9 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
 
     @Test
     void getCompany_shouldReturn200_ifCompanyFound() {
-        assertEquals(0, repository.count());
-        BusinessStream industry = createAndGetIndustry();
-        sendCreateCompanyEvent(industry, getSampleCompanyRequest());
+        Company entity = createAndGetCompany(getSampleCompanyRequest());
 
-        assertEquals(1, repository.count());
-
-        getAndVerify(API + "/companies/" + 3, OK)
+        getAndVerify(API + "/companies/" + entity.getId(), OK)
                 .jsonPath("$.name").exists()
                 .jsonPath("$.name").isEqualTo("Dog and cat");
     }
@@ -94,6 +91,19 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
                 Collections.emptyList()));
 
         assertEquals(2, repository.count());
+    }
+
+    private Company createAndGetCompany(CompanyRequest request) {
+        BusinessStream industry = createAndGetIndustry();
+        Company company = new Company(
+                request.getName(),
+                request.getDescription(),
+                request.getEstablishmentDate(),
+                request.getWebsiteUrl(),
+                industry,
+                Collections.emptyList());
+
+        return repository.save(company);
     }
 
     private BodyContentSpec getAndVerify(String url, HttpStatus expectedStatus) {
