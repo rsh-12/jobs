@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -68,11 +67,14 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
     }
 
     @Test
-    void getCompany_shouldReturnOkResponse_ifCompanyFound() {
+    void getCompany_shouldReturn200_ifCompanyFound() {
+        assertEquals(0, repository.count());
         BusinessStream industry = createAndGetIndustry();
-        sendCreateCompanyEvent(industry, this::getSampleCompanyRequest);
+        sendCreateCompanyEvent(industry, getSampleCompanyRequest());
 
-        getAndVerify(API + "/companies/" + 1, OK)
+        assertEquals(1, repository.count());
+
+        getAndVerify(API + "/companies/" + 3, OK)
                 .jsonPath("$.name").exists()
                 .jsonPath("$.name").isEqualTo("Dog and cat");
     }
@@ -83,8 +85,8 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
 
         BusinessStream industry = createAndGetIndustry();
 
-        sendCreateCompanyEvent(industry, this::getSampleCompanyRequest);
-        sendCreateCompanyEvent(industry, () -> new CompanyRequest(
+        sendCreateCompanyEvent(industry, getSampleCompanyRequest());
+        sendCreateCompanyEvent(industry, new CompanyRequest(
                 "Private Bank",
                 "Description",
                 LocalDate.of(1970, 4, 12),
@@ -103,8 +105,7 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
                 .expectBody();
     }
 
-    private void sendCreateCompanyEvent(BusinessStream businessStream, Supplier<CompanyRequest> supplier) {
-        CompanyRequest request = supplier.get();
+    private void sendCreateCompanyEvent(BusinessStream businessStream, CompanyRequest request) {
         request.setBusinessStreamId(businessStream.getId());
 
         Event<Integer, CompanyRequest> event = new Event<>(CREATE, null, request);
