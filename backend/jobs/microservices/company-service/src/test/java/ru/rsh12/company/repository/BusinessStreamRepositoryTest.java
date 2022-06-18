@@ -37,9 +37,7 @@ public class BusinessStreamRepositoryTest extends PostgreSqlTestBase {
 
     @AfterEach
     void tearDown() {
-        assertTrue(repository.count() > 0);
         repository.deleteAll();
-        assertEquals(0, repository.count());
     }
 
     @Test
