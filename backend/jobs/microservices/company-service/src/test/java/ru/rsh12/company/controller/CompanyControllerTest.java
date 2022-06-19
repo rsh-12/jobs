@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -59,6 +60,16 @@ public class CompanyControllerTest extends PostgreSqlTestBase {
 
         assertEquals(0, businessStreamRepository.count());
         assertEquals(0, repository.count());
+    }
+
+    @Test
+    void createCompany_shouldCreateCompany() {
+        long totalElements = repository.count();
+
+        Company company = createAndGetCompany(getSampleCompanyRequest());
+        assertNotNull(company);
+
+        assertEquals(totalElements + 1, repository.count());
     }
 
     @Test
