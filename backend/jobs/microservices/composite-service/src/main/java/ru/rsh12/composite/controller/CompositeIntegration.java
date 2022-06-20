@@ -1,5 +1,9 @@
 package ru.rsh12.composite.controller;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,6 +33,7 @@ import ru.rsh12.api.core.resume.request.ResumeRequest;
 import ru.rsh12.api.event.Event;
 import ru.rsh12.api.exceptions.InvalidInputException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.logging.Level.FINE;
@@ -60,6 +65,9 @@ public class CompositeIntegration implements
         this.publishEventScheduler = publishEventScheduler;
     }
 
+    @Retry(name = "company")
+    @TimeLimiter(name = "company")
+    @CircuitBreaker(name = "company", fallbackMethod = "getCompanyFallbackValue")
     @Override
     public Mono<CompanyDto> getCompany(Integer companyId) {
         return webClient.get().uri(COMPANY_SERVICE_URL + "/companies/" + companyId)
@@ -286,6 +294,23 @@ public class CompositeIntegration implements
                 .build();
 
         streamBridge.send(bindingName, message);
+    }
+
+    // todo implement caching
+    private Mono<CompanyDto> getCompanyFallbackValue(Integer companyId, CallNotPermittedException e) {
+        CompanyDto company = new CompanyDto(
+                0,
+                "Not found",
+                "Company '" + companyId + "' not found",
+                null,
+                "",
+                null,
+                Collections.emptyList(),
+                null,
+                null,
+                "");
+
+        return Mono.just(company);
     }
 
 }
