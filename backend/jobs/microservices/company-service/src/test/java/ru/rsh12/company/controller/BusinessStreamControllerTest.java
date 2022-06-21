@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import ru.rsh12.api.core.company.request.BusinessStreamRequest;
 import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.company.PostgreSqlTestBase;
+import ru.rsh12.company.entity.BusinessStream;
 import ru.rsh12.company.repository.BusinessStreamRepository;
 import ru.rsh12.company.repository.CompanyImageRepository;
 import ru.rsh12.company.repository.CompanyRepository;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(
@@ -67,8 +69,10 @@ public class BusinessStreamControllerTest extends PostgreSqlTestBase {
     @Test
     void getBusinessStream_shouldReturnBusinessStreamDto() {
         String name = "Art";
-        postAndVerify(API, new BusinessStreamRequest(name), HttpStatus.CREATED)
-                .jsonPath("$.name").isEqualTo(name);
+        BusinessStream businessStream = repository.save(new BusinessStream(name));
+        assertNotNull(businessStream);
+
+        getAndVerify("/" + businessStream.getId(), HttpStatus.OK);
     }
 
     @Test
