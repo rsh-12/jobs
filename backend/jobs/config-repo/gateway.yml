@@ -48,6 +48,16 @@ spring:
           filters:
             - RewritePath=/config(?<segment>/?.*), $\{segment}
 
+        - id: composite-swagger-ui
+          uri: lb://-composite
+          predicates:
+            - Path=/openapi/**
+
+        - id: composite-swagger-ui-webjars
+          uri: lb://composite
+          predicates:
+            - Path=/webjars/**
+
   security:
     oauth2:
       resourceserver:
