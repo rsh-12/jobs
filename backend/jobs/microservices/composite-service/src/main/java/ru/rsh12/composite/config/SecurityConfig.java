@@ -36,6 +36,8 @@ public class SecurityConfig {
 
         http.authorizeExchange()
                 .pathMatchers("/actuator/**").permitAll()
+                .pathMatchers("/openapi/**").permitAll()
+                .pathMatchers("/webjars/**").permitAll()
                 // modify companies, jobs
                 .pathMatchers(POST, employers).hasAnyAuthority(COMPANIES, VACANCIES)
                 .pathMatchers(PUT, employers).hasAnyAuthority(COMPANIES, VACANCIES)
