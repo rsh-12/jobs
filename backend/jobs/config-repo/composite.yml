@@ -3,6 +3,14 @@ server:
   error:
     include-message: always
 
+springdoc:
+  swagger-ui.path: /openapi/swagger-ui.html
+  api-docs.path: /openapi/v3/api-docs
+  cache.disabled: true
+  packages-to-scan: ru.rsh12.composite-service
+  paths-to-match: /**
+
+
 spring:
   application:
     name: composite
