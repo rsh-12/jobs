@@ -10,6 +10,18 @@ springdoc:
   packages-to-scan: ru.rsh12.composite-service
   paths-to-match: /**
 
+  swagger-ui:
+    oauth2-redirect-url: https://localhost:8443/webjars/swagger-ui/oauth2-redirect.html
+    oauth:
+      clientId: admins-client
+      clientSecret: u86HYlNxFFZ7GzJeTacgTCFYjROuFhZA # temporary secret key
+      use-basic-authentication-with-access-code-grant: true
+  oAuthFlow:
+    authorizationUrl: http://localhost:9999/auth/realms/ugk/authorize
+    tokenUrl: http://localhost:9999/auth/realms/ugk/token
+    refreshUrl: some_refresh_url
+
+server.forward-headers-strategy: framework
 
 spring:
   application:
