@@ -1,44 +1,5 @@
 spring.config.import: "configserver:"
 
-resilience4j:
-  retry:
-    configs:
-      shared:
-        max-attempts: 3
-        wait-duration: 1500
-        retry-exceptions:
-          - org.springframework.web.reactive.function.client.WebClientResponseException.InternalServerError
-    instances:
-      company:
-        base-config: shared
-
-  timelimiter:
-    configs:
-      shared:
-        timeout-duration: 3s
-    instances:
-      company:
-        base-config: shared
-
-  circuitbreaker:
-    configs:
-      shared:
-        allow-health-indicator-to-fail: false
-        register-health-indicator: true
-        sliding-window-type: count_based
-        sliding-window-size: 5
-        failure-rate-threshold: 50
-        wait-duration-in-open-state: 10000
-        permitted-number-of-calls-in-half-open-state: 3
-        automatic-transition-from-open-to-half-open-enabled: true
-        ignore-exceptions:
-          - ru.rsh12.api.exceptions.NotFoundException
-          - ru.rsh12.api.exceptions.InvalidInputException
-    instances:
-      company:
-        base-config: shared
-
-
 spring:
   application:
     name: composite
