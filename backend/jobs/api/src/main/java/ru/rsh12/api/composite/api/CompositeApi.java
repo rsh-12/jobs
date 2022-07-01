@@ -1,5 +1,10 @@
 package ru.rsh12.api.composite.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +21,39 @@ import ru.rsh12.api.composite.dto.JobPostAggregate;
 import ru.rsh12.api.composite.dto.ResumeAggregate;
 import ru.rsh12.api.core.company.dto.BusinessStreamDto;
 import ru.rsh12.api.core.company.dto.CompanyDto;
-import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.api.core.company.request.BusinessStreamRequest;
+import ru.rsh12.api.core.company.request.CompanyRequest;
 import ru.rsh12.api.core.job.request.JobPostRequest;
 import ru.rsh12.api.core.resume.dto.ResumeDto;
 import ru.rsh12.api.core.resume.request.ResumeRequest;
 
 import javax.validation.Valid;
 
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Composite API", description = "REST API for composite information.")
 public interface CompositeApi {
 
+    /**
+     * Sample usage: "curl $HOST:$PORT/api/v1/composite/1".
+     *
+     * @param companyId ID of the company
+     * @return the company info, if found, else null
+     */
+    @Operation(
+            summary = "Returns composite information about a company",
+            description = """
+                    # Normal response
+                    If the requested company ID is found the method will return information regarding:
+                    1. Company information
+                    2. Business Stream information
+                                        
+                    # Expected partial and error responses:
+                    1. If no company found information is found, a **404 - Not Found** error will be returned
+                    """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Company found"),
+            @ApiResponse(responseCode = "404", description = "Company not found"),
+    })
     @GetMapping(value = "/api/v1/composite/companies/{companyId}", produces = "application/json")
     Mono<CompanyDto> getCompany(@PathVariable("companyId") Integer companyId);
 
