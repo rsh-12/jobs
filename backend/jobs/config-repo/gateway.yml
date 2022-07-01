@@ -49,7 +49,7 @@ spring:
             - RewritePath=/config(?<segment>/?.*), $\{segment}
 
         - id: composite-swagger-ui
-          uri: lb://-composite
+          uri: lb://composite
           predicates:
             - Path=/openapi/**
 
