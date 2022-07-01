@@ -19,6 +19,8 @@ public class SecurityConfig {
                 .pathMatchers("/login/**").permitAll()
                 .pathMatchers("/error/**").permitAll()
                 .pathMatchers("/config/**").permitAll()
+                .pathMatchers("/openapi/**").permitAll()
+                .pathMatchers("/webjars/**").permitAll()
                 .anyExchange().authenticated()
                 .and()
                 .oauth2ResourceServer()

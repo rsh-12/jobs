@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
+
 @SecurityScheme(
         name = "security_auth", type = SecuritySchemeType.OAUTH2,
         flows = @OAuthFlows(
@@ -15,7 +16,8 @@ import org.springframework.context.annotation.Configuration;
                         tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
                         scopes = {
                                 @OAuthScope(name = "companies", description = "companies scope"),
-                                @OAuthScope(name = "clients", description = "clients scope")
+                                @OAuthScope(name = "vacancies", description = "clients scope"),
+                                @OAuthScope(name = "resumes", description = "clients scope"),
                         }
                 )
         )
