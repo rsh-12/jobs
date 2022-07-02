@@ -69,4 +69,4 @@ logging:
     root: info
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: info
     org.springframework.cloud.gateway: trace
-    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: trace
