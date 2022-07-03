@@ -7,6 +7,9 @@ app:
 spring.cloud.stream:
   defaultBinder: rabbit
   bindings:
-    products-out-0.destination: products
-    recommendations-out-0.destination: recommendations
-    reviews-out-0.destination: reviews
+    companies-out-0:
+      destination: companies
+    resumes-out-0:
+      destination: resumes
+    jobs-out-0:
+      destination: jobs
