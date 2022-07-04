@@ -1,8 +1,12 @@
-/*
 package ru.rsh12.composite;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import ru.rsh12.composite.controller.CompositeIntegration;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -14,11 +18,19 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                 "spring.main.allow-bean-definition-overriding=true",
                 "eureka.client.enabled=false",
                 "spring.cloud.config.enabled=false"})
-class CompositeServiceApplicationTests {
+public class CompositeServiceApplicationTests {
+
+    @Autowired
+    private WebTestClient client;
+
+    @MockBean
+    private CompositeIntegration integration;
+
+    @MockBean
+    private ReactiveJwtDecoder reactiveJwtDecoder;
 
     @Test
     void contextLoads() {
     }
 
 }
-*/
