@@ -1,5 +1,6 @@
 package ru.rsh12.composite.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
@@ -12,6 +13,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -32,7 +34,10 @@ import ru.rsh12.api.core.resume.dto.SkillSetDto;
 import ru.rsh12.api.core.resume.request.ResumeRequest;
 import ru.rsh12.api.event.Event;
 import ru.rsh12.api.exceptions.InvalidInputException;
+import ru.rsh12.api.exceptions.NotFoundException;
+import ru.rsh12.util.exception.HttpErrorInfo;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,15 +59,18 @@ public class CompositeIntegration implements
     private final WebClient webClient;
     private final StreamBridge streamBridge;
     private final Scheduler publishEventScheduler;
+    private final ObjectMapper mapper;
 
     public CompositeIntegration(
             WebClient.Builder webClient,
             StreamBridge streamBridge,
-            @Qualifier("publishEventScheduler") Scheduler publishEventScheduler) {
+            @Qualifier("publishEventScheduler") Scheduler publishEventScheduler,
+            ObjectMapper mapper) {
 
         this.webClient = webClient.build();
         this.streamBridge = streamBridge;
         this.publishEventScheduler = publishEventScheduler;
+        this.mapper = mapper;
     }
 
     @Retry(name = "company")
@@ -74,7 +82,7 @@ public class CompositeIntegration implements
                 .retrieve()
                 .bodyToMono(CompanyDto.class)
                 .log(log.getName(), FINE)
-                .onErrorMap(ex -> new InvalidInputException("getCompany failed: " + ex.getMessage()));
+                .onErrorMap(WebClientResponseException.class, this::handleException);
     }
 
     @Override
@@ -294,6 +302,32 @@ public class CompositeIntegration implements
                 .build();
 
         streamBridge.send(bindingName, message);
+    }
+
+    private Throwable handleException(Throwable ex) {
+        if (!(ex instanceof WebClientResponseException wcre)) {
+            log.warn("Got a unexpected error: {}, will rethrow it", ex.toString());
+            return ex;
+        }
+
+        switch (wcre.getStatusCode()) {
+            case NOT_FOUND:
+                return new NotFoundException(getErrorMessage(wcre));
+            case UNPROCESSABLE_ENTITY:
+                return new InvalidInputException(getErrorMessage(wcre));
+            default:
+                log.warn("Got an unexpected HTTP error: {}, will rethrow it", wcre.getStatusCode());
+                log.warn("Error body: {}", wcre.getResponseBodyAsString());
+                return ex;
+        }
+    }
+
+    private String getErrorMessage(WebClientResponseException wcre) {
+        try {
+            return mapper.readValue(wcre.getResponseBodyAsString(), HttpErrorInfo.class).message();
+        } catch (IOException ioex) {
+            throw wcre;
+        }
     }
 
     // todo implement caching
