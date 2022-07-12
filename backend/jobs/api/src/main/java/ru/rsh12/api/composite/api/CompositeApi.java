@@ -57,6 +57,18 @@ public interface CompositeApi {
     @GetMapping(value = "/api/v1/composite/companies/{companyId}", produces = "application/json")
     Mono<CompanyDto> getCompany(@PathVariable("companyId") Integer companyId);
 
+    /**
+     * Sample usage: "curl $HOST:$PORT/api/v1/companies"
+     *
+     * @param page Page number
+     * @param size Number of companies
+     * @return The list of companies
+     */
+    @Operation(
+            summary = "Returns composite information about companies")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+    })
     @GetMapping(value = "/api/v1/composite/companies", produces = "application/json")
     Flux<CompanyDto> getCompanies(
             @RequestParam(required = false, defaultValue = "0") int page,
