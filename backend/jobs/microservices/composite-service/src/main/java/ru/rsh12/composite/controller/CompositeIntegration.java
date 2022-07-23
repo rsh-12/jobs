@@ -78,7 +78,7 @@ public class CompositeIntegration implements
     @CircuitBreaker(name = "company", fallbackMethod = "getCompanyFallbackValue")
     @Override
     public Mono<CompanyDto> getCompany(Integer companyId) {
-        return webClient.get().uri(COMPANY_SERVICE_URL + "/companies/" + companyId)
+        return webClient.get().uri(COMPANY_SERVICE_URL + "/companies/{companyId}", companyId)
                 .retrieve()
                 .bodyToMono(CompanyDto.class)
                 .log(log.getName(), FINE)
@@ -133,7 +133,7 @@ public class CompositeIntegration implements
 
     @Override
     public Mono<JobPostDto> getJobPost(Integer jobPostId) {
-        return webClient.get().uri(JOB_SERVICE_URL + "/jobs" + jobPostId)
+        return webClient.get().uri(JOB_SERVICE_URL + "/jobs/{jobPostId}", jobPostId)
                 .retrieve()
                 .bodyToMono(JobPostDto.class)
                 .log(log.getName(), FINE)
@@ -205,7 +205,7 @@ public class CompositeIntegration implements
 
     @Override
     public Mono<ResumeDto> getResume(Integer resumeId) {
-        return webClient.get().uri(RESUME_SERVICE_URL + "/resumes" + resumeId)
+        return webClient.get().uri(RESUME_SERVICE_URL + "/resumes/{resumeId}", resumeId)
                 .retrieve()
                 .bodyToMono(ResumeDto.class)
                 .log(log.getName(), FINE)
