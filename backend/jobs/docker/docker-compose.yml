@@ -35,7 +35,6 @@ services:
     command: [ "-Djboss.http.port=9999" ]
     ports:
       - "9999:9999"
-    network_mode: host
     depends_on:
       postgres:
         condition: service_started
@@ -99,7 +98,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    network_mode: host
     depends_on:
       rabbitmq:
         condition: service_started
@@ -170,7 +168,6 @@ services:
       resources:
         limits:
           memory: 512M
-    network_mode: host
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
