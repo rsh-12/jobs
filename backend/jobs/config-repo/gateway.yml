@@ -62,7 +62,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9999/auth/realms/ugk
+          issuer-uri: http://${app.auth-server}:9999/auth/realms/ugk
 
 logging:
   level:
