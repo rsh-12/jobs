@@ -25,6 +25,13 @@ spring:
     port: 5672
     username: guest
     password: guest
+  zipkin:
+    sender:
+      type: rabbit
+  sleuth:
+    sampler:
+      probability: 1.0 # send all trace to Zipkin
+
 
 spring.cloud.stream.default-binder: rabbit
 

@@ -7,6 +7,10 @@ server:
     key-alias: localhost
 
 spring:
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_on_last # enable Sleuth to track trace IDs correctly
+
   cloud:
     gateway:
       routes:
