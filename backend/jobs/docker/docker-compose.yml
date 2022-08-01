@@ -206,3 +206,20 @@ services:
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
     ports:
       - "8443:8443"
+
+  zipkin:
+    image: openzipkin/zipkin:2.23.18
+    environment:
+      - RABBIT_ADDRESSES=rabbitmq
+      - STORAGE_TYPE=mem
+    ports:
+      - "9411:9411"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
