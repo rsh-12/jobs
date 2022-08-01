@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose -f docker/auth/auth-server.yml up -d
-
-docker-compose -f docker/docker-compose.yml up -d postgres rabbitmq
+docker-compose -f docker/docker-compose.yml up -d db keycloak postgres rabbitmq zipkin
