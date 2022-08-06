@@ -35,3 +35,4 @@ backend/jobs/bash/util/
 backend/jobs/sql/tmp/
 backend/jobs/docker/datastore/
 .env
+init_cluster.bash
