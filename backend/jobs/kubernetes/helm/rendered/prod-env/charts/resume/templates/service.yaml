@@ -1,0 +1,19 @@
+---
+# Source: prod-env/charts/resume/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: resume
+  labels:
+    app.kubernetes.io/name: resume
+    helm.sh/chart: resume-1.0.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: resume

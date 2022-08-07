@@ -1,0 +1,16 @@
+---
+# Source: dev-env/charts/zipkin-server/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: zipkin-server
+  labels:
+    app.kubernetes.io/name: zipkin-server
+    helm.sh/chart: zipkin-server-1.0.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9411
+  selector:
+    app.kubernetes.io/name: zipkin-server

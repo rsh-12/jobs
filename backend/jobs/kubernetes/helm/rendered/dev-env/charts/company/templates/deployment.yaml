@@ -1,0 +1,57 @@
+---
+# Source: dev-env/charts/company/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: company
+  labels:
+    app.kubernetes.io/name: company
+    helm.sh/chart: company-1.0.0
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: company
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: company
+    spec:
+      containers:
+        - name: company
+          image: "hands-on/company-service:latest"
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          envFrom:
+            - secretRef:
+                name: config-client-credentials
+          livenessProbe:
+            failureThreshold: 20
+            httpGet:
+              path: /actuator/health/liveness
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health/readiness
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              memory: 350Mi
