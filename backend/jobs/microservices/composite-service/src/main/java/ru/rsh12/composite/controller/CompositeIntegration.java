@@ -52,9 +52,9 @@ public class CompositeIntegration implements
 
     private static final Logger log = LoggerFactory.getLogger(CompositeIntegration.class);
 
-    private static final String COMPANY_SERVICE_URL = "http://company/api/v1";
-    private static final String RESUME_SERVICE_URL = "http://resume/api/v1";
-    private static final String JOB_SERVICE_URL = "http://job/api/v1";
+    private static final String COMPANY_SERVICE_URL = "http://company";
+    private static final String RESUME_SERVICE_URL = "http://resume";
+    private static final String JOB_SERVICE_URL = "http://job";
 
     private final WebClient webClient;
     private final StreamBridge streamBridge;
@@ -78,7 +78,7 @@ public class CompositeIntegration implements
     @CircuitBreaker(name = "company", fallbackMethod = "getCompanyFallbackValue")
     @Override
     public Mono<CompanyDto> getCompany(Integer companyId) {
-        return webClient.get().uri(COMPANY_SERVICE_URL + "/companies/{companyId}", companyId)
+        return webClient.get().uri(COMPANY_SERVICE_URL + "/api/v1/companies/{companyId}", companyId)
                 .retrieve()
                 .bodyToMono(CompanyDto.class)
                 .log(log.getName(), FINE)
@@ -88,7 +88,7 @@ public class CompositeIntegration implements
     @Override
     public Flux<CompanyDto> getCompanies(int page, int size) {
         return webClient.get().uri(COMPANY_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/companies")
+                        .path("/api/v1/companies")
                         .queryParam("page", page)
                         .queryParam("size", size)
                         .build())
@@ -117,7 +117,7 @@ public class CompositeIntegration implements
     @Override
     public Mono<Boolean> companyExistsById(Integer companyId) {
         return webClient.get().uri(COMPANY_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/companies/" + companyId + "/exists")
+                        .path("/api/v1/companies/" + companyId + "/exists")
                         .build())
                 .retrieve()
                 .bodyToMono(Boolean.class);
@@ -133,7 +133,7 @@ public class CompositeIntegration implements
 
     @Override
     public Mono<JobPostDto> getJobPost(Integer jobPostId) {
-        return webClient.get().uri(JOB_SERVICE_URL + "/jobs/{jobPostId}", jobPostId)
+        return webClient.get().uri(JOB_SERVICE_URL + "/api/v1/jobs/{jobPostId}", jobPostId)
                 .retrieve()
                 .bodyToMono(JobPostDto.class)
                 .log(log.getName(), FINE)
@@ -143,7 +143,7 @@ public class CompositeIntegration implements
     @Override
     public Flux<JobPostDto> getJobPosts(int page, int size) {
         return webClient.get().uri(JOB_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/jobs")
+                        .path("/api/v1/jobs")
                         .queryParam("page", page)
                         .queryParam("size", size)
                         .build())
@@ -157,7 +157,7 @@ public class CompositeIntegration implements
     public Flux<JobPostDto> getCompanyJobPosts(Integer companyId, int page, int size) {
         return webClient.get().uri(JOB_SERVICE_URL,
                         uriBuilder -> uriBuilder
-                                .path("/companies/" + companyId + "/jobs")
+                                .path("/api/v1/companies/" + companyId + "/jobs")
                                 .queryParam("page", page)
                                 .queryParam("size", size)
                                 .build())
@@ -194,7 +194,7 @@ public class CompositeIntegration implements
     @Override
     public Flux<SpecializationDto> getSpecializationsById(List<Integer> ids) {
         return webClient.get().uri(JOB_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/specializations")
+                        .path("/api/v1/specializations")
                         .queryParam("ids", ids)
                         .build())
                 .retrieve()
@@ -205,7 +205,7 @@ public class CompositeIntegration implements
 
     @Override
     public Mono<ResumeDto> getResume(Integer resumeId) {
-        return webClient.get().uri(RESUME_SERVICE_URL + "/resumes/{resumeId}", resumeId)
+        return webClient.get().uri(RESUME_SERVICE_URL + "/api/v1/resumes/{resumeId}", resumeId)
                 .retrieve()
                 .bodyToMono(ResumeDto.class)
                 .log(log.getName(), FINE)
@@ -215,7 +215,7 @@ public class CompositeIntegration implements
     @Override
     public Flux<ResumeDto> getResumes(int page, int size) {
         return webClient.get().uri(RESUME_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/resumes")
+                        .path("/api/v1/resumes")
                         .queryParam("page", page)
                         .queryParam("size", size)
                         .build())
@@ -252,7 +252,7 @@ public class CompositeIntegration implements
     @Override
     public Flux<SkillSetDto> getSkillsByIdsIn(List<Integer> skillIds) {
         return webClient.get().uri(RESUME_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/skills")
+                        .path("/api/v1/skills")
                         .queryParam("skillIds", skillIds)
                         .build())
                 .retrieve()
@@ -264,7 +264,7 @@ public class CompositeIntegration implements
     @Override
     public Mono<BusinessStreamDto> getBusinessStream(Integer id) {
         return webClient.get().uri(COMPANY_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/industries/" + id)
+                        .path("/api/v1/industries/" + id)
                         .build())
                 .retrieve()
                 .bodyToMono(BusinessStreamDto.class)
@@ -276,7 +276,7 @@ public class CompositeIntegration implements
     @Override
     public Flux<BusinessStreamDto> getBusinessStreams(int page, int size) {
         return webClient.get().uri(COMPANY_SERVICE_URL, uriBuilder -> uriBuilder
-                        .path("/industries")
+                        .path("/api/v1/industries")
                         .queryParam("page", page)
                         .queryParam("size", size)
                         .build())
