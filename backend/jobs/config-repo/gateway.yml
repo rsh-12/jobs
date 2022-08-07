@@ -15,28 +15,9 @@ spring:
     gateway:
       routes:
         - id: composite
-          uri: lb://composite
+          uri: http://composite
           predicates:
             - Path=/api/v1/composite/**
-
-        - id: eureka-api
-          uri: http://${app.eureka-server}:8761
-          predicates:
-            - Path=/eureka/api/{segment}
-          filters:
-            - SetPath=/eureka/{segment}
-
-        - id: eureka-web-start
-          uri: http://${app.eureka-server}:8761
-          predicates:
-            - Path=/eureka/web
-          filters:
-            - SetPath=/
-
-        - id: eureka-web-other
-          uri: http://${app.eureka-server}:8761
-          predicates:
-            - Path=/eureka/**
 
         - id: auth-server
           uri: http://${app.auth-server}:9999
@@ -53,12 +34,12 @@ spring:
             - RewritePath=/config(?<segment>/?.*), $\{segment}
 
         - id: composite-swagger-ui
-          uri: lb://composite
+          uri: http://composite
           predicates:
             - Path=/openapi/**
 
         - id: composite-swagger-ui-webjars
-          uri: lb://composite
+          uri: http://composite
           predicates:
             - Path=/webjars/**
 

@@ -42,7 +42,7 @@ services:
       - "-Djboss.http.port=9999"
       - "-b 0.0.0.0"
     ports:
-      - "9999:9999"
+      - "80:80"
     networks:
       backend:
         aliases:
@@ -160,19 +160,6 @@ services:
     networks:
       - backend
     restart: on-failure
-
-  eureka:
-    build: ../spring-cloud/eureka-server
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-    networks:
-      - backend
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
-      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
 
   config-server:
     build: ../spring-cloud/config-server
