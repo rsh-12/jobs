@@ -1,0 +1,33 @@
+dependencies:
+- name: common
+  repository: file://../../common
+  version: 1.0.0
+- name: rabbitmq
+  repository: file://../../components/rabbitmq
+  version: 1.0.0
+- name: postgres
+  repository: file://../../components/postgres
+  version: 1.0.0
+- name: config-server
+  repository: file://../../components/config-server
+  version: 1.0.0
+- name: gateway
+  repository: file://../../components/gateway
+  version: 1.0.0
+- name: company
+  repository: file://../../components/company
+  version: 1.0.0
+- name: resume
+  repository: file://../../components/resume
+  version: 1.0.0
+- name: job
+  repository: file://../../components/job
+  version: 1.0.0
+- name: composite
+  repository: file://../../components/composite
+  version: 1.0.0
+- name: zipkin-server
+  repository: file://../../components/zipkin-server
+  version: 1.0.0
+digest: sha256:8dd1aab113bdf9b244de0d8697e35ea75e3935b012c44f3ac6494e697394b6aa
+generated: "2022-08-07T20:58:39.952087272+05:00"

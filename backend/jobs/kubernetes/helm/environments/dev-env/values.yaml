@@ -1,0 +1,41 @@
+secrets:
+
+  config-server-secrets:
+    ENCRYPT_KEY: my-very-secure-encrypt-key
+    SPRING_SECURITY_USER_NAME: dev-usr
+    SPRING_SECURITY_USER_PASSWORD: dev-pwd
+
+  config-client-credentials:
+    CONFIG_SERVER_USR: dev-usr
+    CONFIG_SERVER_PWD: dev-pwd
+
+postgres:
+  env:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: postgres
+    POSTGRES_HOST_AUTH_METHOD: trust
+
+config-server:
+  envFromSecretRefs:
+    - config-server-secrets
+
+gateway:
+  envFromSecretRefs:
+    - config-client-credentials
+
+company:
+  envFromSecretRefs:
+    - config-client-credentials
+
+job:
+  envFromSecretRefs:
+    - config-client-credentials
+
+resume:
+  envFromSecretRefs:
+    - config-client-credentials
+
+composite:
+  envFromSecretRefs:
+    - config-client-credentials
