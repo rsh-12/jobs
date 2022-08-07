@@ -10,7 +10,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         properties = {
                 "spring.cloud.stream.default-binder=rabbit",
                 "logging.level.ru.rsh12=debug",
-                "eureka.client.enabled=false",
                 "spring.cloud.config.enabled=false"})
 class JobServiceApplicationTests extends PostgreSqlTestBase {
 
