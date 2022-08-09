@@ -1,1 +1,0 @@
-The rendered files are needed to satisfy my curiosity
