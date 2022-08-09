@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DEPLOYMENT_FILE='deployment.yaml'
 SERVICE_FILE='service.yaml'
@@ -7,7 +7,7 @@ DEPLOYMENT_TEMPLATE='{{- template "common.deployment" . -}}'
 SERVICE_TEMPLATE='{{- template "common.service" . -}}'
 
 function write_to_file() {
-  for file in ./components/*/templates/"$1"; do
+  for file in kubernetes/helm/components/*/templates/"$1"; do
     echo "$2" > "$file"
   done
 }
