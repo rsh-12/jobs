@@ -1,4 +1,3 @@
-
 fullnameOverride: config-server
 
 image:
