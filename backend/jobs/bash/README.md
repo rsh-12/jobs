@@ -1,0 +1,1 @@
+> ## All commands are executed in the root folder of the project, that is, in _./jobs/backend/jobs/_
