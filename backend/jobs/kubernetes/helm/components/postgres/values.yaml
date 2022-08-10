@@ -5,6 +5,7 @@ image:
   name: postgres
   tag: 14
   pullPolicy: IfNotPresent
+  init: true
 ports:
   - containerPort: 5432
 

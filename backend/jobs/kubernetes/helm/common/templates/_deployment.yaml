@@ -26,6 +26,12 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.image.init }}
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash","-c","sleep 20 && psql -U $POSTGRES_USER -c \'CREATE DATABASE company; CREATE DATABASE resume; CREATE DATABASE job;\'"]
+          {{- end }}
           {{- with .Values.image.args }}
           args:
             {{- toYaml . | nindent 12 }}
