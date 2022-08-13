@@ -42,13 +42,13 @@ services:
       - "-Djboss.http.port=9999"
       - "-b 0.0.0.0"
     ports:
-      - "80:80"
+      - "9999:9999"
     networks:
       backend:
         aliases:
           - "keycloak"
     depends_on:
-      postgres:
+      db:
         condition: service_started
   ### END auth-server
 
