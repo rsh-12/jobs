@@ -55,3 +55,20 @@ logging:
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: info
     org.springframework.cloud.gateway: trace
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: trace
+
+---
+spring.config.activate.on-profile: prod
+
+logging:
+  level:
+    root: warn
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: warn
+    org.springframework.cloud.gateway: warn
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: warn
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://172.17.0.1:9999/auth/realms/ugk

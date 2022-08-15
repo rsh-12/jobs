@@ -43,3 +43,12 @@ spring.rabbitmq.host: rabbitmq
 app:
   config-server: config-server
   auth-server: keycloak
+
+---
+spring.config.activate.on-profile: prod
+spring:
+  rabbitmq:
+    host: 172.17.0.1
+
+# Only allow management endpoints over http in production for info, health and circuitbreakerevents
+management.endpoints.web.exposure.include: health,info,circuitbreakerevents

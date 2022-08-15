@@ -53,3 +53,20 @@ spring:
 
 server:
   port: 80
+
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://172.17.0.1:5432/job
+  config:
+    activate:
+      on-profile: prod
+  rabbitmq:
+    host: 172.17.0.1
+
+logging:
+  level:
+    root: warn
+    ru.rsh12: warn
+    org.hibernate.SQL: warn
+    org.hibernate.type.descriptor.sql.BasicBinder: warn
