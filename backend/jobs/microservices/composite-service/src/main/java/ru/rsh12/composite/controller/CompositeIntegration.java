@@ -7,6 +7,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
@@ -61,6 +62,7 @@ public class CompositeIntegration implements
     private final Scheduler publishEventScheduler;
     private final ObjectMapper mapper;
 
+    @Autowired
     public CompositeIntegration(
             WebClient.Builder webClient,
             StreamBridge streamBridge,
