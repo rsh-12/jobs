@@ -1,9 +1,5 @@
 version: '3.8'
 
-networks:
-  backend:
-    driver: bridge
-
 services:
 
   ### BEGIN auth-server
@@ -15,8 +11,6 @@ services:
           memory: 512M
     volumes:
       - ./datastore/keycloak:/var/lib/postgresql/data/pgdata
-    networks:
-      - backend
     environment:
       POSTGRES_DB: ${POSTGRES_DB_K}
       POSTGRES_USER: ${POSTGRES_USER_K}
@@ -43,10 +37,6 @@ services:
       - "-b 0.0.0.0"
     ports:
       - "9999:9999"
-    networks:
-      backend:
-        aliases:
-          - "keycloak"
     depends_on:
       db:
         condition: service_started
@@ -63,8 +53,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    networks:
-      - backend
     depends_on:
       rabbitmq:
         condition: service_started
@@ -82,8 +70,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    networks:
-      - backend
     depends_on:
       rabbitmq:
         condition: service_started
@@ -101,8 +87,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    networks:
-      - backend
     depends_on:
       rabbitmq:
         condition: service_started
@@ -120,8 +104,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
-    networks:
-      - backend
     depends_on:
       rabbitmq:
         condition: service_started
@@ -138,8 +120,6 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    networks:
-      - backend
     healthcheck:
       test: [ "CMD", "rabbitmqctl", "status" ]
       interval: 10s
@@ -161,8 +141,6 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
-    networks:
-      - backend
     restart: on-failure
 
   config-server:
@@ -172,8 +150,6 @@ services:
       resources:
         limits:
           memory: 512M
-    networks:
-      - backend
     environment:
       - SPRING_PROFILES_ACTIVE=docker,native
       - ENCRYPT_KEY=${CONFIG_SERVER_ENCRYPT_KEY}
@@ -189,10 +165,6 @@ services:
       resources:
         limits:
           memory: 512M
-    networks:
-      backend:
-        aliases:
-          - "gateway"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
@@ -210,8 +182,6 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-    networks:
-      - backend
     deploy:
       resources:
         limits:
