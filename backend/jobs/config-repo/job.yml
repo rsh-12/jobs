@@ -6,8 +6,6 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost/job
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PWD:postgres}
     hikari:
       initialization-fail-timeout: 60000
   data:
@@ -61,8 +59,6 @@ spring:
   config:
     activate:
       on-profile: prod
-  rabbitmq:
-    host: 172.17.0.1
 
 logging:
   level:

@@ -1,6 +1,5 @@
 app:
   auth-server: localhost
-  config-server: localhost
   http-pattern: "/api/v1/composite"
   scope-companies: "SCOPE_companies"
   scope-vacancies: "SCOPE_vacancies"
@@ -10,8 +9,6 @@ spring:
   rabbitmq:
     host: 127.0.0.1
     port: 5672
-    username: guest
-    password: guest
   zipkin:
     sender:
       type: rabbit
@@ -34,14 +31,12 @@ management.endpoint.health.group.readiness.include: rabbit, db
 server.shutdown: "graceful"
 spring.lifecycle.timeout-per-shutdown-phase: "10s"
 
-
 ---
 spring.config.activate.on-profile: docker
 
 spring.rabbitmq.host: rabbitmq
 
 app:
-  config-server: config-server
   auth-server: keycloak
 
 ---

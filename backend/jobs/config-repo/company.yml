@@ -6,8 +6,6 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost/company
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PWD:postgres}
     hikari:
       initialization-fail-timeout: 60000
   data:
@@ -54,7 +52,6 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
-
 ---
 spring:
   datasource:
@@ -73,8 +70,6 @@ spring:
   config:
     activate:
       on-profile: prod
-  rabbitmq:
-    host: 172.17.0.1
 
 logging:
   level:
