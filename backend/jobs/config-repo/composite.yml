@@ -111,12 +111,16 @@ server:
 spring:
   config:
     activate:
+      on-profile: docker
+
+server:
+  port: 80
+
+---
+spring:
+  config:
+    activate:
       on-profile: prod
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://172.17.0.1:9999/auth/realms/ugk
 
 logging:
   level:

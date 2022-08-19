@@ -45,6 +45,11 @@ app:
   auth-server: keycloak
 
 ---
+spring.config.activate.on-profile: kuber
+app:
+  auth-server: 172.17.0.1
+
+---
 spring.config.activate.on-profile: prod
 spring.rabbitmq.host: 172.17.0.1
 

@@ -7,7 +7,7 @@ ports:
   - containerPort: 8443
 
 env:
-  SPRING_PROFILES_ACTIVE: "docker"
+  SPRING_PROFILES_ACTIVE: "docker,kuber"
 
 livenessProbe_enabled: true
 livenessProbe:
