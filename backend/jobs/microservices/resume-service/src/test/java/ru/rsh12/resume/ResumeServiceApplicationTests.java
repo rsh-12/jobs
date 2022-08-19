@@ -9,8 +9,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         webEnvironment = RANDOM_PORT,
         properties = {
                 "spring.cloud.stream.default-binder=rabbit",
-                "logging.level.ru.rsh12=debug",
-                "spring.cloud.config.enabled=false"})
+                "logging.level.ru.rsh12=debug"})
 class ResumeServiceApplicationTests extends PostgreSqlTestBase {
 
     @Test

@@ -37,8 +37,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
         properties = {
                 "spring.cloud.stream.default-binder=rabbit",
                 "logging.level.ru.rsh12=debug",
-                "eureka.client.enabled=false",
-                "spring.cloud.config.enabled=false"})
+                "eureka.client.enabled=false"})
 public class BusinessStreamControllerTest extends PostgreSqlTestBase {
 
     @Autowired
