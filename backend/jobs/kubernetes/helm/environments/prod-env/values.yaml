@@ -1,27 +1,16 @@
 secrets:
 
-  config-server-secrets:
-    ENCRYPT_KEY: my-very-secure-encrypt-key
-    SPRING_SECURITY_USER_NAME: prod-usr
-    SPRING_SECURITY_USER_PASSWORD: prod-pwd
+  rabbitmq-credentials:
+    SPRING_RABBITMQ_USERNAME: rabbit-user-prod
+    SPRING_RABBITMQ_PASSWORD: rabbit-pwd-prod
 
-  config-client-credentials:
-    CONFIG_SERVER_USR: prod-usr
-    CONFIG_SERVER_PWD: prod-pwd
+  rabbitmq-zipkin-credentials:
+    RABBIT_USER: rabbit-user-prod
+    RABBIT_PASSWORD: rabbit-pwd-prod
 
-config-server:
-  image:
-    tag: v1
-  env:
-    LOGGING_LEVEL_ROOT: WARN
-    MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
-  envFromSecretRefs:
-    - config-server-secrets
-  resources:
-    requests:
-      memory: 200Mi
-    limits:
-      memory: 400Mi
+  postgres-credentials:
+    SPRING_DATASOURCE_USERNAME: postgres-user-dev
+    SPRING_DATASOURCE_PASSWORD: postgres-pwd-dev
 
 gateway:
   image:
@@ -29,7 +18,7 @@ gateway:
   env:
     SPRING_PROFILES_ACTIVE: "docker,prod"
   envFromSecretRefs:
-    - config-client-credentials
+    - rabbitmq-credentials
   resources:
     requests:
       memory: 200Mi
@@ -42,7 +31,8 @@ company:
   env:
     SPRING_PROFILES_ACTIVE: "docker,prod"
   envFromSecretRefs:
-    - config-client-credentials
+    - rabbitmq-credentials
+    - postgres-credentials
   resources:
     requests:
       memory: 200Mi
@@ -55,7 +45,8 @@ resume:
   env:
     SPRING_PROFILES_ACTIVE: "docker,prod"
   envFromSecretRefs:
-    - config-client-credentials
+    - rabbitmq-credentials
+    - postgres-credentials
   resources:
     requests:
       memory: 200Mi
@@ -68,7 +59,8 @@ job:
   env:
     SPRING_PROFILES_ACTIVE: "docker,prod"
   envFromSecretRefs:
-    - config-client-credentials
+    - rabbitmq-credentials
+    - postgres-credentials
   resources:
     requests:
       memory: 200Mi
@@ -81,7 +73,7 @@ composite:
   env:
     SPRING_PROFILES_ACTIVE: "docker,prod"
   envFromSecretRefs:
-    - config-client-credentials
+    - rabbitmq-credentials
   resources:
     requests:
       memory: 200Mi
@@ -92,6 +84,8 @@ zipkin-server:
   env:
     LOGGING_LEVEL_ROOT: WARN
     RABBIT_ADDRESSES: 172.17.0.1
+  envFromSecretRefs:
+    - rabbitmq-zipkin-credentials
   resources:
     requests:
       memory: 300Mi
