@@ -12,19 +12,6 @@ secrets:
     SPRING_DATASOURCE_USERNAME: postgres-user-dev
     SPRING_DATASOURCE_PASSWORD: postgres-pwd-dev
 
-gateway:
-  image:
-    tag: v1
-  env:
-    SPRING_PROFILES_ACTIVE: "docker,prod"
-  envFromSecretRefs:
-    - rabbitmq-credentials
-  resources:
-    requests:
-      memory: 200Mi
-    limits:
-      memory: 400Mi
-
 company:
   image:
     tag: v1
