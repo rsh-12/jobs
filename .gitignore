@@ -33,6 +33,6 @@ build/
 .vscode/
 backend/jobs/bash/util/
 backend/jobs/sql/tmp/
-backend/jobs/docker/datastore/
+backend/jobs/datastore/
 .env
 init_cluster.bash
