@@ -1,8 +1,20 @@
+ingress:
+  host: minikube.me
+  paths:
+    - path: /api/v1/composite
+      service: composite
+    - path: /actuator/health
+      service: composite
+    - path: /openapi
+      service: composite
+    - path: /webjars
+      service: composite
+
 secrets:
 
   rabbitmq-server-credentials:
     RABBITMQ_DEFAULT_USER: rabbit-user-dev
-    RABBITMQ_DEFAULT_PASS: rabbit-user-dev
+    RABBITMQ_DEFAULT_PASS: rabbit-pwd-dev
 
   rabbitmq-credentials:
     SPRING_RABBITMQ_USERNAME: rabbit-user-dev
@@ -21,6 +33,10 @@ secrets:
   postgres-credentials:
     SPRING_DATASOURCE_USERNAME: postgres-user-dev
     SPRING_DATASOURCE_PASSWORD: postgres-pwd-dev
+
+rabbitmq:
+  envFromSecretRefs:
+    - rabbitmq-server-credentials
 
 postgres:
   envFromSecretRefs:

@@ -1,3 +1,15 @@
+ingress:
+  host: minikube.me
+  paths:
+    - path: /api/v1/composite
+      service: composite
+    - path: /actuator/health
+      service: composite
+    - path: /openapi
+      service: composite
+    - path: /webjars
+      service: composite
+
 secrets:
 
   rabbitmq-credentials:
