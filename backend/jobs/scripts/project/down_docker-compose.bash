@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose -f docker/docker-compose.yml down
+docker-compose down
