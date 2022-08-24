@@ -42,7 +42,7 @@ app:
 ---
 spring.config.activate.on-profile: kuber
 app:
-  auth-server: 172.17.0.1
+  auth-server: 192.168.49.2
 
 ---
 spring.config.activate.on-profile: prod
