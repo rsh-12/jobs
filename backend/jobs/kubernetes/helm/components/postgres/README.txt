@@ -1,0 +1,1 @@
+$ kubectl exec ${POD} --namespace=hands-on --stdin=true --tty=true -- /bin/bash
