@@ -21,8 +21,8 @@ secrets:
     RABBIT_PASSWORD: rabbit-pwd-prod
 
   postgres-credentials:
-    SPRING_DATASOURCE_USERNAME: postgres-user-dev
-    SPRING_DATASOURCE_PASSWORD: postgres-pwd-dev
+    SPRING_DATASOURCE_USERNAME: postgres
+    SPRING_DATASOURCE_PASSWORD: postgres
 
 company:
   image:

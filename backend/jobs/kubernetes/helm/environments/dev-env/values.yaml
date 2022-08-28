@@ -25,14 +25,14 @@ secrets:
     RABBIT_PASSWORD: rabbit-pwd-dev
 
   postgres-server-credentials:
-    POSTGRES_USER: postgres-user-dev
-    POSTGRES_PASSWORD: postgres-pwd-dev
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
     POSTGRES_DB: postgres
     POSTGRES_HOST_AUTH_METHOD: trust
 
   postgres-credentials:
-    SPRING_DATASOURCE_USERNAME: postgres-user-dev
-    SPRING_DATASOURCE_PASSWORD: postgres-pwd-dev
+    SPRING_DATASOURCE_USERNAME: postgres
+    SPRING_DATASOURCE_PASSWORD: postgres
 
 rabbitmq:
   envFromSecretRefs:
