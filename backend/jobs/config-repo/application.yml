@@ -49,7 +49,7 @@ spring.config.activate.on-profile: prod
 spring.rabbitmq.host: 172.17.0.1
 
 app:
-  auth-server: 172.17.0.1
+  auth-server: 192.168.49.2
 
 # Only allow management endpoints over http in production for info, health and circuitbreakerevents
 management.endpoints.web.exposure.include: health,info,circuitbreakerevents
