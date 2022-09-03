@@ -13,16 +13,16 @@ ingress:
 secrets:
 
   rabbitmq-server-credentials:
-    RABBITMQ_DEFAULT_USER: rabbit-user-dev
-    RABBITMQ_DEFAULT_PASS: rabbit-pwd-dev
+    RABBITMQ_DEFAULT_USER: rabbit
+    RABBITMQ_DEFAULT_PASS: rabbit
 
   rabbitmq-credentials:
-    SPRING_RABBITMQ_USERNAME: rabbit-user-dev
-    SPRING_RABBITMQ_PASSWORD: rabbit-pwd-dev
+    SPRING_RABBITMQ_USERNAME: rabbit
+    SPRING_RABBITMQ_PASSWORD: rabbit
 
   rabbitmq-zipkin-credentials:
-    RABBIT_USER: rabbit-user-dev
-    RABBIT_PASSWORD: rabbit-pwd-dev
+    RABBIT_USER: rabbit
+    RABBIT_PASSWORD: rabbit
 
   postgres-server-credentials:
     POSTGRES_USER: postgres

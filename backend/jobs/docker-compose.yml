@@ -56,6 +56,8 @@ services:
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_PWD}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USR}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+    volumes:
+      - $PWD/config-repo:/config-repo
     depends_on:
       rabbitmq:
         condition: service_started
@@ -76,6 +78,8 @@ services:
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_PWD}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USR}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+    volumes:
+      - $PWD/config-repo:/config-repo
     depends_on:
       rabbitmq:
         condition: service_started
@@ -96,6 +100,8 @@ services:
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_PWD}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USR}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PWD}
+    volumes:
+      - $PWD/config-repo:/config-repo
     depends_on:
       rabbitmq:
         condition: service_started
@@ -114,6 +120,8 @@ services:
       - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/composite.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_PWD}
+    volumes:
+      - $PWD/config-repo:/config-repo
     depends_on:
       rabbitmq:
         condition: service_started
@@ -166,6 +174,8 @@ services:
       - SERVER_SSL_KEY_STORE_PASSWORD=${GATEWAY_TLS_PWD}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_PWD}
+    volumes:
+      - $PWD/config-repo:/config-repo
     ports:
       - "8443:8443"
 

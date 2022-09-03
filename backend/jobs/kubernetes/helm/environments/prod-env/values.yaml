@@ -13,12 +13,12 @@ ingress:
 secrets:
 
   rabbitmq-credentials:
-    SPRING_RABBITMQ_USERNAME: rabbit-user-prod
-    SPRING_RABBITMQ_PASSWORD: rabbit-pwd-prod
+    SPRING_RABBITMQ_USERNAME: rabbit
+    SPRING_RABBITMQ_PASSWORD: rabbit
 
   rabbitmq-zipkin-credentials:
-    RABBIT_USER: rabbit-user-prod
-    RABBIT_PASSWORD: rabbit-pwd-prod
+    RABBIT_USER: rabbit
+    RABBIT_PASSWORD: rabbit
 
   postgres-credentials:
     SPRING_DATASOURCE_USERNAME: postgres
