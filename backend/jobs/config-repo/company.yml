@@ -73,7 +73,7 @@ spring:
 
 logging:
   level:
-    root: warn
-    ru.rsh12: warn
-    org.hibernate.SQL: warn
-    org.hibernate.type.descriptor.sql.BasicBinder: warn
+    root: info
+    ru.rsh12: info
+    org.hibernate.SQL: info
+    org.hibernate.type.descriptor.sql.BasicBinder: info

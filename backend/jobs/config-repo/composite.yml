@@ -33,6 +33,10 @@ spring:
           destination: companies
           producer:
             required-groups: auditGroup
+        businessStreams-out-0:
+          destination: businessStreams
+          producer:
+            required-groups: auditGroup
         resumes-out-0:
           destination: resumes
           producer:
@@ -115,6 +119,6 @@ spring:
 
 logging:
   level:
-    root: warn
-    ru.rsh12: warn
-    org.springframework.web.server.adapter.HttpWebHandlerAdapter: warn
+    root: info
+    ru.rsh12: info
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: info
