@@ -51,7 +51,7 @@ services:
           memory: 512M
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/product.yml
+      - SPRING_CONFIG_LOCATION=file:/config-repo/application.yml,file:/config-repo/job.yml
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_USR}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_PWD}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USR}
