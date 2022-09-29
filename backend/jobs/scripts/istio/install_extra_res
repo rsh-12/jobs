@@ -1,0 +1,16 @@
+#!/bin/bash
+
+istio_version=$(istioctl version --short --remote=false)
+echo "Installing integrations for Istio v$istio_version"
+
+# kiali
+kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/${istio_version}/samples/addons/kiali.yaml
+
+# jaeger
+kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/${istio_version}/samples/addons/jaeger.yaml
+
+# prometheus
+kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/${istio_version}/samples/addons/prometheus.yaml
+
+# grafana
+kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/${istio_version}/samples/addons/grafana.yaml
