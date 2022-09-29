@@ -1,15 +1,3 @@
-ingress:
-  host: minikube.me
-  paths:
-    - path: /api/v1/composite
-      service: composite
-    - path: /actuator/health
-      service: composite
-    - path: /openapi
-      service: composite
-    - path: /webjars
-      service: composite
-
 secrets:
 
   rabbitmq-server-credentials:
@@ -19,10 +7,6 @@ secrets:
   rabbitmq-credentials:
     SPRING_RABBITMQ_USERNAME: rabbit
     SPRING_RABBITMQ_PASSWORD: rabbit
-
-  rabbitmq-zipkin-credentials:
-    RABBIT_USER: rabbit
-    RABBIT_PASSWORD: rabbit
 
   postgres-server-credentials:
     POSTGRES_USER: postgres
@@ -62,6 +46,8 @@ composite:
     - rabbitmq-credentials
     - postgres-credentials
 
-zipkin-server:
-  envFromSecretRefs:
-    - rabbitmq-zipkin-credentials
+destinationRules:
+  - name: composite
+  - name: company
+  - name: resume
+  - name: job

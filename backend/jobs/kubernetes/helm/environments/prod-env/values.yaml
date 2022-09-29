@@ -1,24 +1,8 @@
-ingress:
-  host: minikube.me
-  paths:
-    - path: /api/v1/composite
-      service: composite
-    - path: /actuator/health
-      service: composite
-    - path: /openapi
-      service: composite
-    - path: /webjars
-      service: composite
-
 secrets:
 
   rabbitmq-credentials:
     SPRING_RABBITMQ_USERNAME: rabbit
     SPRING_RABBITMQ_PASSWORD: rabbit
-
-  rabbitmq-zipkin-credentials:
-    RABBIT_USER: rabbit
-    RABBIT_PASSWORD: rabbit
 
   postgres-credentials:
     SPRING_DATASOURCE_USERNAME: postgres
@@ -78,15 +62,3 @@ composite:
       memory: 200Mi
     limits:
       memory: 400Mi
-
-zipkin-server:
-  env:
-    LOGGING_LEVEL_ROOT: WARN
-    RABBIT_ADDRESSES: 172.17.0.1
-  envFromSecretRefs:
-    - rabbitmq-zipkin-credentials
-  resources:
-    requests:
-      memory: 300Mi
-    limits:
-      memory: 600Mi

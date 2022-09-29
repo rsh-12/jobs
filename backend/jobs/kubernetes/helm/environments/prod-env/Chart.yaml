@@ -25,7 +25,3 @@ dependencies:
   - name: composite
     version: 1.0.0
     repository: file://../../components/composite
-
-  - name: zipkin-server
-    version: 1.0.0
-    repository: file://../../components/zipkin-server

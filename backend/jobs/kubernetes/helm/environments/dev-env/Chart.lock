@@ -20,8 +20,5 @@ dependencies:
 - name: composite
   repository: file://../../components/composite
   version: 1.0.0
-- name: zipkin-server
-  repository: file://../../components/zipkin-server
-  version: 1.0.0
-digest: sha256:e81b0a5a1ec77c3927512978e99c5015f43277ce46a6c7c39282f8e9bd12fc6f
-generated: "2022-08-22T08:24:24.123596686+05:00"
+digest: sha256:4c0b70c37ba923fa91541fb3162df6500d952ef402d95b73db9d7f74e35535c9
+generated: "2022-09-12T09:00:19.712977753+05:00"
