@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+kubectl apply -f kubernetes/hands-on-namespace.yml
+
 bash scripts/project/build.bash
 
 docker-compose up -d keycloak
